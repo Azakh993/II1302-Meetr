@@ -1,19 +1,22 @@
 package com.group7.meetr;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+
 import com.group7.meetr.databinding.Loginpagev2Binding;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
-import com.group7.meetr.activity.EmailPasswordActivity;
 
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    private ArrayList<String> users;
+    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
                 this, R.layout.loginpagev2);
         activityMainBinding.setViewModel(lpvm);
         activityMainBinding.executePendingBindings();
+
+        users = new ArrayList<>();
+        users.add("Ahmed");
+        users.add("Haadi");
+        users.add("Bashir");
+        users.add("Ibrahim");
+        users.add("Bakal");
+
+        for (int i = 0; i < users.size(); i++) {
+            Log.d(TAG, "onCreate: names:" + users.get(i));
+        }
     }
     public void onStart() {
         super.onStart();
