@@ -1,5 +1,7 @@
-package com.group7.meetr.model;
+package com.group7.meetr.data.model;
 import androidx.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 public class LoginPageModel {
 
@@ -8,7 +10,7 @@ public class LoginPageModel {
 
     // constructor to initialize
     // the variables
-    public LoginPageModel(String email, String password){
+    public LoginPageModel(@NotNull String email, @NotNull String password){
         this.email = email;
         this.password = password;
     }
