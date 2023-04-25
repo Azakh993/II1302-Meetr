@@ -7,20 +7,15 @@ import androidx.databinding.Bindable;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.BR;
-import com.group7.meetr.JoinSession;
-import com.group7.meetr.NewSession;
 import com.group7.meetr.activity.EmailPasswordActivity;
-import com.group7.meetr.model.LoginPageModel;
+import com.group7.meetr.data.model.LoginPageModel;
+import com.group7.meetr.data.remote.SessionHandler;
 
 public class LoginPageViewModel extends BaseObservable {
 
     // creating object of Model class
-    private LoginPageModel model;
-
-    // string variables for
-    // toast messages
-    private String successMessage = "Login successful";
-    private String errorMessage = "Email or Password is not valid";
+    private final LoginPageModel model;
+    private final FirebaseDatabase database;
 
     @Bindable
     private String toastMessage = null;
@@ -58,11 +53,12 @@ public class LoginPageViewModel extends BaseObservable {
     }
 
 
-    public LoginPageViewModel() {
+    public LoginPageViewModel(FirebaseDatabase database) {
 
         // instantiating object of
         // model class
         model = new LoginPageModel("","");
+        this.database = database;
     }
 
 
@@ -74,20 +70,22 @@ public class LoginPageViewModel extends BaseObservable {
             EmailPasswordActivity emailLogIn = new EmailPasswordActivity();
             EmailPasswordActivity.login();
             emailLogIn.signIn(getUserEmail(), getUserPassword());
+
+            String successMessage = "Login successful";
             setToastMessage(successMessage);
         }
-        else
+        else {
+            String errorMessage = "Email or Password is not valid";
             setToastMessage(errorMessage);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
+        }
 
         String userMail = getUserEmail();
+        SessionHandler sessionHandler = new SessionHandler(database);
+
         if(userMail.contains("admin@admin.com")) {
-            NewSession newSession = new NewSession(database);
-            newSession.createSession(userMail);
+            sessionHandler.createSession(userMail);
         } else {
-            JoinSession joinSession = new JoinSession(database);
-            joinSession.joinSession(userMail);
+            sessionHandler.joinSession(userMail);
         }
     }
 
