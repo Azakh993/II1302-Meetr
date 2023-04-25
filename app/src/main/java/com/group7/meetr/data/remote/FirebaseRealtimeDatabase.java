@@ -1,22 +1,24 @@
 package com.group7.meetr.data.remote;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.group7.meetr.activity.myAdapter;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
  */
 public class FirebaseRealtimeDatabase {
-    private final FirebaseDatabase database;
-    private final String meetingID;
+    private  final FirebaseDatabase database;
+    private  final String meetingID;
+    public static ArrayList<String> emails;
 
     /**
      * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
@@ -43,9 +45,12 @@ public class FirebaseRealtimeDatabase {
                     String email = emailSnapshot.getValue(String.class);
                     emailList.add(email);
                 }
+                //String[] emails = {"Ahmed", "Dinho", "Baskim", "Pop", "Alice"};
                 String[] emails = emailList.toArray(new String[0]);
                 // TODO: add a setter here to that updates the UI with the array of participants.
+                myAdapter.setParticipants(emails);
             }
+
 
             @Override
             public void onCancelled(@NotNull DatabaseError databaseError) {
@@ -54,4 +59,6 @@ public class FirebaseRealtimeDatabase {
         };
         participantsRef.addValueEventListener(participantsListener);
     }
+
+
 }
