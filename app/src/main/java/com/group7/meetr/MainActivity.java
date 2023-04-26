@@ -1,6 +1,7 @@
 package com.group7.meetr;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.activity.myAdapter;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         //activityMainBinding.setViewModel(lpvm);
         //activityMainBinding.executePendingBindings();
 
+        String[] emails = adapter.getParticipants();
+        Log.d("Emails", "onCreate: " + Arrays.toString(emails));
 
         // RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycleview);

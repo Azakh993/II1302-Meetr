@@ -45,6 +45,7 @@ public class myAdapter extends RecyclerView.Adapter<myViewHolder> {
         particantsNames = participants;
     }
     public  String[] getParticipants(){
-        return particantsNames;
+        String[] str = {"Hej", "hejsan"};
+        return str;
     }
 }
