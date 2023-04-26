@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
     <TextView
         android:id="@+id/textView"
@@ -9,7 +10,9 @@
         android:layout_height="wrap_content"
         android:text="The current queue"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp"
+        android:textColor="#ffffff"
+        android:background="#000000" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -17,7 +20,9 @@
         android:layout_height="200dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:textColor="#ffffff"
+        android:background="#000000" />
 
     <Button
         android:id="@+id/buttonJoin"
@@ -26,7 +31,8 @@
         android:text="Join queue"
         android:layout_below="@+id/recyclerView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:textColor="#ffffff" />
 
     <Button
         android:id="@+id/buttonFinish"
@@ -35,7 +41,9 @@
         android:text="Finish talking"
         android:layout_below="@+id/buttonJoin"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>
+
 

@@ -46,7 +46,7 @@ public class LoginPageActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }else if(i == 1){
-                    //intent = new Intent(LoginPageActivity.this, //TODO: user-activity here!!!)
+                    intent = new Intent(LoginPageActivity.this,ParticipantView.class );//TODO: user-activity here!!!)
                 }
 
             }
