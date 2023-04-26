@@ -1,4 +1,5 @@
 package com.group7.meetr.viewmodel;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -7,9 +8,12 @@ import androidx.databinding.Bindable;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.BR;
+import com.group7.meetr.ParticipantView;
 import com.group7.meetr.activity.EmailPasswordActivity;
 import com.group7.meetr.data.model.LoginPageModel;
 import com.group7.meetr.data.remote.SessionHandler;
+
+import com.group7.meetr.MainActivity;
 
 public class LoginPageViewModel extends BaseObservable {
 
@@ -62,6 +66,7 @@ public class LoginPageViewModel extends BaseObservable {
     }
 
 
+
     public void onButtonClicked() {
         if (isValid()) {
 
@@ -73,6 +78,7 @@ public class LoginPageViewModel extends BaseObservable {
 
             String successMessage = "Login successful";
             setToastMessage(successMessage);
+
         }
         else {
             String errorMessage = "Email or Password is not valid";
