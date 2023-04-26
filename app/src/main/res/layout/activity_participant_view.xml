@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.ParticipantView">
-
-    <Button
-        android:id="@+id/queueButton"
-        android:layout_width="133dp"
-        android:layout_height="55dp"
-        android:text="Join Queue"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="479dp" />
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current Queue:"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="96dp" />
-
-    <Button
-        android:id="@+id/finishButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Finish Talking"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="573dp" />
+        android:text="The current queue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="409dp"
-        android:layout_height="348dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="130dp" />
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/buttonJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join queue"
+        android:layout_below="@+id/recyclerView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/buttonFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish talking"
+        android:layout_below="@+id/buttonJoin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+</RelativeLayout>
+
