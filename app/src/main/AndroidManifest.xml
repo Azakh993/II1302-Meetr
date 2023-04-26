@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ParticipantListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.LoginPageActivity"
             android:exported="false" />
         <activity

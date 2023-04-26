@@ -48,8 +48,8 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
+                intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
+                startActivity(intent);
             }
         });
         Button go_to_vote = findViewById(R.id.btn_vote);

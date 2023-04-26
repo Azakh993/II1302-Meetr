@@ -1,5 +1,5 @@
-package com.group7.meetr.activity;
 
+package com.group7.meetr.activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,22 +7,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.group7.meetr.R;
 
-public class myAdapter extends RecyclerView.Adapter<myViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParticipantListAdapter extends RecyclerView.Adapter<myViewHolder> {
 
     Context context;
-    private  String[] particantsNames = new String[0];
+    String[] names;
 
-    public myAdapter() {
+    public ParticipantListAdapter(Context context, String[] names) {
         this.context = context;
+        this.names = names;
     }
+    public ParticipantListAdapter() {
 
-    public myAdapter(Context applicationContext, String[] participants) {
-        this.context = context;
-        this.particantsNames = participants;
     }
-
 
     @NonNull
     @Override
@@ -30,22 +32,20 @@ public class myAdapter extends RecyclerView.Adapter<myViewHolder> {
         return new myViewHolder(LayoutInflater.from(context).inflate(R.layout.participant_item, parent, false));
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        String participantEmail = particantsNames[position];
-        holder.bind(participantEmail);
+        holder.nameView.setText(names[position]);
     }
 
     @Override
     public int getItemCount() {
-        return particantsNames.length;
+        return names.length;
     }
-
-    public  void setParticipants(String[] participants) {
-        particantsNames = participants;
+    public void setNames(String[] names){
+        this.names = names;
     }
     public  String[] getParticipants(){
-        String[] str = {"Hej", "hejsan"};
-        return str;
+        return names;
     }
 }
