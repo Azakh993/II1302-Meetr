@@ -3,13 +3,20 @@
     <string name="email_hint">Enter your Email ID</string>
     <string name="password_hint">Enter your password</string>
     <string name="button_text">Login</string>
-        <string name="title_activity_login">LoginActivity</string>
-        <string name="prompt_email">Email</string>
-        <string name="prompt_password">Password</string>
-        <string name="action_sign_in">Sign in or register</string>
-        <string name="action_sign_in_short">Sign in</string>
-        <string name="welcome">"Welcome !"</string>
-        <string name="invalid_username">Not a valid username</string>
-        <string name="invalid_password">Password must be >5 characters</string>
-        <string name="login_failed">"Login failed"</string>
-    </resources>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="modV_voting">Initiate vote</string>
+    <string name="modV_partlist">See participants</string>
+    <string name="modV_options">Options</string>
+    <string name="open_lobby_code">Open lobby code</string>
+    <string name="leave_your_meeting">Leave your meeting</string>
+    <string name="meeting">Meeting</string>
+
+</resources>
