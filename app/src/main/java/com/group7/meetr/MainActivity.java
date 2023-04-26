@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private myAdapter mParticipantsAdapter;
+    myAdapter adapter = new myAdapter();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         // via the ViewModel
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
+        //TODO: Move this code to a more appropriate place.
+        FirebaseRealtimeDatabase realtimeDatabase = new FirebaseRealtimeDatabase(database, "7");
+        realtimeDatabase.addParticipantsListener();
 
         //Loginpagev2Binding activityMainBinding = DataBindingUtil.setContentView(
           //      this, R.layout.loginpagev2);
@@ -50,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
         // RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new myAdapter(getApplicationContext(), myAdapter.getParticipants()));
+        recyclerView.setAdapter(new myAdapter(getApplicationContext(), adapter.getParticipants()));
         //recyclerView.setAdapter(mParticipantsAdapter);
 
-        //TODO: Move this code to a more appropriate place.
-        FirebaseRealtimeDatabase realtimeDatabase = new FirebaseRealtimeDatabase(database, "7");
-        realtimeDatabase.addParticipantsListener();
+
 
 
     }

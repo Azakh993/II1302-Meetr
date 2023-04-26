@@ -18,7 +18,7 @@ import java.util.List;
 public class FirebaseRealtimeDatabase {
     private  final FirebaseDatabase database;
     private  final String meetingID;
-    public static ArrayList<String> emails;
+    myAdapter adapter = new myAdapter();
 
     /**
      * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
@@ -45,10 +45,9 @@ public class FirebaseRealtimeDatabase {
                     String email = emailSnapshot.getValue(String.class);
                     emailList.add(email);
                 }
-                //String[] emails = {"Ahmed", "Dinho", "Baskim", "Pop", "Alice"};
                 String[] emails = emailList.toArray(new String[0]);
                 // TODO: add a setter here to that updates the UI with the array of participants.
-                myAdapter.setParticipants(emails);
+                adapter.setParticipants(emails);
             }
 
 
