@@ -6,4 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".activity.ParticipantView">
 
+    <Button
+        android:id="@+id/queueButton"
+        android:layout_width="133dp"
+        android:layout_height="55dp"
+        android:text="Join Queue"
+        tools:layout_editor_absoluteX="139dp"
+        tools:layout_editor_absoluteY="479dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Queue:"
+        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteY="96dp" />
+
+    <Button
+        android:id="@+id/finishButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish Talking"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="573dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="409dp"
+        android:layout_height="348dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="130dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
