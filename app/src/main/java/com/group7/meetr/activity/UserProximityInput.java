@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.remote.SessionHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +19,9 @@ import java.util.Date;
 public class UserProximityInput extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     Sensor proximitySensor;
+
+    private SessionHandler sessionHandler;
+    private String sessionId = "7";
 
     @Override
     public final void onCreate(Bundle savedInstanceState) {
@@ -27,19 +31,23 @@ public class UserProximityInput extends Activity implements SensorEventListener 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        sessionHandler = new SessionHandler();
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         float distance = event.values[0];
-        String ts = getCurrentTimeStamp();
-        if (distance > 5) {
-            Toast.makeText(this, "Object is far: " + ts, Toast.LENGTH_SHORT).show();
+        String timestamp = getCurrentTimeStamp();
+
+        if (distance <= 7) {
+            Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
+            // Send handRaise flag and timestamp to sessionHandler
+            sessionHandler.sendProximityData(sessionId, true, timestamp);
         }
         else {
-            Toast.makeText(this, "Object is close: " + ts, Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, "Request Not Registered: " + timestamp, Toast.LENGTH_SHORT).show();
         }
     }
 
