@@ -22,7 +22,7 @@ public class UserProximityInput extends Activity implements SensorEventListener 
     @Override
     public final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loginpagev2);
+        setContentView(R.layout.activity_loginpage);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
