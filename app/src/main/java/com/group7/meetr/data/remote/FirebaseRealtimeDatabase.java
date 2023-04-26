@@ -50,7 +50,7 @@ public class FirebaseRealtimeDatabase {
                     String email = emailSnapshot.getValue(String.class);
                     emailList.add(email);
                 }
-                String[] emails = emailList.toArray(new String[0]);
+                List<String> emails = emailList;
                 // TODO: add a setter here to that updates the UI with the array of participants.
                 adapter.setNames(emails);
             }

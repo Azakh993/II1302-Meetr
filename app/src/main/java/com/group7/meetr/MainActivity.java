@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         // model will also update the view
         // via the ViewModel
 
-       // Intent intent = new Intent(MainActivity.this, ParticipantListActivity.class);
+        //Intent intent = new Intent(LoginPageActivity.this, ParticipantListActivity.class);
         //startActivity(intent);
 
         //TODO: Move this code to a more appropriate place.

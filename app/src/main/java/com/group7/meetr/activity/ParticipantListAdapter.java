@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.group7.meetr.R;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantListAdapter.myViewHolder> {
 
     Context context;
-    String[] names;
+    List<String> names;
 
-    public ParticipantListAdapter(Context context, String[] names) {
+    public ParticipantListAdapter(Context context, List<String> names) {
         this.context = context;
         this.names = names;
     }
@@ -37,18 +37,18 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        holder.nameView.setText(names[position]);
+        holder.nameView.setText(names.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return names.length;
+        return names.size();
     }
-    public void setNames(String[] names){
+    public void setNames(List<String> names){
         this.names = names;
-        Log.d("Participants LIST", "setNames: " + Arrays.toString(names));
+        Log.d("Participants LIST", "setNames: " + names);
     }
-    public  String[] getParticipants(){
+    public  List<String>  getParticipants(){
         return names;
     }
 

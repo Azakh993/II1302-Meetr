@@ -12,12 +12,15 @@ import com.group7.meetr.MainActivity;
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParticipantListActivity extends AppCompatActivity {
 
      RecyclerView participantListRecyclerView;
     ParticipantListAdapter adapter;
     FirebaseRealtimeDatabase firebaseRealtimeDatabase;
-    String[] emails;
+    List<String> names = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,6 @@ public class ParticipantListActivity extends AppCompatActivity {
         firebaseRealtimeDatabase = new FirebaseRealtimeDatabase(FirebaseDatabase.getInstance(), "meetingID", adapter);
         firebaseRealtimeDatabase.addParticipantsListener();
 
-        emails = new String[]{};
         participantListRecyclerView = findViewById(R.id.ParticipantList);
         participantListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ParticipantListAdapter(this, adapter.getParticipants());
