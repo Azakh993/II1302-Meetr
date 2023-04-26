@@ -1,7 +1,6 @@
 package com.group7.meetr;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.activity.myAdapter;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
         //LoginPageViewModel lpvm = new LoginPageViewModel(database);
         //activityMainBinding.setViewModel(lpvm);
         //activityMainBinding.executePendingBindings();
-
-
-        String[] names = {"AHmed", "Bashir", "Ibrahim", "Bakal"};
-
-            Log.d("Participant List", ": names:  " + Arrays.toString(names));
 
 
         // RecyclerView

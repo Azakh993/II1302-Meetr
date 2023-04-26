@@ -12,8 +12,7 @@ import com.group7.meetr.R;
 public class myAdapter extends RecyclerView.Adapter<myViewHolder> {
 
     Context context;
-    private  String[] particantsNames = new String[0]; //= {"Ahmed", "Dinho", "Baskim", "Pop", "Alice"};
-    //String[] emails = {"Ahmed", "Dinho", "Baskim", "Pop", "Alice"};
+    private  String[] particantsNames = new String[0];
 
     public myAdapter() {
         this.context = context;
@@ -33,7 +32,6 @@ public class myAdapter extends RecyclerView.Adapter<myViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        //holder.nameView.setText(particantsNames.get(position));
         String participantEmail = particantsNames[position];
         holder.bind(participantEmail);
     }
