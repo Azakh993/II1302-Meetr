@@ -1,20 +1,11 @@
 package com.group7.meetr;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.DataBindingUtil;
-
-import com.group7.meetr.activity.LoginPageActivity;
-import com.group7.meetr.activity.ModeratorActivity;
-import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
-import com.group7.meetr.viewmodel.LoginPageViewModel;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         // model will also update the view
         // via the ViewModel
 
-        Intent intent = new Intent(MainActivity.this, LoginPageActivity.class);
-        startActivity(intent);
+       // Intent intent = new Intent(MainActivity.this, ParticipantListActivity.class);
+        //startActivity(intent);
 
         //TODO: Move this code to a more appropriate place.
 

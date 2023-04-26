@@ -1,19 +1,21 @@
 
 package com.group7.meetr.activity;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.group7.meetr.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-public class ParticipantListAdapter extends RecyclerView.Adapter<myViewHolder> {
+public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantListAdapter.myViewHolder> {
 
     Context context;
     String[] names;
@@ -44,8 +46,21 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<myViewHolder> {
     }
     public void setNames(String[] names){
         this.names = names;
+        Log.d("Participants LIST", "setNames: " + Arrays.toString(names));
     }
     public  String[] getParticipants(){
         return names;
     }
+
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
+
+
+        TextView nameView;
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameView = itemView.findViewById(R.id.participant_name);
+        }
+    }
+
 }
