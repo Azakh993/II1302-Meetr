@@ -8,7 +8,6 @@ import androidx.databinding.Bindable;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.BR;
-import com.group7.meetr.ParticipantView;
 import com.group7.meetr.activity.EmailPasswordActivity;
 import com.group7.meetr.data.model.LoginPageModel;
 import com.group7.meetr.data.remote.SessionHandler;

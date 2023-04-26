@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 
+import com.group7.meetr.activity.ParticipantView;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
 import com.group7.meetr.databinding.Loginpagev2Binding;
 import com.group7.meetr.generated.callback.OnClickListener;
