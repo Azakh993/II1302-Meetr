@@ -23,12 +23,13 @@ public class ParticipantListActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
         firebaseRealtimeDatabase = new FirebaseRealtimeDatabase(database, "meetingID");
-
+        //String[] str = adapter.getNames();
         firebaseRealtimeDatabase.addParticipantsListener();
 
 
         participantListRecyclerView = findViewById(R.id.ParticipantList);
         participantListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         adapter = new ParticipantListAdapter(getApplicationContext(), new String[0]); // create new instance
         String[] str = adapter.setUsers(new String[]{"hej", "hejsan"});
         adapter = new ParticipantListAdapter(getApplicationContext(), adapter.getNames());
