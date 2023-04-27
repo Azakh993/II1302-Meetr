@@ -14,7 +14,7 @@ public class SessionHandler {
     }
 
     public SessionHandler() {
-        mDatabase = FirebaseDatabase.getInstance().getReference("/Sessions/");
+        mDatabase = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/Sessions/");
     }
 
     /**
