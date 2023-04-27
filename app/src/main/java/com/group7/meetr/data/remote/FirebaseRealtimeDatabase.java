@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.group7.meetr.activity.ParticipantListActivity;
 import com.group7.meetr.activity.ParticipantListAdapter;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,21 +21,19 @@ public class FirebaseRealtimeDatabase {
     private  final String meetingID;
     ParticipantListAdapter adapter;
 
+
     /**
      * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
      * @param database FirebaseDatabase instance to interact with Firebase Realtime Database
      * @param meetingID Meeting ID of the session
      */
 
-    public FirebaseRealtimeDatabase(FirebaseDatabase database, String meetingID, ParticipantListAdapter adapter) {
-        this.database = database;
-        this.meetingID = meetingID;
-        this.adapter = adapter;
-    }
     public FirebaseRealtimeDatabase(FirebaseDatabase database, String meetingID) {
         this.database = database;
         this.meetingID = meetingID;
+        this.adapter = new ParticipantListAdapter();
     }
+
 
     /**
      * Adds a ValueEventListener to the Participants node of the session in Firebase Realtime Database
@@ -52,7 +51,9 @@ public class FirebaseRealtimeDatabase {
                 }
                 String[] emails = emailList.toArray(new String[0]);
                 // TODO: add a setter here to that updates the UI with the array of participants.
-                //adapter.setNames(emails);
+                adapter.setUsers(emails);
+                //activity.setUsers(emails);
+
             }
 
 
@@ -63,6 +64,7 @@ public class FirebaseRealtimeDatabase {
         };
         participantsRef.addValueEventListener(participantsListener);
     }
+
 
 
 }

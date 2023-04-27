@@ -18,13 +18,16 @@ import java.util.Arrays;
 public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantListAdapter.myViewHolder> {
 
     Context context;
-    String[] names;
+   String[] names;
+   // List<Participant> names;
 
     public ParticipantListAdapter(Context context, String[] names) {
         this.context = context;
         this.names = names;
     }
 
+    public ParticipantListAdapter(){
+    }
 
     @NonNull
     @Override
@@ -35,6 +38,7 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+        //Participant participant = names[position];
         holder.nameView.setText(names[position]);
     }
 
@@ -42,15 +46,20 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
     public int getItemCount() {
         return names.length;
     }
-    public String[]  setNames(String[] names){
+
+    public String[] setUsers(String[] names){
         this.names = names;
         Log.d("Participants LIST", "setNames: " + Arrays.toString(names));
+        //notifyDataSetChanged();
         return this.names;
     }
 
+    public String[] getNames(){
+    Log.d("Participants LIST", "setNames: " + Arrays.toString(this.names));
+      return this.names;
+    }
 
-
-    public static class myViewHolder extends RecyclerView.ViewHolder {
+    public class myViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView nameView;
