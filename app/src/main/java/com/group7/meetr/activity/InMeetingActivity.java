@@ -18,13 +18,6 @@ public class InMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_view);
 
-        Button vib = findViewById(R.id.buttonJoin);
-        Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibr.vibrate(400);
-            }
-        });
+
     }
 }
