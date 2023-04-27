@@ -24,10 +24,7 @@
             android:name=".activity.ModeratorActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ParticipantView"
-            android:exported="false" />
-        <activity
-            android:name=".ParticipantView"
+            android:name=".activity.InMeetingActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

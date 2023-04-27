@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class EmailPasswordActivity extends Activity {
@@ -37,7 +38,7 @@ public class EmailPasswordActivity extends Activity {
     // [START declare_auth]
     private static FirebaseAuth mAuth;
     // [END declare_auth]
-    public static void login(){
+    public static void getInstance(){
         //TODO:
         // Fixa så det är inte är statiskt.
         mAuth = FirebaseAuth.getInstance();
@@ -84,8 +85,8 @@ public class EmailPasswordActivity extends Activity {
                 });
         // [END create_user_with_email]
     }
-
-    public void signIn(String email, String password) {
+//TODO:
+    public void signIn(String email, String password) throws FirebaseAuthInvalidUserException {
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

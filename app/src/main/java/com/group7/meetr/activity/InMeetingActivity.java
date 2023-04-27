@@ -11,7 +11,7 @@ import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 
-public class ParticipantView extends AppCompatActivity {
+public class InMeetingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
