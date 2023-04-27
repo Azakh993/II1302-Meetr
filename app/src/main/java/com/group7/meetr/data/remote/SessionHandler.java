@@ -35,9 +35,7 @@ public class SessionHandler {
         mDatabase.child(sessionID).child("Moderator").setValue(userMail);
     }
 
-    public void sendProximityData(String sessionId, boolean handRaised, String timestamp) {
-        DatabaseReference proximityDataRef = mDatabase.child(sessionId).child("QueueRequestData").push();
-        proximityDataRef.child("handRaised").setValue(handRaised);
-        proximityDataRef.child("timestamp").setValue(timestamp);
+    public void sendProximityData(String sessionId, boolean handRaised, long timestamp) {
+        mDatabase.child(sessionId + "/QueueRequestData").push().setValue(timestamp);
     }
 }
