@@ -17,7 +17,7 @@ public class ModeratorPageModel {
     // constructor to initialize
     // the variables
     public ModeratorPageModel(String meeting_name) {
-        meeting_name = meeting_name;
+        this.meeting_name = meeting_name;
 
     }
 }

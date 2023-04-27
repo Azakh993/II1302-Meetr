@@ -11,10 +11,7 @@ import android.widget.ImageButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
-import com.group7.meetr.databinding.ActivityLoginpageBinding;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
-import com.group7.meetr.viewmodel.LoginPageViewModel;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
@@ -48,8 +45,8 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
+                intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
+                startActivity(intent);
             }
         });
         Button go_to_vote = findViewById(R.id.btn_vote);

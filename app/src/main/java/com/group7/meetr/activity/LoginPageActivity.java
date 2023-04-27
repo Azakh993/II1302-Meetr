@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
 import com.group7.meetr.databinding.ActivityLoginpageBinding;
-import com.group7.meetr.databinding.ActivityMainBinding;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class LoginPageActivity extends AppCompatActivity {
@@ -40,13 +40,15 @@ public class LoginPageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // har en ide för att lösa detta. confirmation funktion i loginpageviewmodel som confirmar med hjälp av dens vetande
                 int i = lpvm.checkLogin();
+                Log.d("!USER LOGIN INFO", "SUCCESSCODE" + i);
                 Intent intent;
                 if(i == 3) {
                     intent = new Intent(LoginPageActivity.this, ModeratorActivity.class);
                     startActivity(intent);
 
                 }else if(i == 1){
-                    //intent = new Intent(LoginPageActivity.this, //TODO: user-activity here!!!)
+                    intent = new Intent(LoginPageActivity.this, InMeetingActivity.class );//TODO: user-activity here!!!)
+                    startActivity(intent);
                 }
 
             }
