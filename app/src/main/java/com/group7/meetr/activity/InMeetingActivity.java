@@ -22,7 +22,7 @@ public class InMeetingActivity extends AppCompatActivity {
 
         botton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);

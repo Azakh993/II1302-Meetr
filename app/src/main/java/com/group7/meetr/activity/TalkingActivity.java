@@ -19,13 +19,13 @@ public class TalkingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_talking);
 
-        Button botton = findViewById(R.id.buttonFinish);
+        Button button = findViewById(R.id.buttonFinish);
 
 
         Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        botton.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 vibr.vibrate(400);
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
