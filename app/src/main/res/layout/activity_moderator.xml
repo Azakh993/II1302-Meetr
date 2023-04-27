@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    android:padding="20dp">
+
+    <!-- binding object of ViewModel to the XML layout -->
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.group7.meetr.viewmodel.ModeratorViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="376dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_leave_meeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/leave_your_meeting"
+                    android:onClick="@{()-> viewModel.onBtnLeaveClicked()}"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/arrow_left" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="24"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Meeting"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_lobby_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/open_lobby_code"
+                    android:cropToPadding="false"
+                    android:onClick="@{()-> viewModel.onBtnQRClicked()}"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/qrcode" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="231dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/vote_LOUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    android:id="@+id/btn_vote"
+                    android:layout_width="0dp"
+                    android:layout_height="61dp"
+                    android:layout_weight="1"
+                    android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
+                    android:text="@string/modV_voting"
+                    app:icon="@drawable/vote" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/participant_LOUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    android:id="@+id/btn_participants"
+                    android:layout_width="0dp"
+                    android:layout_height="61dp"
+                    android:layout_weight="1"
+                    android:onClick="@{()-> viewModel.onBtnParticipantsClicked()}"
+                    android:text="@string/modV_partlist"
+                    app:icon="@drawable/account_group_outline" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/options_LOUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    android:id="@+id/btn_options"
+                    android:layout_width="0dp"
+                    android:layout_height="61dp"
+                    android:layout_weight="1"
+                    android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
+                    android:text="@string/modV_options"
+                    app:icon="@drawable/cog_outline" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Provided Linear layout for the activity components -->
+</layout>

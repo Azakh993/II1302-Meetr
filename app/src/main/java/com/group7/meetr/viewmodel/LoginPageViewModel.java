@@ -5,6 +5,7 @@ import android.util.Patterns;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.BR;
 import com.group7.meetr.activity.EmailPasswordActivity;
@@ -60,33 +61,56 @@ public class LoginPageViewModel extends BaseObservable {
         model = new LoginPageModel("","");
         this.database = database;
     }
+    public void onButtonClicked(){
+        Log.d("!LOGIN", "LOGIN BUTRTON ");
+    }
 
 
-    public void onButtonClicked() {
+    /**
+     * Checks if user login information is correct. -1 false login
+     * 1 is user
+     * 3 is admin user.
+     * @return
+     */
+    public int checkLogin() {
+        SessionHandler sessionHandler = new SessionHandler(database);
+        String userMail = getUserEmail();
+        String errorMessage = "Email or Password is not valid";
+
+
         if (isValid()) {
-
-            Log.d("!User Email", getUserEmail());
+            //Debugging and logging
+            Log.d("!User Email", userMail);
             Log.d("!User Pass", getUserPassword());
             EmailPasswordActivity emailLogIn = new EmailPasswordActivity();
-            EmailPasswordActivity.login();
-            emailLogIn.signIn(getUserEmail(), getUserPassword());
-
+            EmailPasswordActivity.getInstance();
+            try {
+                emailLogIn.signIn(getUserEmail(), getUserPassword());
+            }
+            catch (FirebaseAuthInvalidUserException firebaseInvalidUser){
+                setToastMessage(errorMessage);
+                return -1;
+            }
             String successMessage = "Login successful";
             setToastMessage(successMessage);
+            if(userMail.contains("admin@admin.com")) {
+                sessionHandler.createSession(userMail);
+                return 3; // returns admin "key"
+            }
+            else {
+                Log.d("!USER LOGIN SUCCESS", "USER LOGIN SUCCESS");
+                sessionHandler.joinSession(userMail);
+                return 1;
+            }
         }
         else {
-            String errorMessage = "Email or Password is not valid";
             setToastMessage(errorMessage);
+            return -1;
         }
 
-        String userMail = getUserEmail();
-        SessionHandler sessionHandler = new SessionHandler(database);
 
-        if(userMail.contains("admin@admin.com")) {
-            sessionHandler.createSession(userMail);
-        } else {
-            sessionHandler.joinSession(userMail);
-        }
+
+
     }
 
 
