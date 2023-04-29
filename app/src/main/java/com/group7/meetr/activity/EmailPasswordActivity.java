@@ -35,6 +35,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class EmailPasswordActivity extends Activity {
 
     private static final String TAG = "EmailPassword";
+
+    public static FirebaseAuth getmAuth() {
+        return mAuth;
+    }
+
     // [START declare_auth]
     private static FirebaseAuth mAuth;
     // [END declare_auth]
