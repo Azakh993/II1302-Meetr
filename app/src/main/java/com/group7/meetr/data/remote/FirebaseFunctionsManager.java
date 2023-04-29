@@ -25,12 +25,22 @@ public class FirebaseFunctionsManager {
      */
     public static void putInQueueOnFirebase(){
         if(fFunctions == null)
-            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+            createQueue();
         String auth = EmailPasswordActivity.getmAuth().getUid();
         Map<String, Object> data = new HashMap<>();
         data.put("text", auth);
         data.put("push", true);
-        fFunctions.getHttpsCallable("joinQ").call(data);
+        fFunctions.getHttpsCallable("enqueue").call(data);
+
+        }
+        public static void createQueue(){
+            if(fFunctions == null){
+                fFunctions = FirebaseFunctions.getInstance("us-central1");
+                String auth = EmailPasswordActivity.getmAuth().getUid();
+                Map<String, Object> data = new HashMap<>();
+                data.put("push", true);
+                fFunctions.getHttpsCallable("initQ").call(data);
+            }
 
         }
 }

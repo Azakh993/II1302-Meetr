@@ -33,8 +33,7 @@ public class InMeetingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 vibr.vibrate(400);
                 Intent intent;
-                FirebaseFunctionsManager firebaseFunctionsManager = new FirebaseFunctionsManager();
-                firebaseFunctionsManager.putInQueueOnFirebase();
+                FirebaseFunctionsManager.putInQueueOnFirebase();
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
             }

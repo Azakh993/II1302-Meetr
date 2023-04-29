@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
@@ -24,6 +25,7 @@ public class ModeratorActivity extends AppCompatActivity {
         ActivityModeratorBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_moderator);
         activityMainBinding.setViewModel(lpvm);
         activityMainBinding.executePendingBindings();
+        FirebaseFunctionsManager.createQueue();
 
 
         /*
