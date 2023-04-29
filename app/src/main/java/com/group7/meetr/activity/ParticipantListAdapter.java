@@ -50,7 +50,7 @@ public class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantList
     public String[] setUsers(String[] names){
         this.names = names;
         Log.d("Participants LIST", "setNames: " + Arrays.toString(names));
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
         return this.names;
     }
 

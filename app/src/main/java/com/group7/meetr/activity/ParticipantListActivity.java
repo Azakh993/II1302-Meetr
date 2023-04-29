@@ -31,7 +31,7 @@ public class ParticipantListActivity extends AppCompatActivity {
         participantListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new ParticipantListAdapter(getApplicationContext(), new String[0]); // create new instance
-        String[] str = adapter.setUsers(new String[]{"hej", "hejsan"});
+        String[] str = adapter.setUsers(new String[]{"user@user.com", "user2@user.com", "user@user.com", "user@user.com"});
         adapter = new ParticipantListAdapter(getApplicationContext(), adapter.getNames());
         participantListRecyclerView.setAdapter(adapter);
 
