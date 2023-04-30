@@ -2,6 +2,7 @@ package com.group7.meetr.data.remote;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.group7.meetr.activity.Participant;
 
 public class SessionHandler {
     private static DatabaseReference mDatabase;
@@ -17,8 +18,9 @@ public class SessionHandler {
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
     public void joinSession(String email) {
+        Participant userEmail = new Participant(email);
         String sessionID = "7";
-        mDatabase.child(sessionID).child("Participants").push().setValue(email);
+        mDatabase.child(sessionID).child("Participants").push().setValue(userEmail);
     }
 
     /**
@@ -27,7 +29,8 @@ public class SessionHandler {
      * under the created session.
      */
     public void createSession(String userMail) {
+        Participant moderator = new Participant(userMail);
         String sessionID = "7";
-        mDatabase.child(sessionID).child("Moderator").setValue(userMail);
+        mDatabase.child(sessionID).child("Moderator").setValue(moderator);
     }
 }

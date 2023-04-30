@@ -1,20 +1,21 @@
 package com.group7.meetr.activity;
 
 public class Participant {
-    String user;
+    String userEmail;
+
+    public Participant() {
+    }
 
     public Participant(String user) {
-        this.user = user;
+        this.userEmail = user;
     }
 
-    public String getUsers() {
-        return user;
+    public String getUser() {
+        return this.userEmail;
     }
 
-    public void setUsers(String user) {
-        this.user = user;
+    public void setUser(String user) {
+        this.userEmail = user;
     }
 
-    public void add(Participant participant) {
-    }
 }

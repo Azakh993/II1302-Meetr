@@ -5,8 +5,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group7.meetr.activity.ParticipantListActivity;
-import com.group7.meetr.activity.ParticipantListAdapter;
+import com.group7.meetr.activity.Participant;
+import com.group7.meetr.activity.ParticipantAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class FirebaseRealtimeDatabase {
     private  final FirebaseDatabase database;
     private  final String meetingID;
-    ParticipantListAdapter adapter;
+    ParticipantAdapter adapter;
 
 
     /**
@@ -31,7 +31,7 @@ public class FirebaseRealtimeDatabase {
     public FirebaseRealtimeDatabase(FirebaseDatabase database, String meetingID) {
         this.database = database;
         this.meetingID = meetingID;
-        this.adapter = new ParticipantListAdapter();
+        //this.adapter = new ParticipantAdapter();
     }
 
 
@@ -44,14 +44,14 @@ public class FirebaseRealtimeDatabase {
         ValueEventListener participantsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> emailList = new ArrayList<>();
+                List<Participant> emailList = new ArrayList<>();
                 for (DataSnapshot emailSnapshot : dataSnapshot.getChildren()) {
-                    String email = emailSnapshot.getValue(String.class);
+                    Participant email = emailSnapshot.getValue(Participant.class);
                     emailList.add(email);
                 }
-                String[] emails = emailList.toArray(new String[0]);
+                //Participant[] emails = emailList.toArray(new String[0]);
                 // TODO: add a setter here to that updates the UI with the array of participants.
-                adapter.setUsers(emails);
+                //adapter.setUsers(emails);
                 //activity.setUsers(emails);
 
             }
