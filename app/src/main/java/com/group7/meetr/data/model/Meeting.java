@@ -3,6 +3,7 @@ package com.group7.meetr.data.model;
 import com.group7.meetr.activity.EmailPasswordActivity;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,13 +15,12 @@ public class Meeting {
     List<Participant> participants;// meetings/MID/participants/UID and boolean for if mod??
     //2
     //3
-    List<String> queue;
     //(each queueposition) UID + timestamp + reason?
+    Queue queue;
 
     String meetingID;
-    int frontIndex;
-    int lastIndex;
     //TIME startTime;
+    Timestamp startTime;
     //TIME endTime; //endtime == null mötet aktivt
 
     /**
@@ -40,16 +40,8 @@ public class Meeting {
         return meetingID;
     }
 
-    public List<String> getQueue() {
+    public Queue getQueue() {
         return queue;
-    }
-
-    public int getFrontIndex() {
-        return frontIndex;
-    }
-
-    public int getLastIndex() {
-        return lastIndex;
     }
 
     /**
@@ -57,16 +49,14 @@ public class Meeting {
      */
     public Meeting(){
         this.meetingID = generateMID();
-        this.frontIndex = 0;
-        this.lastIndex = 0;
         this.participants = new ArrayList<>();
 
         String UID = EmailPasswordActivity.getmAuth().getUid(); // gets current logged in user.
         addParticipant(UID); //adds current logged in user.
 
         // Queue handling
-        FirebaseFunctionsManager.createQueue();
-        queue = new ArrayList<>();
+        FirebaseFunctionsManager.callNewMeeting("Edvin Frosterud","7");
+        queue = new Queue();
         //TODO: Listener for when queue changes.
     }
 
@@ -86,7 +76,6 @@ public class Meeting {
 
         // create random string builder
         StringBuilder sb = new StringBuilder();
-        sb.append("meet-");
 
         // create an object of Random class
         Random random = new Random();

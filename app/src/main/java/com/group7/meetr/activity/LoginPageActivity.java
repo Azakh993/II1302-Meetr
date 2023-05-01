@@ -11,9 +11,13 @@ import android.widget.Button;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
 import com.group7.meetr.databinding.ActivityLoginpageBinding;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginPageActivity extends AppCompatActivity {
 
@@ -35,6 +39,7 @@ public class LoginPageActivity extends AppCompatActivity {
         Button go_to_meeting = findViewById(R.id.btn_login);
         FirebaseRealtimeDatabase realtimeDatabase = new FirebaseRealtimeDatabase(database, "7");
         realtimeDatabase.addParticipantsListener();
+
         go_to_meeting.setOnClickListener(new View.OnClickListener() {
             @Override  //skriver inte över?? nvm fucking skriver över -.-
             public void onClick(View view) {

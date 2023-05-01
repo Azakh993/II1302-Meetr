@@ -20,8 +20,8 @@ public class SessionHandler {
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
     public void joinSession(String meetingID) {
-        Meeting meeting = new Meeting(meetingID);
-        mDatabase.child(meeting.getMeetingID()).child("participants").push().setValue(new Participant(EmailPasswordActivity.getmAuth().getUid()));
+        //Meeting meeting = new Meeting(meetingID);
+        //mDatabase.child(meeting.getMeetingID()).child("participants").push().setValue(new Participant(EmailPasswordActivity.getmAuth().getUid()));
     }
 
     /**
@@ -31,6 +31,6 @@ public class SessionHandler {
      */
     public void dbCreateSession(String userMail) {
         Meeting meeting = new Meeting();
-        mDatabase.child(meeting.getMeetingID()).setValue(meeting);
+        //mDatabase.child("meet-" + meeting.getMeetingID()).setValue(meeting);
     }
 }
