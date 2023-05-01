@@ -21,6 +21,7 @@ public class SessionHandler {
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
     public void joinSession(String email) {
+        //Participant participant = new Participant(email);
         String sessionID = "7";
         mDatabase.child(sessionID).child("Participants").push().setValue(email);
     }
@@ -31,6 +32,7 @@ public class SessionHandler {
      * under the created session.
      */
     public void createSession(String userMail) {
+        //Participant moderator = new Participant(userMail);
         String sessionID = "7";
         mDatabase.child(sessionID).child("Moderator").setValue(userMail);
     }

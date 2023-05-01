@@ -21,6 +21,9 @@
             android:name=".activity.LoginPageActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ParticipantListActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.ModeratorActivity"
             android:exported="false" />
         <activity

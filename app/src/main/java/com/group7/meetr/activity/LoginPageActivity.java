@@ -1,13 +1,13 @@
 package com.group7.meetr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
@@ -34,7 +34,7 @@ public class LoginPageActivity extends AppCompatActivity {
         activityMainBinding.executePendingBindings();
         Button go_to_meeting = findViewById(R.id.btn_login);
         FirebaseRealtimeDatabase realtimeDatabase = new FirebaseRealtimeDatabase(database, "7");
-        realtimeDatabase.addParticipantsListener();
+        //realtimeDatabase.addParticipantsListener();
         go_to_meeting.setOnClickListener(new View.OnClickListener() {
             @Override  //skriver inte över?? nvm fucking skriver över -.-
             public void onClick(View view) {
