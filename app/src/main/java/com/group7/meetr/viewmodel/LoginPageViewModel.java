@@ -1,20 +1,14 @@
 package com.group7.meetr.viewmodel;
-import android.app.Activity;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.DataBindingUtil;
 
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.BR;
-import com.group7.meetr.MainActivity;
-import com.group7.meetr.R;
 import com.group7.meetr.activity.EmailPasswordActivity;
-import com.group7.meetr.activity.LoginPageActivity;
-import com.group7.meetr.activity.ModeratorActivity;
 import com.group7.meetr.data.model.LoginPageModel;
 import com.group7.meetr.data.remote.SessionHandler;
 
@@ -81,15 +75,22 @@ public class LoginPageViewModel extends BaseObservable {
     public int checkLogin() {
         SessionHandler sessionHandler = new SessionHandler(database);
         String userMail = getUserEmail();
+        String errorMessage = "Email or Password is not valid";
+
 
         if (isValid()) {
             //Debugging and logging
             Log.d("!User Email", userMail);
             Log.d("!User Pass", getUserPassword());
             EmailPasswordActivity emailLogIn = new EmailPasswordActivity();
-            EmailPasswordActivity.login();
-            emailLogIn.signIn(getUserEmail(), getUserPassword());
-
+            EmailPasswordActivity.getInstance();
+            try {
+                emailLogIn.signIn(getUserEmail(), getUserPassword());
+            }
+            catch (FirebaseAuthInvalidUserException firebaseInvalidUser){
+                setToastMessage(errorMessage);
+                return -1;
+            }
             String successMessage = "Login successful";
             setToastMessage(successMessage);
             if(userMail.contains("admin@admin.com")) {
@@ -97,12 +98,12 @@ public class LoginPageViewModel extends BaseObservable {
                 return 3; // returns admin "key"
             }
             else {
+                Log.d("!USER LOGIN SUCCESS", "USER LOGIN SUCCESS");
                 sessionHandler.joinSession(userMail);
+                return 1;
             }
-            return 1;
         }
         else {
-            String errorMessage = "Email or Password is not valid";
             setToastMessage(errorMessage);
             return -1;
         }

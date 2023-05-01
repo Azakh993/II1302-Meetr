@@ -13,6 +13,10 @@ public class SessionHandler {
         mDatabase = database.getReference("/Sessions/");
     }
 
+    public SessionHandler() {
+        mDatabase = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/Sessions/");
+    }
+
     /**
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
@@ -29,5 +33,9 @@ public class SessionHandler {
     public void createSession(String userMail) {
         String sessionID = "7";
         mDatabase.child(sessionID).child("Moderator").setValue(userMail);
+    }
+
+    public void sendProximityData(String sessionId, boolean handRaised, long timestamp) {
+        mDatabase.child(sessionId + "/QueueRequestData").push().setValue(timestamp);
     }
 }
