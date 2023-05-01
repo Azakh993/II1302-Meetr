@@ -45,23 +45,6 @@ public class Meeting {
     }
 
     /**
-     * Create a new meeting with random UID. Then create that respectively online.
-     */
-    public Meeting(){
-        this.meetingID = generateMID();
-        this.participants = new ArrayList<>();
-
-        String UID = EmailPasswordActivity.getmAuth().getUid(); // gets current logged in user.
-        addParticipant(UID); //adds current logged in user.
-
-        // Queue handling
-        FirebaseFunctionsManager.callNewMeeting("Edvin Frosterud","7");
-        queue = new Queue();
-        //TODO: Listener for when queue changes.
-    }
-
-
-    /**
      * Create a copy of a current meeting session by basing it of data in Firebase;
      * Use firebaserealtimedatabase please...
      * Use cloud functions to instanciate Queue.

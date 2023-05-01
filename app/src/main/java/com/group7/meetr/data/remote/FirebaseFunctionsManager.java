@@ -61,18 +61,12 @@ public class FirebaseFunctionsManager {
             });
         }
 
-    /**
-     *
-     * @param functionName the function name found in Firebase.
-     * @param data data blob that needs to be pushed. do not include push true, already doing that.
-     */
-    public static void anyFunctionCaller(String functionName, Map<String, Object> data){
-            data.put("push", true);
-            if(fFunctions != null){
-                fFunctions.getHttpsCallable(functionName).call(data);
-            }
-        }
 
+    /**
+     * Private helper function to be run and awaited results.
+     * @param input object to input
+     * @return returns the task that hasnt finished yet.
+     */
     private static Task<Map<String, Object>> newMeeting(Map<String, Object> input) {
         // Create the arguments to the callable function.
 
@@ -92,12 +86,20 @@ public class FirebaseFunctionsManager {
                     }
                 });
     }
-    public static Integer callNewMeeting(String moderatorName, String meetingID) {
+
+    /**
+     * Call a new meeting using the FirebaseFunctions.
+     * @param moderatorName whats the name of the moderator.
+     * @param meetingID
+     * @return the meeting id as an ínteger. Should defintely be string...
+     */
+    public static String callNewMeeting(String moderatorName, String meetingID) {
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
 
         //{moderator: moderatorUserName<String>, meetingID: meetingID<String>}
         Map<String, Object> sendInfo = new HashMap<>();
+        final String[] result = {null};
         sendInfo.put("moderator", moderatorName);
         sendInfo.put("meetingID", meetingID);
         newMeeting(sendInfo).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
@@ -113,11 +115,54 @@ public class FirebaseFunctionsManager {
                 }
                 else
                 {
-
+                    result[0] = String.valueOf(task.getResult().get("sid"));
                     Log.d("fornite",(task.getResult().get("sid").toString()));
+                }
+
+            }
+        });
+        return result[0];
+    }
+    private static Task<Map<String, Object>> anyFunction(String functionName, Map<String, Object> data){
+        return fFunctions
+                .getHttpsCallable(functionName)
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        return (Map<String, Object>) task.getResult().getData();
+                    }
+                });
+    }
+    /**
+     *
+     * @param functionName the function name found in Firebase.
+     * @param data data blob that needs to be pushed. do not include push true, already doing that.
+     */
+    public static Map<String, Object> callAnyFunction(String functionName, Map<String, Object> data){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        final Object[] result = {null};
+        anyFunction(functionName, data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+                }
+                else
+                {
+                    result[0] =  task.getResult();
                 }
             }
         });
-        return null;
+        return (Map<String, Object>) result[0];
     }
 }

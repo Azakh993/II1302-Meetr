@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseUser;
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
-import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
 import com.group7.meetr.databinding.ActivityLoginpageBinding;
 import com.group7.meetr.data.remote.DatabaseHandler;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
