@@ -5,10 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group7.meetr.activity.Participant;
-import com.group7.meetr.activity.ParticipantAdapter;
-
-import org.jetbrains.annotations.NotNull;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +16,6 @@ import java.util.List;
 public class FirebaseRealtimeDatabase {
     private  final FirebaseDatabase database;
     private  final String meetingID;
-    ParticipantAdapter adapter;
 
 
     /**
@@ -31,7 +27,6 @@ public class FirebaseRealtimeDatabase {
     public FirebaseRealtimeDatabase(FirebaseDatabase database, String meetingID) {
         this.database = database;
         this.meetingID = meetingID;
-        //this.adapter = new ParticipantAdapter();
     }
 
 
@@ -44,15 +39,13 @@ public class FirebaseRealtimeDatabase {
         ValueEventListener participantsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Participant> emailList = new ArrayList<>();
+                List<String> emailList = new ArrayList<>();
                 for (DataSnapshot emailSnapshot : dataSnapshot.getChildren()) {
-                    Participant email = emailSnapshot.getValue(Participant.class);
+                    String email = emailSnapshot.getValue(String.class);
                     emailList.add(email);
                 }
-                //Participant[] emails = emailList.toArray(new String[0]);
+                //String[] emails = emailList.toArray(new String[0]);
                 // TODO: add a setter here to that updates the UI with the array of participants.
-                //adapter.setUsers(emails);
-                //activity.setUsers(emails);
 
             }
 

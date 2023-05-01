@@ -14,7 +14,6 @@ public class ParticipantListActivity extends AppCompatActivity {
 
     RecyclerView participantListRecyclerView;
     ParticipantListAdapter adapter;
-    //FirebaseRealtimeDatabase firebaseRealtimeDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,31 +23,38 @@ public class ParticipantListActivity extends AppCompatActivity {
         participantListRecyclerView = findViewById(R.id.ParticipantList);
         participantListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
-        //firebaseRealtimeDatabase = new FirebaseRealtimeDatabase(database, "meetingID");
-        //String[] str = adapter.getNames();
-        //firebaseRealtimeDatabase.addParticipantsListener();
-
-        FirebaseRecyclerOptions<Participant> options =
-                new FirebaseRecyclerOptions.Builder<Participant>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference("/Sessions/7/").child("Participants"), Participant.class)
+        /**
+         * FirebaseRecyclerOptions object is used to configure
+         * a RecyclerView adapter that will
+         * display a list of strings retrieved
+         * from the Firebase Realtime Database.
+         */
+        FirebaseRecyclerOptions<String> options =
+                new FirebaseRecyclerOptions.Builder<String>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference("/Sessions/7/").child("Participants"), String.class)
                         .build();
 
         adapter = new ParticipantListAdapter(options);
         participantListRecyclerView.setAdapter(adapter);
 
-        //adapter = new ParticipantAdapter(getApplicationContext(), new String[0]); // create new instance
-        //String[] str = adapter.setUsers(new String[]{"user@user.com", "user2@user.com", "user@user.com", "user@user.com"});
-        //adapter = new ParticipantAdapter(getApplicationContext(), adapter.getNames());
-        //participantListRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     *This method starts listening for changes in the data source
+     * (in this case, the Firebase Realtime Database)
+     * and updates the RecyclerView adapter accordingly.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
+    /**
+     * This method stops listening for changes in
+     * the data source (the Firebase Realtime Database)
+     * and frees up resources used by the adapter.
+     */
     @Override
     protected void onStop() {
         super.onStop();
