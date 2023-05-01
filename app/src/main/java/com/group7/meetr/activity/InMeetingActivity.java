@@ -4,27 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.viewmodel.InputViewModel;
 
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import android.graphics.Color;
-public class InMeetingActivity extends AppCompatActivity {
-    private int black = 0x000000;
-    private int white = 0xffffff;
+public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
 
+    private SensorManager sensorManager;
+    Sensor proximitySensor;
+
+    private InputViewModel inputViewModel = new InputViewModel();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_view);
-        final RelativeLayout layout1;
-        layout1 = findViewById(R.id.activity_participant);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         Button vib = findViewById(R.id.buttonJoin);
         Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -37,8 +45,39 @@ public class InMeetingActivity extends AppCompatActivity {
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
             }
-
         });
+    }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float distance = event.values[0];
+        long timestamp = System.currentTimeMillis();
+
+        if (distance <= 7) {
+            Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
+            inputViewModel.receiveProximityInput(timestamp);
+        }
+        else {
+            Toast.makeText(this, "Request Not Registered: " + timestamp, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    @Override
+    protected void onResume() {
+        // Register a listener for the sensor.
+        super.onResume();
+        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        // Be sure to unregister the sensor when the activity pauses.
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
 }

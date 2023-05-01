@@ -2,9 +2,6 @@ package com.group7.meetr.data.remote;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.group7.meetr.activity.EmailPasswordActivity;
-import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.model.Participant;
 
 public class SessionHandler {
     private static DatabaseReference mDatabase;
@@ -12,16 +9,17 @@ public class SessionHandler {
     /**
      * Class constructor. Initializes database reference.
      */
-    public SessionHandler(FirebaseDatabase database) {
-        mDatabase = database.getReference("/SessionTestBETA/");
+
+    public SessionHandler() {
+        mDatabase = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/Sessions/");
     }
 
     /**
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
-    public void joinSession(String meetingID) {
-        //Meeting meeting = new Meeting(meetingID);
-        //mDatabase.child(meeting.getMeetingID()).child("participants").push().setValue(new Participant(EmailPasswordActivity.getmAuth().getUid()));
+    public void joinSession(String email) {
+        String sessionID = "7";
+        mDatabase.child(sessionID).child("Participants").push().setValue(email);
     }
 
     /**
@@ -29,8 +27,12 @@ public class SessionHandler {
      * represents the existence of a meeting session, as well as the current moderator
      * under the created session.
      */
-    public void dbCreateSession(String userMail) {
-        Meeting meeting = new Meeting();
-        //mDatabase.child("meet-" + meeting.getMeetingID()).setValue(meeting);
+    public void createSession(String userMail) {
+        String sessionID = "7";
+        mDatabase.child(sessionID).child("Moderator").setValue(userMail);
+    }
+
+    public void sendProximityData(String sessionId, long timestamp) {
+        mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
     }
 }
