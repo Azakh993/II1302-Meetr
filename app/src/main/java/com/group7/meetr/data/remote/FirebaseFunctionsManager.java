@@ -43,4 +43,16 @@ public class FirebaseFunctionsManager {
             }
 
         }
+
+    /**
+     *
+     * @param functionName the function name found in Firebase.
+     * @param data data blob that needs to be pushed. do not include push true, already doing that.
+     */
+    public static void anyFunctionCaller(String functionName, Map<String, Object> data){
+            data.put("push", true);
+            if(fFunctions != null){
+                fFunctions.getHttpsCallable(functionName).call(data);
+            }
+        }
 }

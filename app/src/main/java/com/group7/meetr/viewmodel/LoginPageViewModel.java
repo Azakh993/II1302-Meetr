@@ -94,12 +94,12 @@ public class LoginPageViewModel extends BaseObservable {
             String successMessage = "Login successful";
             setToastMessage(successMessage);
             if(userMail.contains("admin@admin.com")) {
-                sessionHandler.createSession(userMail);
+                sessionHandler.dbCreateSession(userMail);
                 return 3; // returns admin "key"
             }
             else {
                 Log.d("!USER LOGIN SUCCESS", "USER LOGIN SUCCESS");
-                sessionHandler.joinSession(userMail);
+                sessionHandler.joinSession("meet-DAegWjU");
                 return 1;
             }
         }

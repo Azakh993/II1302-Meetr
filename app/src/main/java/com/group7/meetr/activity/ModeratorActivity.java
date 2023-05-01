@@ -11,23 +11,23 @@ import android.widget.ImageButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
+import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
+    Meeting modMeeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
         ModeratorViewModel lpvm = new ModeratorViewModel();
         ActivityModeratorBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_moderator);
         activityMainBinding.setViewModel(lpvm);
         activityMainBinding.executePendingBindings();
-        FirebaseFunctionsManager.createQueue();
 
-
+        modMeeting = new Meeting();
         /*
         Define buttons
          */
