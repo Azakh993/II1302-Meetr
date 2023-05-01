@@ -19,18 +19,29 @@ public class ModeratorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
-        ModeratorViewModel lpvm = new ModeratorViewModel();
+        ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
         ActivityModeratorBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_moderator);
-        activityMainBinding.setViewModel(lpvm);
+        activityMainBinding.setViewModel(moderatorViewModel);
         activityMainBinding.executePendingBindings();
 
+        Button optionsButton = findViewById(R.id.btn_options);
+        goToOptions(optionsButton);
 
-        /*
-        Define buttons
-         */
-        Button go_to_options = findViewById(R.id.btn_options);
-        go_to_options.setOnClickListener(new View.OnClickListener() {
+        Button participantsButton = findViewById(R.id.btn_participants);
+        goToParticipants(participantsButton);
+
+        Button voteButton = findViewById(R.id.btn_vote);
+        goToVote(voteButton);
+
+        ImageButton lobbyImgButton = findViewById(R.id.btn_lobby_code);
+        goToLobby(lobbyImgButton);
+
+        ImageButton leaveMeetingButton = findViewById(R.id.btn_leave_meeting);
+        goToLogin(leaveMeetingButton);
+    }
+
+    private void goToOptions(Button optionsButton) {
+        optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -39,8 +50,10 @@ public class ModeratorActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
-        Button go_to_participants = findViewById(R.id.btn_participants);
-        go_to_participants.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void goToParticipants(Button participantsButton) {
+        participantsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -49,8 +62,10 @@ public class ModeratorActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button go_to_vote = findViewById(R.id.btn_vote);
-        go_to_vote.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void goToVote(Button voteButton) {
+        voteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -59,8 +74,10 @@ public class ModeratorActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
-        ImageButton go_to_qr = findViewById(R.id.btn_lobby_code);
-        go_to_qr.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void goToLobby(ImageButton lobbyImgButton) {
+        lobbyImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -69,8 +86,10 @@ public class ModeratorActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
-        ImageButton leave_meeting = findViewById(R.id.btn_leave_meeting);
-        leave_meeting.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void goToLogin(ImageButton leaveMeetingButton) {
+        leaveMeetingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
