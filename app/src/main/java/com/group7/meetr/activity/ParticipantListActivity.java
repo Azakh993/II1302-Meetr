@@ -31,7 +31,8 @@ public class ParticipantListActivity extends AppCompatActivity {
          */
         FirebaseRecyclerOptions<String> options =
                 new FirebaseRecyclerOptions.Builder<String>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference("/Sessions/7/").child("Participants"), String.class)
+                        .setQuery(FirebaseDatabase.getInstance().getReference("/Sessions/")
+                                .child("/7/").child("Participants"), String.class)
                         .build();
 
         adapter = new ParticipantListAdapter(options);
