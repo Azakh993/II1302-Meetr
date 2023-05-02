@@ -10,11 +10,10 @@ public class ParticipantsListViewModel {
     private final FirebaseDatabase database;
     private MutableLiveData<FirebaseRecyclerOptions<String>> participants = new MutableLiveData<>();
     private FirebaseRecyclerOptions<String> participantsList;
-    private final String MEETINGID = "7";
 
     public ParticipantsListViewModel() {
         this.database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");;
-     }
+    }
 
     public void participantsListListener() {
         participantsList =
