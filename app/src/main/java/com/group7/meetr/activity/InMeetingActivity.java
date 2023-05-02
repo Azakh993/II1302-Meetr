@@ -46,7 +46,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 vibr.vibrate(400);
                 Intent intent;
-                FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail());
+                FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
             }

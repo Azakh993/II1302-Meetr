@@ -38,6 +38,6 @@ public class SessionHandler {
 
     public void sendProximityData(String sessionId, long timestamp) {
         //mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
-        FirebaseFunctionsManager.callEnqueue(sessionId, LoginPageViewModel.getCurrentUser().getEmail());
+        FirebaseFunctionsManager.callEnqueue(sessionId, LoginPageViewModel.getCurrentUser().getEmail(), timestamp);
     }
 }
