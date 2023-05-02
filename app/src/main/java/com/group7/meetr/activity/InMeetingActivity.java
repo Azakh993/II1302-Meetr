@@ -1,3 +1,10 @@
+/**
+ * This class represents the in-meeting activity screen of the application. It is responsible for
+ * handling participant interaction with the application during a meeting. It implements the
+ * SensorEventListener interface to monitor sensor events. Participants requests are monitored and
+ * registered based on values detected by the proximity and light sensor.
+ */
+
 package com.group7.meetr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +29,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
     private SensorManager sensorManager;
     Sensor proximitySensor;
+    Sensor lightSensor;
+
+    private boolean proximityFlag = false;
+    private boolean lightFlag = false;
 
     private InputViewModel inputViewModel = new InputViewModel();
 
@@ -32,7 +43,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         Button vib = findViewById(R.id.buttonJoin);
         Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -43,12 +57,25 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             }
         });
     }
+
+    /**
+     * onSensorChanged is called when a sensor value changes. It sets flags for the proximity
+     * and light sensors, if both are triggered, the request is confirmed with a message
+     * then the request is sent as a timestamp to inputViewModel.
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float distance = event.values[0];
         long timestamp = System.currentTimeMillis();
 
-        if (distance <= 7) {
+        if(event.sensor.getType() == Sensor.TYPE_PROXIMITY){
+            float distance = event.values[0];
+            proximityFlag = (distance <= 7);
+        } else if (event.sensor.getType()  == Sensor.TYPE_LIGHT){
+            float lightValue = event.values[0];
+            lightFlag = (lightValue <= 100);
+        }
+
+        if (proximityFlag && lightFlag) {
             Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
             inputViewModel.receiveProximityInput(timestamp);
         }
@@ -67,6 +94,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         // Register a listener for the sensor.
         super.onResume();
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -75,5 +103,4 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         super.onPause();
         sensorManager.unregisterListener(this);
     }
-
 }
