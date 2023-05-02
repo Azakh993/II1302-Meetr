@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
                 vibr.vibrate(400);
                 Intent intent;
                 FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+                ArrayList<Object> obj = FirebaseFunctionsManager.callGetSpeakingQueue("7");
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
             }
