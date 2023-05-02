@@ -36,6 +36,8 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
     private InputViewModel inputViewModel = new InputViewModel();
 
+    private float lastLux = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +73,22 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             float distance = event.values[0];
             proximityFlag = (distance <= 7);
         } else if (event.sensor.getType()  == Sensor.TYPE_LIGHT){
-            float lightValue = event.values[0];
-            lightFlag = (lightValue <= 100);
+            float luxValue = event.values[0];
+
+            if(lastLux != -1){
+                float luxChange = Math.abs((lastLux - luxValue) / luxValue * 100);
+                if (luxChange >= 20){
+                    lightFlag = true;
+                }
+            }
+            lastLux = luxValue;
         }
 
         if (proximityFlag && lightFlag) {
             Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
             inputViewModel.receiveProximityInput(timestamp);
+            proximityFlag = false;
+            lightFlag = false;
         }
         else {
             Toast.makeText(this, "Request Not Registered: " + timestamp, Toast.LENGTH_SHORT).show();
