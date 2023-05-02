@@ -36,6 +36,6 @@ public class SessionHandler {
     }
 
     public void sendProximityData(String sessionId, long timestamp) {
-        mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
+        //mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
     }
 }
