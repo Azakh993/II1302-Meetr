@@ -17,8 +17,17 @@
         android:layout_gravity="center"
         android:layout_margin="8dp"
         android:background="#168BC34A"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textSize="25sp"
+            android:padding="15dp"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <!-- EditText field for the Email -->
         <EditText
@@ -26,13 +35,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
+            android:drawableLeft="@drawable/baseline_email_24"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
-            android:padding="8dp"
-            android:text="@={viewModel.userEmail}" />
+            android:padding="8dp" />
 
         <!-- EditText field for the password -->
         <EditText
@@ -41,10 +50,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:drawableLeft="@drawable/baseline_lock_24"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:padding="8dp"
-            android:text="@={viewModel.userPassword}" />
+            android:padding="8dp" />
 
         <!-- Login Button of the activity -->
         <Button
@@ -55,12 +64,10 @@
             android:layout_marginTop="60dp"
             android:layout_marginEnd="20dp"
             android:background="#4CAF50"
-            android:onClick="@{()-> viewModel.onButtonClicked()}"
             android:text="@string/button_text"
             android:textColor="@android:color/background_light"
             android:textSize="30sp"
-            android:textStyle="bold"
-            bind:toastMessage="@{viewModel.toastMessage}" />
+            android:textStyle="bold" />
 
 
     </LinearLayout>

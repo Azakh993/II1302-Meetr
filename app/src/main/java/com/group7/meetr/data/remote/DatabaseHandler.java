@@ -5,18 +5,17 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
  */
-public class FirebaseRealtimeDatabase {
+public class DatabaseHandler {
     private final FirebaseDatabase database;
     private final String meetingID;
 
     /**
      * FirebaseRealtimeDatabase class provides methods to interact with Firebase Realtime Database
-     * @param database FirebaseDatabase instance to interact with Firebase Realtime Database
      * @param meetingID Meeting ID of the session
      */
 
-    public FirebaseRealtimeDatabase(FirebaseDatabase database, String meetingID) {
-        this.database = database;
+    public DatabaseHandler(String meetingID) {
+        this.database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");;
         this.meetingID = meetingID;
     }
 

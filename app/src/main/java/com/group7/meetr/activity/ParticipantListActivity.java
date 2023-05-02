@@ -3,49 +3,65 @@ package com.group7.meetr.activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.R;
+import com.group7.meetr.viewmodel.ParticipantsListViewModel;
 
 public class ParticipantListActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    DatabaseReference databaseUsers;
+    RecyclerView participantListRecyclerView;
     ParticipantListAdapter adapter;
+    LiveData<FirebaseRecyclerOptions<String>> participantsListLiveData;
+    FirebaseRecyclerOptions<String> participantsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_list);
 
-        recyclerView = findViewById(R.id.recyclerlist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        participantListRecyclerView = findViewById(R.id.ParticipantList);
+        participantListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/Sessions/");
-        databaseUsers = FirebaseDatabase.getInstance().getReference("/Sessions/").child("/7/").child("Participants");
+        ParticipantsListViewModel participantsListViewModel = new ParticipantsListViewModel();
+        participantsListViewModel.participantsListListener();
+        participantsListLiveData = participantsListViewModel.getParticipants();
+        participantsList = participantsListLiveData.getValue();
+        participantsListLiveData.observe(this, new Observer<FirebaseRecyclerOptions<String>>() {
+            @Override
+            public void onChanged(FirebaseRecyclerOptions<String> stringFirebaseRecyclerOptions) {
+                participantsList = participantsListLiveData.getValue();
+            }
+        });
 
-        FirebaseRecyclerOptions<String> options =
-                new FirebaseRecyclerOptions.Builder<String>()
-                        .setQuery(databaseUsers, String.class)
-                        .build();
-
-        adapter = new ParticipantListAdapter(options);
-        recyclerView.setAdapter(adapter);
+        adapter = new ParticipantListAdapter(participantsList);
+        participantListRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     *This method starts listening for changes in the data source
+     * (in this case, the Firebase Realtime Database)
+     * and updates the RecyclerView adapter accordingly.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
+    /**
+     * This method stops listening for changes in
+     * the data source (the Firebase Realtime Database)
+     * and frees up resources used by the adapter.
+     */
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
     }
+
 }

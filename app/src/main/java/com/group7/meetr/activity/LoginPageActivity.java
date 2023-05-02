@@ -1,58 +1,83 @@
 package com.group7.meetr.activity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseRealtimeDatabase;
-import com.group7.meetr.databinding.ActivityLoginpageBinding;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class LoginPageActivity extends AppCompatActivity {
+    private LoginPageViewModel loginPageViewModel;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ViewModel updates the Model
-        // after observing changes in the View
+        loginPageViewModel = new ViewModelProvider(this).get(LoginPageViewModel.class);;
+        setContentView(R.layout.activity_loginpage);
 
-        // model will also update the view
-        // via the ViewModel
+        emailEditText = findViewById(R.id.inEmail);
+        passwordEditText = findViewById(R.id.inPassword);
+        loginButton = findViewById(R.id.btn_login);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
-        LoginPageViewModel lpvm = new LoginPageViewModel(database);
-        ActivityLoginpageBinding activityMainBinding= DataBindingUtil.setContentView(this, R.layout.activity_loginpage);
-        activityMainBinding.setViewModel(lpvm);
-        activityMainBinding.executePendingBindings();
-        Button go_to_meeting = findViewById(R.id.btn_login);
-        FirebaseRealtimeDatabase realtimeDatabase = new FirebaseRealtimeDatabase(database, "7");
-        //realtimeDatabase.addParticipantsListener();
-        go_to_meeting.setOnClickListener(new View.OnClickListener() {
-            @Override  //skriver inte över?? nvm fucking skriver över -.-
-            public void onClick(View view) {
-                // har en ide för att lösa detta. confirmation funktion i loginpageviewmodel som confirmar med hjälp av dens vetande
-                int i = lpvm.checkLogin();
-                Log.d("!USER LOGIN INFO", "SUCCESSCODE" + i);
-                Intent intent;
-                if(i == 3) {
-                    intent = new Intent(LoginPageActivity.this, ModeratorActivity.class);
-                    startActivity(intent);
+        loginOnButtonClick(loginButton);
+    }
 
-                }else if(i == 1){
-                    intent = new Intent(LoginPageActivity.this, InMeetingActivity.class );//TODO: user-activity here!!!)
-                    startActivity(intent);
+    private void loginOnButtonClick(Button loginButton) {
+        loginButton.setOnClickListener(view -> {
+            String emailString = emailEditText.getText().toString();
+            String passwordString = passwordEditText.getText().toString();
+
+            FirebaseUser currentUser = loginPageViewModel.login(emailString, passwordString);
+
+            if(!isValid(emailString, passwordString)) {
+                Toast.makeText(getApplicationContext(), "Incorrect credentials format!",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            else if(currentUser == null || currentUser.getUid().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Authentication failure!",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                if (emailString.contains("admin@admin.com")) {
+                    switchToModeratorActivity();
+                } else {
+                    switchToInMeetingActivity();
                 }
-
             }
         });
     }
 
+    private void switchToModeratorActivity() {
+        Toast.makeText(getApplicationContext(), "Moderator login successful!",
+                Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginPageActivity.this, ModeratorActivity.class);
+        startActivity(intent);
+    }
+
+    private void switchToInMeetingActivity() {
+        Toast.makeText(getApplicationContext(), "Participant login successful!",
+                Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginPageActivity.this, InMeetingActivity.class );
+        startActivity(intent);
+    }
+
+    public boolean isValid(String email, String password) {
+        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                && password.length() > 5;
+    }
 }
