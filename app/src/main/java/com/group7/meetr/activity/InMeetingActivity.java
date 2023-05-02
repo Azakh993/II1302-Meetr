@@ -9,8 +9,8 @@ package com.group7.meetr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,12 +18,19 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.model.Participant;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.InputViewModel;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -56,6 +63,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             @Override
             public void onClick(View v) {
                 vibr.vibrate(400);
+                Intent intent;
+                FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+                ArrayList<Object> obj = FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
+                startActivity(intent);
             }
         });
     }

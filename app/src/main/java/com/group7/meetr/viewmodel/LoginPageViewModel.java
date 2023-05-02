@@ -9,13 +9,16 @@ import com.group7.meetr.data.model.AuthenticationHandler;
 import com.group7.meetr.data.remote.SessionHandler;
 
 public class LoginPageViewModel extends AndroidViewModel {
-    private final AuthenticationHandler authenticationHandler;
+    private static AuthenticationHandler authenticationHandler;
     private FirebaseUser currentUser;
 
 
     public LoginPageViewModel(Application application) {
         super(application);
-        this.authenticationHandler = new AuthenticationHandler(application);
+        authenticationHandler = new AuthenticationHandler(application);
+    }
+    public static FirebaseUser getCurrentUser(){
+        return authenticationHandler.getCurrentUser();
     }
 
 
@@ -33,6 +36,7 @@ public class LoginPageViewModel extends AndroidViewModel {
         if(currentUser != null && !currentUser.getUid().isEmpty()) {
             if (email.contains("admin@admin.com")) {
                 sessionHandler.createSession(email);
+
             } else {
                 sessionHandler.joinSession(email);
             }

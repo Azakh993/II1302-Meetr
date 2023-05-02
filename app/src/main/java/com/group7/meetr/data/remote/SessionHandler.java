@@ -1,7 +1,11 @@
 package com.group7.meetr.data.remote;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.data.model.Participant;
 
 public class SessionHandler {
     private static DatabaseReference mDatabase;
@@ -18,8 +22,10 @@ public class SessionHandler {
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
     public void joinSession(String email) {
+
         String sessionID = "7";
-        mDatabase.child(sessionID).child("Participants").push().setValue(email);
+        //mDatabase.child(sessionID).child("ListOfParticipants").push().setValue(new Participant(email, false));
+        FirebaseFunctionsManager.callJoinMeeting("7",email);
     }
 
     /**
@@ -28,12 +34,13 @@ public class SessionHandler {
      * under the created session.
      */
     public void createSession(String userMail) {
-        String sessionID = "7";
-        mDatabase.child(sessionID).child("Moderator").setValue(userMail);
+        String s = FirebaseFunctionsManager.callNewMeeting(userMail,"7");
+        if(s != null)
+            Log.d("Created session", s);
     }
 
-    public void sendProximityData(long timestamp) {
-        String sessionId = "7";
-        mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
+    public void sendProximityData(String sessionId, long timestamp) {
+        //mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
+        FirebaseFunctionsManager.callEnqueue(sessionId, LoginPageViewModel.getCurrentUser().getEmail(), timestamp);
     }
 }

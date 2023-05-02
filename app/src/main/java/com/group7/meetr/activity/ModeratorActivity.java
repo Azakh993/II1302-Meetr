@@ -1,15 +1,14 @@
 package com.group7.meetr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.group7.meetr.R;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
@@ -58,7 +57,7 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
-                intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
+                intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
                 startActivity(intent);
             }
         });

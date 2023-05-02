@@ -13,6 +13,13 @@ public class AuthenticationHandler {
     private final FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
 
+    public FirebaseAuth getFirebaseAuth() {
+        return firebaseAuth;
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
 
     public AuthenticationHandler(Application application) {
         this.application = application;
