@@ -18,11 +18,17 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31" >
         <activity
+            android:name=".activity.ParticipantListActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.LoginPageActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".activity.ParticipantListActivity"
+            android:exported="true" />
         <activity
             android:name=".activity.ModeratorActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.InMeetingActivity"
             android:exported="true" />
