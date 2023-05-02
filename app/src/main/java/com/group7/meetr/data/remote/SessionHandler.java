@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class SessionHandler {
     private static DatabaseReference mDatabase;
@@ -36,6 +37,7 @@ public class SessionHandler {
     }
 
     public void sendProximityData(String sessionId, long timestamp) {
-        mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
+        //mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
+        FirebaseFunctionsManager.callEnqueue(sessionId, LoginPageViewModel.getCurrentUser().getEmail());
     }
 }
