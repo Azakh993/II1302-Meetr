@@ -40,6 +40,8 @@ public class FirebaseFunctionsManager {
                         // This continuation runs on either success or failure, but if the task
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
+                        Log.d("FFunctionsManager:newMeeting","Task successful?...");
+
                         Map<String, Object> result = (Map<String, Object>)  task.getResult().getData();
                         return (Map<String, Object>) result;
                     }

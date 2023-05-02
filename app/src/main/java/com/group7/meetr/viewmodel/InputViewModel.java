@@ -6,6 +6,6 @@ public class InputViewModel {
 
     private SessionHandler sessionHandler = new SessionHandler();
     public void receiveProximityInput(long timestamp){
-        sessionHandler.sendProximityData(timestamp);
+        sessionHandler.sendProximityData("7",timestamp);
     }
 }
