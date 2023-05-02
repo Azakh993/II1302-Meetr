@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.DatabaseHandler;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class LoginPageActivity extends AppCompatActivity {
@@ -26,8 +25,6 @@ public class LoginPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupParticipantsListener();
-
         loginPageViewModel = new ViewModelProvider(this).get(LoginPageViewModel.class);;
         setContentView(R.layout.activity_loginpage);
 
@@ -36,11 +33,6 @@ public class LoginPageActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
 
         loginOnButtonClick(loginButton);
-    }
-
-    private void setupParticipantsListener() {
-        DatabaseHandler realtimeDatabase = new DatabaseHandler("7");
-        realtimeDatabase.addParticipantsListener();
     }
 
     private void loginOnButtonClick(Button loginButton) {
