@@ -11,6 +11,8 @@ import android.widget.Button;
 
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class TalkingActivity extends AppCompatActivity {
 

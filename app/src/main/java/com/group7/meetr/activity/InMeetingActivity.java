@@ -11,13 +11,18 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.model.Participant;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.InputViewModel;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -41,7 +46,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 vibr.vibrate(400);
                 Intent intent;
-                FirebaseFunctionsManager.putInQueueOnFirebase();
+                FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail());
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
             }

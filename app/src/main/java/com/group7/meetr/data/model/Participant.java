@@ -1,6 +1,6 @@
 package com.group7.meetr.data.model;
 
-import com.group7.meetr.activity.EmailPasswordActivity;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 public class Participant {
     //1 UUID, talkingScore*, name;
@@ -42,8 +42,8 @@ public class Participant {
      * A participant clientside for a specific meeting clientside.
      */
     public Participant(String displayName, boolean createdMeeting){
-        this.UUID = EmailPasswordActivity.getmAuth().getUid();
-        this.userEmail = EmailPasswordActivity.getUserMail();
+        this.UUID = LoginPageViewModel.getCurrentUser().getUid();
+        this.userEmail = LoginPageViewModel.getCurrentUser().getEmail();
         this.talkingScore = (float) 0.69;
         this.userName = displayName;
         this.isModerator = createdMeeting;

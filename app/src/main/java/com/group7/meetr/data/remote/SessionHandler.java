@@ -1,5 +1,7 @@
 package com.group7.meetr.data.remote;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +30,9 @@ public class SessionHandler {
      * under the created session.
      */
     public void createSession(String userMail) {
-        FirebaseFunctionsManager.callNewMeeting("useremail","7");
+        String s = FirebaseFunctionsManager.callNewMeeting(userMail,"7");
+        if(s != null)
+            Log.d("Created session", s);
     }
 
     public void sendProximityData(String sessionId, long timestamp) {

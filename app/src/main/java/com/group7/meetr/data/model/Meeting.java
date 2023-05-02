@@ -1,10 +1,6 @@
 package com.group7.meetr.data.model;
 
-import com.group7.meetr.activity.EmailPasswordActivity;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

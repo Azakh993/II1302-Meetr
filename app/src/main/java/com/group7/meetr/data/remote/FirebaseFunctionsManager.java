@@ -11,57 +11,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
-import com.group7.meetr.activity.EmailPasswordActivity;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseFunctionsManager {
     static FirebaseFunctions fFunctions;
-
-    /**
-     * Puts the current authed user from getmAuth into queue on firebase using firebase
-     * functions joinQ function.
-     */
-    public static void putInQueueOnFirebase(){
-        if(fFunctions == null)
-            initQ();
-        String auth = EmailPasswordActivity.getmAuth().getUid();
-        Map<String, Object> data = new HashMap<>();// meeting.mid
-        //meeting.startTime
-        data.put("text", auth);
-        data.put("push", true);
-        fFunctions.getHttpsCallable("enqueue").call(data);
-
-        }
-        public static Task<Object> initQ(){
-                fFunctions = FirebaseFunctions.getInstance("europe-west1");
-                Map<String, Object> data = new HashMap<>();
-                data.put("push", true);
-                return fFunctions.getHttpsCallable("initQ").call(data)
-                        .continueWith(new Continuation<HttpsCallableResult, Object>() {
-                            @Override
-                            public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                                // This continuation runs on either success or failure, but if the task
-                                // has failed then getResult() will throw an Exception which will be
-                                // propagated down.
-                                String result = (String) task.getResult().getData();
-                                Log.d("!Ffunction result", result);
-                                return result;
-                            }
-                        });
-        }
-        public static void callInitQ(){
-            initQ().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    task.getResult();
-                    Log.d("Ffunction", "Gettem result");
-
-                }
-            });
-        }
-
-
     /**
      * Private helper function to be run and awaited results.
      * @param input object to input
@@ -71,6 +28,7 @@ public class FirebaseFunctionsManager {
         // Create the arguments to the callable function.
 
         input.put("push", true);
+        input.put("uid", LoginPageViewModel.getCurrentUser().getUid());
 
         return fFunctions
                 .getHttpsCallable("newMeeting")
@@ -86,11 +44,10 @@ public class FirebaseFunctionsManager {
                     }
                 });
     }
-
     /**
      * Call a new meeting using the FirebaseFunctions.
      * @param moderatorName whats the name of the moderator.
-     * @param meetingID
+     * @param meetingID the meetingID to use to create.
      * @return the meeting id as an ínteger. Should defintely be string...
      */
     public static String callNewMeeting(String moderatorName, String meetingID) {
@@ -101,7 +58,7 @@ public class FirebaseFunctionsManager {
         Map<String, Object> sendInfo = new HashMap<>();
         final String[] result = {null};
         sendInfo.put("moderator", moderatorName);
-        sendInfo.put("meetingID", meetingID);
+        sendInfo.put("mID", meetingID);
         newMeeting(sendInfo).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
             @Override
             public void onComplete(@NonNull Task<Map<String, Object>> task) {
@@ -116,14 +73,24 @@ public class FirebaseFunctionsManager {
                 else
                 {
                     result[0] = String.valueOf(task.getResult().get("sid"));
-                    Log.d("fornite",(task.getResult().get("sid").toString()));
+                    Log.d("fornite",(task.getResult().get("meetingID").toString()));
                 }
 
             }
         });
         return result[0];
     }
+
+    /**
+     * Private function that runs any function on Firebase side.
+     * Use this to make a task that runs your functions defined in firebase.
+     * @param functionName name of function. capitalized sensitive
+     * @param data Data to send. JSON Map format. STRING -> Object. Object any java default object.
+     * @return returns task. run whencomplete on it to get actual data.
+     */
     private static Task<Map<String, Object>> anyFunction(String functionName, Map<String, Object> data){
+        data.put("push", true);
+        data.put("uid", LoginPageViewModel.getCurrentUser().getUid());
         return fFunctions
                 .getHttpsCallable(functionName)
                 .call(data)
@@ -138,9 +105,12 @@ public class FirebaseFunctionsManager {
                 });
     }
     /**
-     *
-     * @param functionName the function name found in Firebase.
-     * @param data data blob that needs to be pushed. do not include push true, already doing that.
+     * Use this to execute any function defined in firebase.
+     * @param functionName name of function. capitalized sensitive
+     * @param data Data to send. JSON Map format. STRING -> Object. Object any java default object.
+     * @return returns task. run whencomplete on it to get actual data.
+     * Map<String, Object> map.put(blahblabhbl).
+     * callanyfunction("test", map);
      */
     public static Map<String, Object> callAnyFunction(String functionName, Map<String, Object> data){
         if(fFunctions == null)
@@ -158,11 +128,113 @@ public class FirebaseFunctionsManager {
                     }
                 }
                 else
-                {
-                    result[0] =  task.getResult();
-                }
+                { result[0] =  task.getResult(); }
             }
         });
         return (Map<String, Object>) result[0];
+    }
+    /**
+     * Calls enqueue function on Firebase side. This will enqueue a user using their information.
+     * Uses the generic task.
+     * @param meetingID the meeting ID to enqueue in.
+     * @param participantName the name to use. usually email atm?
+     */
+    public static Map<String, Object> callEnqueue(String meetingID, String participantName){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", meetingID);
+        data.put("participant", participantName);
+
+        anyFunction("enqueue", data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+                }
+                else
+                {
+                    result.putAll(task.getResult());
+                }
+            }
+        });
+        Log.d("Enqueue result: ", result.toString());
+        return result;
+    }
+    public static List<Object> callDequeue(String meetingID, String participantName){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        List<Object> result;
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", meetingID);
+        data.put("participant", participantName);
+
+        anyFunction("dequeue", data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+                }
+                else
+                {
+                    task.getResult();
+                    Log.d("test","test");
+                }
+            }
+        });
+        return null;
+    }
+
+    /** DEPRECATED
+     * Puts the current authed user from getmAuth into queue on firebase using firebase
+     * functions joinQ function.
+     */
+    public static void putInQueueOnFirebase(){
+        if(fFunctions == null)
+            initQ();
+        String auth = LoginPageViewModel.getCurrentUser().getUid();
+        Map<String, Object> data = new HashMap<>();// meeting.mid
+        //meeting.startTime
+        data.put("text", auth);
+        data.put("push", true);
+        fFunctions.getHttpsCallable("enqueue").call(data);
+
+    }
+    public static Task<Object> initQ(){
+        fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        Map<String, Object> data = new HashMap<>();
+        data.put("push", true);
+
+        return fFunctions.getHttpsCallable("initQ").call(data)
+                .continueWith(new Continuation<HttpsCallableResult, Object>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        Log.d("!Ffunction result", result);
+                        return result;
+                    }
+                });
+    }
+    public static void callInitQ(){
+        initQ().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                task.getResult();
+                Log.d("Ffunction", "Gettem result");
+            }
+        });
     }
 }
