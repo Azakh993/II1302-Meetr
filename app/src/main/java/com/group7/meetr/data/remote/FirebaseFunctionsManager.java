@@ -104,7 +104,8 @@ public class FirebaseFunctionsManager {
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
                         Object result = task.getResult().getData();
-                        if(task.getResult().getData().getClass() == ArrayList.class )
+                        if(result == null) return null;
+                        if(result.getClass() == ArrayList.class)
                         return (Map<String, Object>) ((ArrayList<Object>) task.getResult().getData()).get(0);
                         else
                             return (Map<String, Object>)task.getResult().getData();
@@ -179,6 +180,12 @@ public class FirebaseFunctionsManager {
             }
         });
     }
+
+    /**
+     * Ask server for the getspeakingqueue.
+     * @param meetingID meeting you are asking about :)
+     * @return returns an arraylist of people
+     */
     public static ArrayList<Object> callGetSpeakingQueue(String meetingID){
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
@@ -218,6 +225,8 @@ public class FirebaseFunctionsManager {
      * from LoginPageViewModel
      */
     public static void callFinishedTalking(String meetingID){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
         Map<String, Object> data = new HashMap<>();
         data.put("mID", meetingID);
         anyFunction("finishedTalking", data).addOnCompleteListener(task -> {
@@ -240,46 +249,33 @@ public class FirebaseFunctionsManager {
         });
     }
 
-
-    /** DEPRECATED
-     * Puts the current authed user from getmAuth into queue on firebase using firebase
-     * functions joinQ function.
+    /** Joins a meeting using backend.
+     * @param meetingID meetingid to join
      */
-    /*public static void putInQueueOnFirebase(){
+    public static void callJoinMeeting(String meetingID, String name){
         if(fFunctions == null)
-            initQ();
-        String auth = LoginPageViewModel.getCurrentUser().getUid();
-        Map<String, Object> data = new HashMap<>();// meeting.mid
-        //meeting.startTime
-        data.put("text", auth);
-        data.put("push", true);
-        fFunctions.getHttpsCallable("enqueue").call(data);
-
-    }
-    public static Task<Object> initQ(){
-        fFunctions = FirebaseFunctions.getInstance("europe-west1");
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
         Map<String, Object> data = new HashMap<>();
-        data.put("push", true);
+        data.put("mID", meetingID);
+        data.put("name", name);
+        anyFunction("joinMeeting", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:finishedTalking","Task not successful...");
+                task.getException().printStackTrace();
 
-        return fFunctions.getHttpsCallable("initQ").call(data)
-                .continueWith(new Continuation<HttpsCallableResult, Object>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        String result = (String) task.getResult().getData();
-                        Log.d("!Ffunction result", result);
-                        return result;
-                    }
-                });
-    }
-    public static void callInitQ(){
-        initQ().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                task.getResult();
-                Log.d("Ffunction", "Gettem result");
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            }
+            else
+            {
+                Log.d("FFunctionsManager:FinishedTalking","Task succeeded!");
             }
         });
-    }*/
+    }
+
 }
