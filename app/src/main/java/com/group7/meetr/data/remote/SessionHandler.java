@@ -32,7 +32,8 @@ public class SessionHandler {
         mDatabase.child(sessionID).child("Moderator").setValue(userMail);
     }
 
-    public void sendProximityData(String sessionId, long timestamp) {
+    public void sendProximityData(long timestamp) {
+        String sessionId = "7";
         mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
     }
 }
