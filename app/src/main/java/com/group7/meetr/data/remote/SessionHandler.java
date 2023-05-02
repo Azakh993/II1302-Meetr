@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.data.model.Participant;
 
 public class SessionHandler {
     private static DatabaseReference mDatabase;
@@ -21,8 +22,9 @@ public class SessionHandler {
      * Joins a hardcoded meeting session and adds the signed in user's email address
      */
     public void joinSession(String email) {
+
         String sessionID = "7";
-        mDatabase.child(sessionID).child("Participants").push().setValue(email);
+        mDatabase.child(sessionID).child("ListOfParticipant").push().setValue(new Participant("test@hardcoded.com", true));
     }
 
     /**
