@@ -18,7 +18,6 @@ import com.group7.meetr.databinding.ActivityLoginpageBinding;
 import com.group7.meetr.data.remote.DatabaseHandler;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 
-
 public class LoginPageActivity extends AppCompatActivity {
     private LoginPageViewModel loginPageViewModel;
     private EditText emailEditText;
@@ -91,5 +90,4 @@ public class LoginPageActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 && password.length() > 5;
     }
-
 }

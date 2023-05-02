@@ -35,7 +35,7 @@ public class SessionHandler {
 
         if(s != null)
             Log.d("Created session", s);
-        mDatabase.child("7").child("Moderator").setValue(userMail);
+        //mDatabase.child("7").child("Moderator").setValue(userMail);
 
     }
 
