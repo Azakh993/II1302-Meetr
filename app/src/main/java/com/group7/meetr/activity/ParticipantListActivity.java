@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.group7.meetr.R;
 import com.group7.meetr.viewmodel.ParticipantsListViewModel;
+import com.group7.meetr.data.model.Participant;
 
 public class ParticipantListActivity extends AppCompatActivity {
 
     RecyclerView participantListRecyclerView;
     ParticipantListAdapter adapter;
-    LiveData<FirebaseRecyclerOptions<String>> participantsListLiveData;
-    FirebaseRecyclerOptions<String> participantsList;
+    LiveData<FirebaseRecyclerOptions<Participant>> participantsListLiveData;
+    FirebaseRecyclerOptions<Participant> participantsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,9 @@ public class ParticipantListActivity extends AppCompatActivity {
         participantsListViewModel.participantsListListener();
         participantsListLiveData = participantsListViewModel.getParticipants();
         participantsList = participantsListLiveData.getValue();
-        participantsListLiveData.observe(this, new Observer<FirebaseRecyclerOptions<String>>() {
+        participantsListLiveData.observe(this, new Observer<FirebaseRecyclerOptions<Participant>>() {
             @Override
-            public void onChanged(FirebaseRecyclerOptions<String> stringFirebaseRecyclerOptions) {
+            public void onChanged(FirebaseRecyclerOptions<Participant> stringFirebaseRecyclerOptions) {
                 participantsList = participantsListLiveData.getValue();
             }
         });

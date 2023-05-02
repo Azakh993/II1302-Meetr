@@ -5,12 +5,23 @@ import com.group7.meetr.viewmodel.LoginPageViewModel;
 public class Participant {
     //1 UUID, talkingScore*, name;
     String UUID;
-    String userEmail;
-    String userName;
+  String name;
     float talkingScore; // Might onyl need to exist on server...
 
     //Participant specific values. Not stored permanently but useful in meetings.
     // to not store permanently, simply null them before database storage.
+
+
+    public Participant() {
+    }
+
+    public Participant(String UUID, String name, float talkingScore, boolean isModerator) {
+        this.UUID = UUID;
+        this.name = name;
+        this.talkingScore = talkingScore;
+        this.isModerator = isModerator;
+    }
+
     boolean isModerator;
 
     public String getUUID() {
@@ -21,8 +32,8 @@ public class Participant {
         return talkingScore;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
     public boolean getIsModerator(){
         return isModerator;
@@ -33,9 +44,7 @@ public class Participant {
         return isModerator;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
+
 
 
     /**
@@ -43,9 +52,8 @@ public class Participant {
      */
     public Participant(String displayName, boolean createdMeeting){
         this.UUID = LoginPageViewModel.getCurrentUser().getUid();
-        this.userEmail = LoginPageViewModel.getCurrentUser().getEmail();
+        this.name = LoginPageViewModel.getCurrentUser().getEmail();
         this.talkingScore = (float) 0.69;
-        this.userName = displayName;
         this.isModerator = createdMeeting;
     }
     public Participant(String UUID){

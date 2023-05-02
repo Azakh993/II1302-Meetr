@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.group7.meetr.R;
+import com.group7.meetr.data.model.Participant;
 
-public class ParticipantListAdapter  extends FirebaseRecyclerAdapter<String,ParticipantListAdapter.myViewHolder > {
+public class ParticipantListAdapter  extends FirebaseRecyclerAdapter<Participant,ParticipantListAdapter.myViewHolder > {
 
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
@@ -20,7 +21,7 @@ public class ParticipantListAdapter  extends FirebaseRecyclerAdapter<String,Part
      *
      * @param options
      */
-    public ParticipantListAdapter(@NonNull FirebaseRecyclerOptions<String> options) {
+    public ParticipantListAdapter(@NonNull FirebaseRecyclerOptions<Participant> options) {
         super(options);
     }
 
@@ -32,8 +33,8 @@ public class ParticipantListAdapter  extends FirebaseRecyclerAdapter<String,Part
      * @param emails the model object containing the data that should be used to populate the view.
      */
     @Override
-    protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull String emails) {
-        holder.nameView.setText(emails);
+    protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull Participant emails) {
+        holder.nameView.setText(emails.getName());
     }
 
     /**
