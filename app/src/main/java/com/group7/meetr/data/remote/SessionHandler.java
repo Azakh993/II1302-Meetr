@@ -9,9 +9,6 @@ public class SessionHandler {
     /**
      * Class constructor. Initializes database reference.
      */
-    public SessionHandler(FirebaseDatabase database) {
-        mDatabase = database.getReference("/Sessions/");
-    }
 
     public SessionHandler() {
         mDatabase = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/").getReference("/Sessions/");
@@ -35,7 +32,7 @@ public class SessionHandler {
         mDatabase.child(sessionID).child("Moderator").setValue(userMail);
     }
 
-    public void sendProximityData(String sessionId, boolean handRaised, long timestamp) {
-        mDatabase.child(sessionId + "/QueueRequestData").push().setValue(timestamp);
+    public void sendProximityData(String sessionId, long timestamp) {
+        mDatabase.child(sessionId).child("/QueueRequestData").push().setValue(timestamp);
     }
 }
