@@ -24,7 +24,7 @@ public class SessionHandler {
     public void joinSession(String email) {
 
         String sessionID = "7";
-        mDatabase.child(sessionID).child("ListOfParticipant").push().setValue(new Participant("test@hardcoded.com", true));
+        mDatabase.child(sessionID).child("ListOfParticipants").push().setValue(new Participant(email, false));
     }
 
     /**
