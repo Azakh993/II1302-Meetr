@@ -32,8 +32,11 @@ public class SessionHandler {
      */
     public void createSession(String userMail) {
         String s = FirebaseFunctionsManager.callNewMeeting(userMail,"7");
+
         if(s != null)
             Log.d("Created session", s);
+        mDatabase.child("7").child("Moderator").setValue(userMail);
+
     }
 
     public void sendProximityData(String sessionId, long timestamp) {

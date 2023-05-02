@@ -36,6 +36,7 @@ public class LoginPageViewModel extends AndroidViewModel {
         if(currentUser != null && !currentUser.getUid().isEmpty()) {
             if (email.contains("admin@admin.com")) {
                 sessionHandler.createSession(email);
+
             } else {
                 sessionHandler.joinSession(email);
             }
