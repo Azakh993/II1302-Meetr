@@ -13,6 +13,7 @@ import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +152,8 @@ public class FirebaseFunctionsManager {
             @Override
             public void onComplete(@NonNull Task<Map<String, Object>> task) {
                 if (!task.isSuccessful()) {
+                    Log.d("FFunctionsManager:ENQUEUE","Task not successful...");
+
                     Exception e = task.getException();
                     if (e instanceof FirebaseFunctionsException) {
                         FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
@@ -160,6 +163,7 @@ public class FirebaseFunctionsManager {
                 }
                 else
                 {
+                    Log.d("FFunctionsManager:ENQUEUE","Task succeeded!");
                     result.putAll(task.getResult());
                 }
             }
@@ -167,18 +171,20 @@ public class FirebaseFunctionsManager {
         Log.d("Enqueue result: ", result.toString());
         return result;
     }
-    public static List<Object> callDequeue(String meetingID, String participantName){
-        if(fFunctions == null)
-            fFunctions = FirebaseFunctions.getInstance("europe-west1");
-        List<Object> result;
+
+    /**
+     * Calls finished talking. Returns nothing and requires nothing as UID is gotten
+     * from LoginPageViewModel
+     */
+    public static void callFinishedTalking(String meetingID){
         Map<String, Object> data = new HashMap<>();
         data.put("mID", meetingID);
-        data.put("participant", participantName);
-
-        anyFunction("dequeue", data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+        anyFunction("finishedTalking", data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
             @Override
             public void onComplete(@NonNull Task<Map<String, Object>> task) {
                 if (!task.isSuccessful()) {
+                    Log.d("FFunctionsManager:finishedTalking","Task not successful...");
+
                     Exception e = task.getException();
                     if (e instanceof FirebaseFunctionsException) {
                         FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
@@ -188,19 +194,56 @@ public class FirebaseFunctionsManager {
                 }
                 else
                 {
-                    task.getResult();
-                    Log.d("test","test");
+                    Log.d("FFunctionsManager:FinishedTalking","Task succeeded!");
                 }
             }
         });
-        return null;
+    }
+
+    /**
+     * Calls dequeue. Deprecated. Do not use.
+     * @deprecated
+     * @param meetingID
+     * @param participantName
+     * @return
+     */
+    public static List<Object> callDequeue(String meetingID, String participantName){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        List<Object> result = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        data.put("meetingID", meetingID);
+        data.put("participant", participantName);
+
+        anyFunction("dequeue", data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                if (!task.isSuccessful()) {
+                    Log.d("FFunctionsManager:DEQUEUE","Task not successful...");
+
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+                }
+                else
+                {
+                    result.add(task.getResult());
+                    task.getResult();
+                    Log.d("FFunctionsManager:DEQUEUE","Task succeeded!");
+                }
+            }
+        });
+        return result;
     }
 
     /** DEPRECATED
      * Puts the current authed user from getmAuth into queue on firebase using firebase
      * functions joinQ function.
      */
-    public static void putInQueueOnFirebase(){
+    /*public static void putInQueueOnFirebase(){
         if(fFunctions == null)
             initQ();
         String auth = LoginPageViewModel.getCurrentUser().getUid();
@@ -236,5 +279,5 @@ public class FirebaseFunctionsManager {
                 Log.d("Ffunction", "Gettem result");
             }
         });
-    }
+    }*/
 }
