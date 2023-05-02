@@ -58,7 +58,7 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
-                intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
+                intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
                 startActivity(intent);
             }
         });
