@@ -20,6 +20,7 @@ public class QueueListViewModel {
     private final FirebaseDatabase database;
     private final MutableLiveData<ArrayList<Object>> functionsOutput;
     private final String MEETINGID = "7";
+    private int firstIndex = 4;
 
 
     public QueueListViewModel() {
@@ -31,7 +32,7 @@ public class QueueListViewModel {
         DatabaseReference queueRef = database.getReference("Sessions")
                 .child(MEETINGID).child("Queue");
 
-        DatabaseReference firstIndexRef = queueRef.child("firstIndex");
+        DatabaseReference frontIndexRef = queueRef.child("frontIndex");
         DatabaseReference lastIndexRef = queueRef.child("lastIndex");
 
         ValueEventListener indexListener = new ValueEventListener() {
@@ -46,7 +47,7 @@ public class QueueListViewModel {
                 // Handle error
             }
         };
-        firstIndexRef.addValueEventListener(indexListener);
+        frontIndexRef.addValueEventListener(indexListener);
         lastIndexRef.addValueEventListener(indexListener);
     }
 
