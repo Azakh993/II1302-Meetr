@@ -1,11 +1,14 @@
 package com.group7.meetr;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
+
+import com.group7.meetr.activity.LoginPageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,22 +17,11 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
 
-        // ViewModel updates the Model
-        // after observing changes in the View
-
-        // model will also update the view
-        // via the ViewModel
-
-        //Intent intent = new Intent(LoginPageActivity.this, ParticipantListActivity.class);
-        //startActivity(intent);
-
-        //TODO: Move this code to a more appropriate place.
-
+        Intent intent = new Intent(MainActivity.this, LoginPageActivity.class);
+        startActivity(intent);
     }
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-
     }
 
     @BindingAdapter({ "toastMessage" })

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- binding object of ViewModel to the XML layout -->
     <data>
@@ -15,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
+        android:layout_margin="11dp"
         android:background="#168BC34A"
         android:orientation="vertical"
         android:gravity="center">
@@ -24,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textSize="25sp"
-            android:padding="15dp"
+            android:textSize="35sp"
+            android:padding="10dp"
             android:textStyle="bold"
             android:gravity="center"/>
 
@@ -35,14 +33,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:drawableLeft="@drawable/baseline_email_24"
+            android:background="@drawable/edit_text_border"
+            android:drawableStart="@drawable/baseline_email_24"
+            android:drawablePadding="20dp"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
-            android:padding="8dp"
-            android:text="@={viewModel.userEmail}" />
+            android:padding="8dp" />
 
         <!-- EditText field for the password -->
         <EditText
@@ -51,27 +50,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/edit_text_border"
             android:drawableLeft="@drawable/baseline_lock_24"
+            android:drawablePadding="20dp"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:padding="8dp"
-            android:text="@={viewModel.userPassword}" />
+            android:padding="8dp" />
 
         <!-- Login Button of the activity -->
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="20dp"
-            android:background="#4CAF50"
-            android:onClick="@{()-> viewModel.onButtonClicked()}"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="15dp"
+
+            android:background="@drawable/button_border"
             android:text="@string/button_text"
-            android:textColor="@android:color/background_light"
+            android:textColor="#ffffff"
             android:textSize="30sp"
-            android:textStyle="bold"
-            bind:toastMessage="@{viewModel.toastMessage}" />
+            android:textStyle="bold" />
 
 
     </LinearLayout>
