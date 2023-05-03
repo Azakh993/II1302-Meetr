@@ -45,8 +45,8 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make options activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
+                intent = new Intent(ModeratorActivity.this, OptionActivity.class);
+                startActivity(intent);
             }
         });
     }

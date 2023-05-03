@@ -57,9 +57,9 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        Button vib = findViewById(R.id.buttonJoin);
+        Button joinQueue = findViewById(R.id.buttonJoin);
         Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vib.setOnClickListener(new View.OnClickListener() {
+        joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibr.vibrate(400);
