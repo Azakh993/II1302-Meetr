@@ -214,10 +214,11 @@ public class FirebaseFunctionsManager {
                     Log.d("FFunctionsManager:getQueue","Task succeeded!");
                     Map<String, Object> s = task.getResult();
                     result.putAll(task.getResult());
+                    Log.d("result:::::", result.toString());
                 }
             }
         });
-        return (ArrayList<Object>) result.get(result);
+        return (ArrayList<Object>) result.get("queue");
     }
 
     /**

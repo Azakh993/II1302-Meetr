@@ -12,15 +12,16 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="modV_voting">Initiate vote</string>
+    <string name="modV_queue">See full queue</string>
     <string name="modV_partlist">See participants</string>
     <string name="modV_options">Meeting preferences</string>
-    <string name="open_lobby_code">Open lobby code</string>
-    <string name="leave_your_meeting">Leave your meeting</string>
+    <string name="modV_lobbyCode">Open lobby code</string>
+    <string name="modV_leaveMeeting">Leave your meeting</string>
     <string name="meeting">Meeting</string>
     <string name="the_current_queue">The current queue</string>
     <string name="join_queue">Join queue</string>
     <string name="finish_talking">Finish talking</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="participation_view">Participation View</string>
 
 </resources>

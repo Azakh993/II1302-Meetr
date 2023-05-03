@@ -22,7 +22,8 @@
             android:layout_height="3dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -35,8 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/leave_your_meeting"
-                    android:onClick="@{()-> viewModel.onBtnLeaveClicked()}"
+                    android:contentDescription="@string/modV_leaveMeeting"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/arrow_left" />
 
@@ -73,9 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/open_lobby_code"
+                    android:contentDescription="@string/modV_lobbyCode"
                     android:cropToPadding="false"
-                    android:onClick="@{()-> viewModel.onBtnQRClicked()}"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/qrcode" />
             </LinearLayout>
@@ -88,6 +87,25 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/join_LOUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    android:id="@+id/btn_join"
+                    android:layout_width="0dp"
+                    android:layout_height="61dp"
+                    android:layout_weight="1"
+                    android:text="@string/participation_view"
+                    app:icon="@drawable/account_arrow_right_outline" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/vote_LOUT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,13 +116,12 @@
                 android:paddingBottom="5dp">
 
                 <Button
-                    android:id="@+id/btn_vote"
+                    android:id="@+id/btn_queue"
                     android:layout_width="0dp"
                     android:layout_height="61dp"
                     android:layout_weight="1"
-                    android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
-                    android:text="@string/modV_voting"
-                    app:icon="@drawable/vote" />
+                    android:text="@string/modV_queue"
+                    app:icon="@drawable/human_queue" />
             </LinearLayout>
 
             <LinearLayout
@@ -122,27 +139,19 @@
                     android:layout_width="0dp"
                     android:layout_height="61dp"
                     android:layout_weight="1"
-                    android:onClick="@{()-> viewModel.onBtnParticipantsClicked()}"
                     android:text="@string/modV_partlist"
                     app:icon="@drawable/account_group_outline" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/options_LOUT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="5dp">
+                style="@style/buttonList">
 
                 <Button
                     android:id="@+id/btn_options"
                     android:layout_width="0dp"
                     android:layout_height="61dp"
                     android:layout_weight="1"
-                    android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
                     android:text="@string/modV_options"
                     app:icon="@drawable/cog_outline" />
             </LinearLayout>
