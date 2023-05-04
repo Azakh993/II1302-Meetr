@@ -14,7 +14,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="modV_voting">Initiate vote</string>
     <string name="modV_partlist">See participants</string>
-    <string name="modV_options">Meeting preferences</string>
+    <string name="modV_Queue">See Queue</string>
     <string name="open_lobby_code">Open lobby code</string>
     <string name="leave_your_meeting">Leave your meeting</string>
     <string name="leave_participant_list">Leave participant list</string>

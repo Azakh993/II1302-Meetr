@@ -143,8 +143,8 @@
                     android:layout_height="61dp"
                     android:layout_weight="1"
                     android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
-                    android:text="@string/modV_options"
-                    app:icon="@drawable/cog_outline" />
+                    android:text="@string/modV_Queue"
+                    app:icon="@drawable/hand_back_right" />
             </LinearLayout>
 
         </LinearLayout>
