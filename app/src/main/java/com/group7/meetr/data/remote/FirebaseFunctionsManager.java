@@ -215,7 +215,9 @@ public class FirebaseFunctionsManager {
                     Log.d("FFunctionsManager:getQueue","Task succeeded!");
                     Map<String, Object> outerHashMap = task.getResult();
                     callGetSpeakingQueueResult.put("queue", outerHashMap.get("queue"));
-                    QueueListViewModel.setQueue((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                    if(callGetSpeakingQueueResult.get("queue") != null) {
+                        QueueListViewModel.setQueue((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                    }
                 }
             }
         });
