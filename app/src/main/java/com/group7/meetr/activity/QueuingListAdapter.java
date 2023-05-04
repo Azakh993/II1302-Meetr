@@ -56,7 +56,12 @@ public class QueuingListAdapter extends RecyclerView.Adapter<QueuingListAdapter.
 
     @Override
     public int getItemCount() {
-        return queueList.size();
+        if(queueList == null){
+            return 0;
+        }
+        else {
+            return queueList.size();
+        }
     }
 
     /**
