@@ -3,7 +3,6 @@ package com.group7.meetr.viewmodel;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,14 +17,13 @@ import java.util.ArrayList;
 
 public class QueueListViewModel {
     private final FirebaseDatabase database;
-    private final MutableLiveData<ArrayList<Object>> functionsOutput;
+    private static ArrayList<Object> queue = null;
     private final String MEETINGID = "7";
-    private int firstIndex = 4;
+
 
 
     public QueueListViewModel() {
         this.database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
-        functionsOutput = new MutableLiveData<>();
     }
 
     public void indexObserver() {
@@ -38,8 +36,8 @@ public class QueueListViewModel {
         ValueEventListener indexListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                functionsOutput.setValue(FirebaseFunctionsManager.callGetSpeakingQueue(MEETINGID));
-                Log.d("Data Changed", (String) "Haha");
+                FirebaseFunctionsManager.callGetSpeakingQueue(MEETINGID);
+
             }
 
             @Override
@@ -51,4 +49,7 @@ public class QueueListViewModel {
         lastIndexRef.addValueEventListener(indexListener);
     }
 
+    public static void setQueue(ArrayList<Object> queue) {
+        QueueListViewModel.queue = queue;
+    }
 }
