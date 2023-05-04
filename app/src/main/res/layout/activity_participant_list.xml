@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/leave_your_meeting"
+                    android:contentDescription="@string/leave_participant_list"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/arrow_left" />
 

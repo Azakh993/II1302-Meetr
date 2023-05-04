@@ -26,10 +26,11 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btn_leave_participantlist"
+                    android:id="@+id/btn_leave_queuelist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:contentDescription="@string/leave_queue_list"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/arrow_left" />
 
@@ -53,22 +54,6 @@
                     android:textStyle="bold"
                     android:typeface="serif"
                     app:autoSizeTextType="uniform" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/btn_lobby_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:cropToPadding="false"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/qrcode" />
             </LinearLayout>
         </LinearLayout>
 

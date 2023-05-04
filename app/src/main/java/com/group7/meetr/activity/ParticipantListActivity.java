@@ -49,9 +49,6 @@ public class ParticipantListActivity extends AppCompatActivity {
         ImageButton leaveParticipantsButton = findViewById(R.id.btn_leave_participantlist);
         goToModeratorview(leaveParticipantsButton);
 
-
-
-
     }
 
     private void goToModeratorview(ImageButton leaveParticipantsButton) {
