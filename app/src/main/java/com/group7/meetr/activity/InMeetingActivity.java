@@ -51,7 +51,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
     private static final String CHANNEL_ID = "my_channel_01";
     private static final  int NOTIFICATION_ID = 1;
-
+    private static final long[] vibrationPattern = {0, 400, 200, 400};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +73,14 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO: Call this notification when it is your turn
                 showNotification(InMeetingActivity.this, "It's your turn");
-
+                //TODO: Move vibration to notification
                 vibr.vibrate(400);
                 Intent intent;
                 FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
                 ArrayList<Object> obj = FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                //TODO: Maybe create another button Start talking or pass and link to this?
                 intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
 
@@ -105,8 +106,9 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
                 .setSmallIcon(R.drawable.exclamation)
                 .setContentTitle("Get Ready")
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
+                .setVibrate(vibrationPattern)
                 .setAutoCancel(true); // Automatically removes the notification when the user taps it
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
