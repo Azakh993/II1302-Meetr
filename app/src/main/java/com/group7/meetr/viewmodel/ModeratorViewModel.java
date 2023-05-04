@@ -12,6 +12,12 @@ public class ModeratorViewModel extends BaseObservable {
     public ModeratorViewModel(){
         modModel = new ModeratorPageModel("");
     }
+    public void onBtnJoinClicked(){
+
+    }
+    public void onBtnQueueClicked(){
+
+    }
     public void onBtnNextClicked(){
         Log.d("!TALKER", "Current talker should change!");
         //TODO: Insert next participant here

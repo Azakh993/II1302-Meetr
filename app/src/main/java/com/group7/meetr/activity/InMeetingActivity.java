@@ -91,6 +91,8 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         vib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vibr.vibrate(400);
                 FirebaseFunctionsManager.callEnqueue("7",LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
             }
         });

@@ -31,14 +31,17 @@ public class ModeratorActivity extends AppCompatActivity {
         Button participantsButton = findViewById(R.id.btn_participants);
         goToParticipants(participantsButton);
 
-        Button voteButton = findViewById(R.id.btn_vote);
-        goToVote(voteButton);
-
         ImageButton lobbyImgButton = findViewById(R.id.btn_lobby_code);
         goToLobby(lobbyImgButton);
 
         ImageButton leaveMeetingButton = findViewById(R.id.btn_leave_meeting);
         goToLogin(leaveMeetingButton);
+
+        Button joinButton = findViewById(R.id.btn_join);
+        goToParticipation(joinButton);
+
+        Button queueButton = findViewById(R.id.btn_queue);
+        goToQueue(queueButton);
 
         QueueListViewModel queueListViewModel = new QueueListViewModel();
         queueListViewModel.indexObserver();
@@ -50,8 +53,8 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make options activity and replace second variable here.
-                intent = new Intent(ModeratorActivity.this, QueuingListActivity.class);
-                startActivity(intent);
+                //intent = new Intent(ModeratorActivity.this, OptionActivity.class);
+                //startActivity(intent);
             }
         });
     }
@@ -68,14 +71,25 @@ public class ModeratorActivity extends AppCompatActivity {
         });
     }
 
-    private void goToVote(Button voteButton) {
-        voteButton.setOnClickListener(new View.OnClickListener() {
+    private void goToQueue(Button queueButton) {
+        queueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make vote activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
+                intent = new Intent(ModeratorActivity.this, QueuingListActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    private void goToParticipation(Button participation) {
+        participation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                Intent intent;
+                intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
+                startActivity(intent);
             }
         });
     }

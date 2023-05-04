@@ -11,20 +11,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
-import com.group7.meetr.activity.InMeetingActivity;
 import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseFunctionsManager {
-    static FirebaseFunctions fFunctions;
     private static Map<String, Object> callGetSpeakingQueueResult = new HashMap<>();
-
+    static FirebaseFunctions fFunctions;
     /**
      * Private helper function to be run and awaited results.
      * @param input object to input
@@ -194,6 +192,7 @@ public class FirebaseFunctionsManager {
     public static ArrayList<Object> callGetSpeakingQueue(String meetingID){
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        Map<String, Object> result = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
         data.put("mID", meetingID);
 
@@ -227,7 +226,6 @@ public class FirebaseFunctionsManager {
         });
         return (ArrayList<Object>) callGetSpeakingQueueResult.get("queue");
     }
-
 
     /**
      * Calls finished talking. Returns nothing and requires nothing as UID is gotten
