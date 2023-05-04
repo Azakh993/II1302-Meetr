@@ -102,8 +102,8 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("My notification")
+                .setSmallIcon(R.drawable.exclamation)
+                .setContentTitle("Get Ready")
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
