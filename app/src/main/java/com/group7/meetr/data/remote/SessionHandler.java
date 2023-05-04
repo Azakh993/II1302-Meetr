@@ -23,7 +23,6 @@ public class SessionHandler {
      */
     public void joinSession(String email) {
 
-        String sessionID = "7";
         //mDatabase.child(sessionID).child("ListOfParticipants").push().setValue(new Participant(email, false));
         FirebaseFunctionsManager.callJoinMeeting("7",email);
     }

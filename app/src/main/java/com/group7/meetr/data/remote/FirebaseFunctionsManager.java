@@ -11,9 +11,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.group7.meetr.activity.InMeetingActivity;
+import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -216,6 +219,7 @@ public class FirebaseFunctionsManager {
                     Map<String, Object> outerHashMap = task.getResult();
                     callGetSpeakingQueueResult.put("queue", outerHashMap.get("queue"));
                     QueueListViewModel.setQueue((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                    InMeetingViewModel.setLiveData((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
                 }
             }
         });

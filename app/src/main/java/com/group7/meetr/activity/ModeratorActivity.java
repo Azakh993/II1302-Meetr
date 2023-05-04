@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
@@ -41,6 +42,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
         QueueListViewModel queueListViewModel = new QueueListViewModel();
         queueListViewModel.indexObserver();
+
     }
 
     private void goToOptions(Button optionsButton) {

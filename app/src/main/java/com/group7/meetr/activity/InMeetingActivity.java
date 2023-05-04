@@ -10,6 +10,8 @@ package com.group7.meetr.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -27,12 +29,14 @@ import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
@@ -47,6 +51,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private InMeetingViewModel inputViewModel = new InMeetingViewModel();
 
     private float lastLux = -1;
+    private LiveData<Integer> currentSpeakingUser;
 
     private static final String CHANNEL_ID = "my_channel_01";
     private static final  int NOTIFICATION_ID = 1;
@@ -56,7 +61,21 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_view);
         createNotificationChannel();
+        currentSpeakingUser = InMeetingViewModel.getLiveData();
+        currentSpeakingUser.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer == 2){
+                    showNotification(InMeetingActivity.this, "You are next to speak, get ready!");
+                } else if (integer == 1) {
+                    Intent intent;
+                    intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
+                    startActivity(intent);
+                    showNotification(InMeetingActivity.this, "You are currently speaking!");
 
+                }
+            }
+        });
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -65,11 +84,14 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        QueueListViewModel queueListViewModel = new QueueListViewModel();
+        queueListViewModel.indexObserver();
+
         Button vib = findViewById(R.id.buttonJoin);
         vib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FirebaseFunctionsManager.callEnqueue("7",LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
             }
         });
     }

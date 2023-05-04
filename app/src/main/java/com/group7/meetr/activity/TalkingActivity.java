@@ -33,7 +33,7 @@ public class TalkingActivity extends AppCompatActivity {
                 //TODO: Make participants activity and replace second variable here.
                 intent = new Intent(TalkingActivity.this, InMeetingActivity.class);
                 //DEPRECATED
-                //FirebaseFunctionsManager.callDequeue("7", LoginPageViewModel.getCurrentUser().getEmail());
+                //FirebaseFunctionsManager.callDequeue("8", LoginPageViewModel.getCurrentUser().getEmail());
                 FirebaseFunctionsManager.callFinishedTalking("7");
                 startActivity(intent);
             }
