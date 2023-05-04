@@ -15,7 +15,7 @@ public class InputViewModel {
      *  to the database.
      * @param timestamp time of request detected from the user sensors
      */
-    public void receiveSensorInput(long timestamp){
+    public void receiveProximityInput(long timestamp){
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - lastRequestTime > REQUEST_DEBOUNCE_INTERVAL) {

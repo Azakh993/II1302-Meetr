@@ -18,6 +18,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.group7.meetr.R;
+import com.group7.meetr.data.model.Participant;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.InputViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
@@ -28,6 +29,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -95,7 +98,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         if (proximityFlag && lightFlag) {
             Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
-            inputViewModel.receiveSensorInput(timestamp);
+            inputViewModel.receiveProximityInput(timestamp);
             proximityFlag = false;
             lightFlag = false;
         }
