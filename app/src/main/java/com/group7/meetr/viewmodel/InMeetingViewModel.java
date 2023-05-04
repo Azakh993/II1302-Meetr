@@ -2,7 +2,7 @@ package com.group7.meetr.viewmodel;
 
 import com.group7.meetr.data.remote.SessionHandler;
 
-public class InputViewModel {
+public class InMeetingViewModel {
 
     private SessionHandler sessionHandler = new SessionHandler();
     public void receiveProximityInput(long timestamp){
