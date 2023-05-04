@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import com.group7.meetr.R;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
 
@@ -37,6 +38,9 @@ public class ModeratorActivity extends AppCompatActivity {
 
         ImageButton leaveMeetingButton = findViewById(R.id.btn_leave_meeting);
         goToLogin(leaveMeetingButton);
+
+        QueueListViewModel queueListViewModel = new QueueListViewModel();
+        queueListViewModel.indexObserver();
     }
 
     private void goToOptions(Button optionsButton) {

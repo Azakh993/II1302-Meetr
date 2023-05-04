@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
 
     <uses-feature
         android:name="android.hardware.sensor.proximity"
@@ -21,8 +18,8 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31">
         <activity
-            android:name=".activity.OptionActivity"
-            android:exported="true" />
+            android:name=".activity.QueuingListActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.ParticipantListActivity"
             android:exported="true" />
@@ -40,8 +37,7 @@
             android:exported="true" />
         <activity
             android:name=".activity.TalkingActivity"
-            android:exported="true" />
-
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
