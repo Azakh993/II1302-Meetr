@@ -3,6 +3,8 @@ package com.group7.meetr.viewmodel;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 
 public class QueueListViewModel {
     private final FirebaseDatabase database;
-    private static ArrayList<Object> queue = null;
+    private static MutableLiveData<ArrayList<Object>> queue;
     private final String MEETINGID = "7";
 
 
@@ -50,6 +52,10 @@ public class QueueListViewModel {
     }
 
     public static void setQueue(ArrayList<Object> queue) {
-        QueueListViewModel.queue = queue;
+        QueueListViewModel.queue.setValue(queue);
+    }
+
+    public static LiveData<ArrayList<Object>> getQueueLiveData() {
+        return QueueListViewModel.queue;
     }
 }
