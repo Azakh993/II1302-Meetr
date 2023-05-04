@@ -23,5 +23,12 @@
     <string name="finish_talking">Finish talking</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="participation_view">Participation View</string>
+    <string name="leave_your_meeting">Leave your meeting</string>
+    <string name="leave_participant_list">Leave participant list</string>
+    <string name="leave_queue_list">Leave queue list</string>
+    <string name="open_lobby_code">Open lobby code</string>
+    <string name="modV_voting">Initiate vote</string>
+    <string name="modV_Queue">See queue</string>
+
 
 </resources>

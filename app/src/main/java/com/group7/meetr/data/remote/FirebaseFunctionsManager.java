@@ -11,7 +11,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FirebaseFunctionsManager {
+    private static Map<String, Object> callGetSpeakingQueueResult = new HashMap<>();
     static FirebaseFunctions fFunctions;
     /**
      * Private helper function to be run and awaited results.
