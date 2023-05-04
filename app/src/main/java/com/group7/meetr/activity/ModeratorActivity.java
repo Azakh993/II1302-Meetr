@@ -13,6 +13,7 @@ import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
 
@@ -30,8 +31,8 @@ public class ModeratorActivity extends AppCompatActivity {
         Button participantsButton = findViewById(R.id.btn_participants);
         goToParticipants(participantsButton);
 
-        Button queueButton = findViewById(R.id.btn_queue);
-        goToQueue(queueButton);
+        Button voteButton = findViewById(R.id.btn_vote);
+        goToVote(voteButton);
 
         ImageButton lobbyImgButton = findViewById(R.id.btn_lobby_code);
         goToLobby(lobbyImgButton);
@@ -41,6 +42,9 @@ public class ModeratorActivity extends AppCompatActivity {
 
         Button joinButton = findViewById(R.id.btn_join);
         goToParticipation(joinButton);
+
+        QueueListViewModel queueListViewModel = new QueueListViewModel();
+        queueListViewModel.indexObserver();
     }
 
     private void goToOptions(Button optionsButton) {
@@ -49,8 +53,8 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent;
                 //TODO: Make options activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
+                intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
+                startActivity(intent);
             }
         });
     }

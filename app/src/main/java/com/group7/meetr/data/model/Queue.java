@@ -1,27 +1,21 @@
 package com.group7.meetr.data.model;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+
 import java.util.ArrayList;
 
 public class Queue {
-    int frontIndex;
 
-    public int getFrontIndex() {
-        return frontIndex;
-    }
+    private static ArrayList<String> participants;
 
-    public int getLastIndex() {
-        return lastIndex;
-    }
-
-    public ArrayList<String> getParticipants() {
+    public static ArrayList<String> getParticipants() {
         return participants;
     }
 
-    int lastIndex;
-    ArrayList<String> participants;
-    public Queue(){
-        frontIndex = 0;
-        lastIndex = 0;
-        participants = new ArrayList<>();
+    public static void setParticipants(ArrayList<String> participants) {
+        Queue.participants = participants;
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/navbar"
+        android:id="@+id/navbar_queue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -26,11 +26,11 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btn_leave_participantlist"
+                    android:id="@+id/btn_leave_queuelist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/leave_participant_list"
+                    android:contentDescription="@string/leave_queue_list"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/arrow_left" />
 
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Participant list"
+                    android:text="Current queue"
                     android:textAlignment="center"
                     android:textAllCaps="true"
                     android:textSize="30sp"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navbar"
+        app:layout_constraintTop_toBottomOf="@+id/navbar_queue"
         app:layout_constraintVertical_bias="0.962" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

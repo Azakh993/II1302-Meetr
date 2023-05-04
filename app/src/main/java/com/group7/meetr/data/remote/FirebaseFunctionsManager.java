@@ -212,13 +212,16 @@ public class FirebaseFunctionsManager {
                 else
                 {
                     Log.d("FFunctionsManager:getQueue","Task succeeded!");
-                    Map<String, Object> s = task.getResult();
-                    result.putAll(task.getResult());
-                    Log.d("result:::::", result.toString());
+                    Map<String, Object> outerHashMap = task.getResult();
+                    callGetSpeakingQueueResult.put("queue", outerHashMap.get("queue"));
+                    if(callGetSpeakingQueueResult.get("queue") != null) {
+                        InMeetingViewModel.setLiveData((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                        QueueListViewModel.setQueue((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                    }
                 }
             }
         });
-        return (ArrayList<Object>) result.get("queue");
+        return (ArrayList<Object>) callGetSpeakingQueueResult.get("queue");
     }
 
     /**
