@@ -102,9 +102,6 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             proximityFlag = false;
             lightFlag = false;
         }
-        else {
-            Toast.makeText(this, "Request Not Registered: " + timestamp, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
