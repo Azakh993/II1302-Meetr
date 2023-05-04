@@ -5,7 +5,7 @@ import com.group7.meetr.data.remote.SessionHandler;
 public class InputViewModel {
 
     private SessionHandler sessionHandler = new SessionHandler();
-    
+
     private static final long REQUEST_DEBOUNCE_INTERVAL = 1000; // 1 second
     private long lastRequestTime = 0;
 
