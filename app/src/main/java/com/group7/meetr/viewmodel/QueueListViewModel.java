@@ -16,6 +16,7 @@ import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QueueListViewModel {
@@ -23,6 +24,7 @@ public class QueueListViewModel {
     private static MutableLiveData<List<String>> queueLiveData = new MutableLiveData<>();
     private static ArrayList<Object> queue = new ArrayList<>();
     private static List<String> queueList;
+    private static ArrayList<String> outlist = new ArrayList<>();
     private final String MEETINGID = "7";
 
 
@@ -57,7 +59,7 @@ public class QueueListViewModel {
     public static void setQueue(ArrayList<Object> queue) {
         QueueListViewModel.queue = queue;
         QueueListViewModel.setQueueList();
-        QueueListViewModel.queueLiveData.setValue(QueueListViewModel.queueList);
+        QueueListViewModel.queueLiveData.setValue(QueueListViewModel.outlist);
     }
 
     public static LiveData<List<String>> getQueueLiveData() {
@@ -65,9 +67,17 @@ public class QueueListViewModel {
     }
 
     private static void setQueueList() {
-        for(Object item : queue) {
-            ArrayList<String> arrayListItem = (ArrayList<String>) item;
-            queue.add(arrayListItem.get(1));
+        HashMap<String, String> queuehashmap = new HashMap<>();
+        ArrayList<Object> temp = new ArrayList<>();
+        temp.addAll(queue);
+        outlist.clear();
+        for(Object item : temp) {
+            queuehashmap = (HashMap<String, String>) item;
+            String arrayListItem = queuehashmap.get("name");
+            outlist.add(arrayListItem);
+            Log.d("QUEUE", "setQueueList: " + outlist);
         }
     }
+
+
 }
