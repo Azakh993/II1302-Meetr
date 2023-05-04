@@ -1,15 +1,22 @@
 package com.group7.meetr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
 import com.group7.meetr.R;
+import com.group7.meetr.viewmodel.QueueListViewModel;
+
+import java.util.ArrayList;
 
 public class QueuingListActivity extends AppCompatActivity {
     RecyclerView queueListRecyclerView;
+    LiveData<ArrayList<Object>> queueLiveData;
+    ArrayList<Object> queue;
     QueuingListAdapter adapter;
 
     @Override
@@ -20,7 +27,15 @@ public class QueuingListActivity extends AppCompatActivity {
         queueListRecyclerView = findViewById(R.id.ParticipantList);
         queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        queueLiveData = QueueListViewModel.getQueueLiveData();
+        queue = queueLiveData.getValue();
 
+        queueLiveData.observe(this, new Observer<ArrayList<Object>>() {
+            @Override
+            public void onChanged(ArrayList<Object> objects) {
+                queue = queueLiveData.getValue();
+            }
+        });
     }
 
 
