@@ -1,6 +1,9 @@
 package com.group7.meetr.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -19,6 +22,7 @@ public class ParticipantListActivity extends AppCompatActivity {
     ParticipantListAdapter adapter;
     LiveData<FirebaseRecyclerOptions<Participant>> participantsListLiveData;
     FirebaseRecyclerOptions<Participant> participantsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,23 @@ public class ParticipantListActivity extends AppCompatActivity {
 
         adapter = new ParticipantListAdapter(participantsList);
         participantListRecyclerView.setAdapter(adapter);
+
+        ImageButton leaveParticipantsButton = findViewById(R.id.btn_leave_participantlist);
+        goToModeratorview(leaveParticipantsButton);
+
+    }
+
+    private void goToModeratorview(ImageButton leaveParticipantsButton) {
+        leaveParticipantsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                //TODO: Make participants activity and replace second variable here.
+                intent = new Intent(ParticipantListActivity.this, ModeratorActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /**
