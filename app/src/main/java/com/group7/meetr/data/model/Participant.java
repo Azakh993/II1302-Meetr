@@ -59,4 +59,14 @@ public class Participant {
     public Participant(String UUID){
         //TODO: Get info from DB??
     }
+
+    @Override
+    public String toString() {
+        return "Participant{" +
+                "UUID='" + UUID + '\'' +
+                ", name='" + name + '\'' +
+                ", talkingScore=" + talkingScore +
+                ", isModerator=" + isModerator +
+                '}';
+    }
 }
