@@ -1,12 +1,15 @@
 package com.group7.meetr.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import com.group7.meetr.R;
 import com.group7.meetr.viewmodel.QueueListViewModel;
@@ -22,7 +25,7 @@ public class QueuingListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_participant_list);
+        setContentView(R.layout.queue_view);
 
         queueListRecyclerView = findViewById(R.id.ParticipantList);
         queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -34,7 +37,29 @@ public class QueuingListActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<String> strings) {
                 queue = queueLiveData.getValue();
+                adapter = new QueuingListAdapter(queue);
+                queueListRecyclerView.setAdapter(adapter);
+            }
+        });
+
+
+
+        ImageButton leaveQueuesButton = findViewById(R.id.btn_leave_queuelist);
+        goToModeratorview(leaveQueuesButton);
+    }
+
+
+    private void goToModeratorview(ImageButton leaveParticipantsButton) {
+        leaveParticipantsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                //TODO: Make participants activity and replace second variable here.
+                intent = new Intent(QueuingListActivity.this, ModeratorActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
+
 }
