@@ -12,14 +12,16 @@ import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FirebaseFunctionsManager {
     static FirebaseFunctions fFunctions;
+    private static Map<String, Object> callGetSpeakingQueueResult = new HashMap<>();
+
     /**
      * Private helper function to be run and awaited results.
      * @param input object to input
@@ -189,7 +191,6 @@ public class FirebaseFunctionsManager {
     public static ArrayList<Object> callGetSpeakingQueue(String meetingID){
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
-        Map<String, Object> result = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
         data.put("mID", meetingID);
 
@@ -212,13 +213,17 @@ public class FirebaseFunctionsManager {
                 else
                 {
                     Log.d("FFunctionsManager:getQueue","Task succeeded!");
-                    Map<String, Object> s = task.getResult();
-                    result.putAll(task.getResult());
+                    Map<String, Object> outerHashMap = task.getResult();
+                    callGetSpeakingQueueResult.put("queue", outerHashMap.get("queue"));
+                    if(callGetSpeakingQueueResult.get("queue") != null) {
+                        QueueListViewModel.setQueue((ArrayList<Object>) callGetSpeakingQueueResult.get("queue"));
+                    }
                 }
             }
         });
-        return (ArrayList<Object>) result.get(result);
+        return (ArrayList<Object>) callGetSpeakingQueueResult.get("queue");
     }
+
 
     /**
      * Calls finished talking. Returns nothing and requires nothing as UID is gotten
