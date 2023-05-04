@@ -11,12 +11,12 @@ import android.os.Bundle;
 import com.group7.meetr.R;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class QueuingListActivity extends AppCompatActivity {
     RecyclerView queueListRecyclerView;
-    LiveData<ArrayList<Object>> queueLiveData;
-    ArrayList<Object> queue;
+    LiveData<List<String>> queueLiveData;
+    List<String> queue;
     QueuingListAdapter adapter;
 
     @Override
@@ -30,13 +30,11 @@ public class QueuingListActivity extends AppCompatActivity {
         queueLiveData = QueueListViewModel.getQueueLiveData();
         queue = queueLiveData.getValue();
 
-        queueLiveData.observe(this, new Observer<ArrayList<Object>>() {
+        queueLiveData.observe(this, new Observer<List<String>>() {
             @Override
-            public void onChanged(ArrayList<Object> objects) {
+            public void onChanged(List<String> strings) {
                 queue = queueLiveData.getValue();
             }
         });
     }
-
-
 }
