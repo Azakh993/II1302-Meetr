@@ -66,7 +66,6 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         Button vib = findViewById(R.id.buttonJoin);
-        Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +173,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         }
     }
     public void setCurrentQueue(ArrayList<Object> queue){
+        Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         showNotification(InMeetingActivity.this, "It's your turn");
 
         vibr.vibrate(400);
