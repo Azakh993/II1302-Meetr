@@ -142,8 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="61dp"
                     android:layout_weight="1"
-                    android:onClick="@{()-> viewModel.onBtnOptionsClicked()}"
-                    android:text="@string/modV_options"
+                    android:text="@string/modV_Queue"
                     app:icon="@drawable/cog_outline" />
             </LinearLayout>
 
