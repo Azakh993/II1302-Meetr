@@ -30,15 +30,14 @@ public class LoginPageViewModel extends AndroidViewModel {
      * @return
      */
     public FirebaseUser login(String email, String password) {
-        SessionHandler sessionHandler = new SessionHandler();
         currentUser = authenticationHandler.signIn(email, password);
 
         if(currentUser != null && !currentUser.getUid().isEmpty()) {
             if (email.contains("admin@admin.com")) {
-                sessionHandler.createSession(email);
+                SessionHandler.createSession(email);
 
             } else {
-                sessionHandler.joinSession(email);
+                SessionHandler.joinSession(email);
             }
         }
 
