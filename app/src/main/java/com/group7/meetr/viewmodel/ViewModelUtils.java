@@ -13,11 +13,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class ViewModelUtils {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
-    private static final String MEETING_ID = "7";
 
     static void indexObserver() {
         DatabaseReference queueRef = database.getReference("Sessions")
-                .child(MEETING_ID).child("Queue");
+                .child(NewOrJoinMeetingViewModel.getCurrentMeetingID()).child("Queue");
 
         DatabaseReference frontIndexRef = queueRef.child("frontIndex");
         DatabaseReference lastIndexRef = queueRef.child("lastIndex");
@@ -25,7 +24,7 @@ public class ViewModelUtils {
         ValueEventListener indexListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                QueueHandler.callGetSpeakingQueue(MEETING_ID);
+                QueueHandler.callGetSpeakingQueue(NewOrJoinMeetingViewModel.getCurrentMeetingID());
             }
 
             @Override
