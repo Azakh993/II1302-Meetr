@@ -17,6 +17,7 @@ import com.group7.meetr.viewmodel.LoginPageViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SessionHandler {
 
@@ -54,7 +55,7 @@ public class SessionHandler {
      * @param meetingID the meetingID to use to create.
      * @return the meeting id as an ínteger. Should defintely be string...
      */
-    private static String callNewMeeting(String moderatorName, String meetingID) {
+    public static String callNewMeeting(String moderatorName, String meetingID) {
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
 
@@ -89,7 +90,7 @@ public class SessionHandler {
     /** Joins a meeting using backend.
      * @param meetingID meetingid to join
      */
-    private static void callJoinMeeting(String meetingID, String name){
+    public static void callJoinMeeting(String meetingID, String name){
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
         Map<String, Object> data = new HashMap<>();
@@ -115,22 +116,38 @@ public class SessionHandler {
         });
     }
 
-
     /**
-     * Joins a hardcoded meeting session and adds the signed in user's email address
+     / meetingExists
+     * Checks if a meeting exists at the indicated meeting ID.
+     * @return a boolean indicating existence of mID as a }
      */
-    public static void joinSession(String email) {
-        callJoinMeeting("7",email);
-    }
+    public static boolean callCheckIfMeetingExists(String mid){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        AtomicReference<Boolean> result = new AtomicReference<>();
+        result.set(false);
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", mid);
+        anyFunction("meetingExists", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:meetingExists","Task not successful...");
+                task.getException().printStackTrace();
 
-    /**
-     * Adds a session identification number in database as a child to "Sessions";
-     * represents the existence of a meeting session, as well as the current moderator
-     * under the created session.
-     */
-    public static void createSession(String userMail) {
-        String s = callNewMeeting(userMail,"7");
-        if(s != null)
-            Log.d("Created session", s);
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            }
+            else
+            {
+
+                Log.d("FFunctionsManager:meetingExists","Task succeeded!");
+                result.set((boolean)task.getResult().get("exists"));
+            }
+        });
+        return result.get();
     }
 }
