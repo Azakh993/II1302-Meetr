@@ -33,7 +33,7 @@ public class UtilFunctions {
                 .call(data)
                 .continueWith(new Continuation<HttpsCallableResult, Map<String, Object>>() {
                     @Override
-                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) {
+                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
                         // This continuation runs on either success or failure, but if the task
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
@@ -41,7 +41,11 @@ public class UtilFunctions {
                         if(result == null) return null;
                         if(result.getClass() == ArrayList.class)
                             return (Map<String, Object>) ((ArrayList<Object>) task.getResult().getData()).get(0);
-                        else
+                        else if (result.getClass() == Boolean.class) { //TODO: change this function to always return exists:boolean so I Dont havet o do this....
+                            Map<String, Object> s = new HashMap<>();
+                            s.put("exists", result);
+                            return s;
+                        } else
                             return (Map<String, Object>)task.getResult().getData();
 
                     }
