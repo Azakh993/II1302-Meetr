@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
 
 public class TalkingActivity extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class TalkingActivity extends AppCompatActivity {
                 intent = new Intent(TalkingActivity.this, InMeetingActivity.class);
                 //DEPRECATED
                 //FirebaseFunctionsManager.callDequeue("8", LoginPageViewModel.getCurrentUser().getEmail());
-                FirebaseFunctionsManager.callFinishedTalking("7");
+                FirebaseFunctionsManager.callFinishedTalking(NewOrJoinMeetingViewModel.getCurrentMeetingID());
                 startActivity(intent);
             }
         });

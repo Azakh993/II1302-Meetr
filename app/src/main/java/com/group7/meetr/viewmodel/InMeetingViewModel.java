@@ -1,12 +1,9 @@
 package com.group7.meetr.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.group7.meetr.data.model.Participant;
-import com.group7.meetr.data.remote.SessionHandler;
+import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +11,8 @@ import java.util.HashMap;
 public class InMeetingViewModel {
     private static MutableLiveData<Integer> liveData = new MutableLiveData<>();
 
-    private SessionHandler sessionHandler = new SessionHandler();
-    public void receiveProximityInput(long timestamp){
-        sessionHandler.sendProximityData("7",timestamp);
+    public static void receiveProximityInput(long timestamp){
+        FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(), LoginPageViewModel.getCurrentUser().getEmail(), timestamp);
     }
 
     /**

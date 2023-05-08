@@ -17,8 +17,8 @@ import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FirebaseFunctionsManager {
     private static Map<String, Object> callGetSpeakingQueueResult = new HashMap<>();
@@ -109,8 +109,12 @@ public class FirebaseFunctionsManager {
                         Object result = task.getResult().getData();
                         if(result == null) return null;
                         if(result.getClass() == ArrayList.class)
-                        return (Map<String, Object>) ((ArrayList<Object>) task.getResult().getData()).get(0);
-                        else
+                            return (Map<String, Object>) ((ArrayList<Object>) task.getResult().getData()).get(0);
+                        else if (result.getClass() == Boolean.class) { //TODO: change this function to always return exists:boolean so I Dont havet o do this....
+                            Map<String, Object> s = new HashMap<>();
+                            s.put("exists", result);
+                            return s;
+                        } else
                             return (Map<String, Object>)task.getResult().getData();
 
                     }
@@ -283,6 +287,40 @@ public class FirebaseFunctionsManager {
                 Log.d("FFunctionsManager:FinishedTalking","Task succeeded!");
             }
         });
+    }
+    /**
+    / meetingExists
+ * Checks if a meeting exists at the indicated meeting ID.
+ * @return a boolean indicating existence of mID as a }
+ */
+    public static boolean callCheckIfMeetingExists(String mid){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        AtomicReference<Boolean> result = new AtomicReference<>();
+        result.set(false);
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", mid);
+        anyFunction("meetingExists", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:meetingExists","Task not successful...");
+                task.getException().printStackTrace();
+
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            }
+            else
+            {
+
+                Log.d("FFunctionsManager:meetingExists","Task succeeded!");
+                result.set((boolean)task.getResult().get("exists"));
+            }
+        });
+        return result.get();
     }
 
 }

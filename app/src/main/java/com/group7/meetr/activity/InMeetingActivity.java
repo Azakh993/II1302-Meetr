@@ -29,6 +29,7 @@ import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import android.os.Vibrator;
@@ -93,7 +94,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vibr.vibrate(400);
-                FirebaseFunctionsManager.callEnqueue("7",LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+                FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(),LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
             }
         });
     }
@@ -124,7 +125,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         if (proximityFlag && lightFlag) {
             Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
-            inputViewModel.receiveProximityInput(timestamp);
+            InMeetingViewModel.receiveProximityInput(timestamp);
             proximityFlag = false;
             lightFlag = false;
         }
@@ -199,7 +200,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         vibr.vibrate(400);
         Intent intent;
-        FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+        FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeetingID(), LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
         intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
         startActivity(intent);
     }

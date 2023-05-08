@@ -25,7 +25,6 @@ public class QueueListViewModel {
     private static ArrayList<Object> queue = new ArrayList<>();
     private static List<String> queueList;
     private static ArrayList<String> outlist = new ArrayList<>();
-    private final String MEETINGID = "7";
 
 
 
@@ -35,7 +34,7 @@ public class QueueListViewModel {
 
     public void indexObserver() {
         DatabaseReference queueRef = database.getReference("Sessions")
-                .child(MEETINGID).child("Queue");
+                .child(NewOrJoinMeetingViewModel.getCurrentMeetingID()).child("Queue");
 
         DatabaseReference frontIndexRef = queueRef.child("frontIndex");
         DatabaseReference lastIndexRef = queueRef.child("lastIndex");
@@ -43,7 +42,7 @@ public class QueueListViewModel {
         ValueEventListener indexListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseFunctionsManager.callGetSpeakingQueue(MEETINGID);
+                FirebaseFunctionsManager.callGetSpeakingQueue(NewOrJoinMeetingViewModel.getCurrentMeetingID());
 
             }
 

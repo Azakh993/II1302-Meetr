@@ -56,26 +56,15 @@ public class LoginPageActivity extends AppCompatActivity {
             }
 
             else {
-                if (emailString.contains("admin@admin.com")) {
-                    switchToModeratorActivity();
-                } else {
-                    switchToInMeetingActivity();
-                }
+                switchToJoinOrCreateActivity();
             }
         });
     }
 
-    private void switchToModeratorActivity() {
+    private void switchToJoinOrCreateActivity() {
         Toast.makeText(getApplicationContext(), "Moderator login successful!",
                 Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(LoginPageActivity.this, ModeratorActivity.class);
-        startActivity(intent);
-    }
-
-    private void switchToInMeetingActivity() {
-        Toast.makeText(getApplicationContext(), "Participant login successful!",
-                Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(LoginPageActivity.this, InMeetingActivity.class );
+        Intent intent = new Intent(LoginPageActivity.this, NewOrJoinMeetingActivity.class);
         startActivity(intent);
     }
 

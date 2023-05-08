@@ -19,14 +19,6 @@ public class Meeting {
     Timestamp startTime;
     //TIME endTime; //endtime == null mötet aktivt
 
-    /**
-     * Adds a user using their userID. Usually used when we get a single update from database.
-     * @param userID who to add. Found with EmailPasswordActivity.getAuth
-     */
-    public void addParticipant(String userID){
-        //TODO: Get previous meeting participation score from here!
-        this.participants.add(new Participant("John Doe", true));
-    }
 
     public List<Participant> getParticipants() {
         return participants;
@@ -47,35 +39,7 @@ public class Meeting {
      * @param meetingID the meeting id that is being recreated locally.
      */
     public Meeting(String meetingID){
-
-    }
-    private String generateMID(){
-        // create a string of all characters
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        // create random string builder
-        StringBuilder sb = new StringBuilder();
-
-        // create an object of Random class
-        Random random = new Random();
-
-        // specify length of random string
-        int length = 7;
-
-        for(int i = 0; i < length; i++) {
-
-            // generate random index number
-            int index = random.nextInt(alphabet.length());
-
-            // get character specified by index
-            // from the string
-            char randomChar = alphabet.charAt(index);
-
-            // append the character to string builder
-            sb.append(randomChar);
-        }
-
-        return sb.toString();
+        this.meetingID = meetingID;
     }
 
     /**
