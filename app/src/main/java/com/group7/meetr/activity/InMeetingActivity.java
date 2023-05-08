@@ -26,7 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.remote.QueueHandler;
 import com.group7.meetr.viewmodel.InMeetingViewModel;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
@@ -36,7 +36,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
@@ -93,7 +92,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vibr.vibrate(400);
-                FirebaseFunctionsManager.callEnqueue("7",LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+                QueueHandler.callEnqueue("7",LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
             }
         });
     }
@@ -199,7 +198,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         vibr.vibrate(400);
         Intent intent;
-        FirebaseFunctionsManager.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
+        QueueHandler.callEnqueue("7", LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
         intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
         startActivity(intent);
     }
