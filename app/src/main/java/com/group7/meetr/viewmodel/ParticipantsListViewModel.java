@@ -20,7 +20,7 @@ public class ParticipantsListViewModel {
         participantsList =
                 new FirebaseRecyclerOptions.Builder<Participant>()
                         .setQuery(database.getReference("/Sessions/")
-                                .child("/7/").child("ListOfParticipants"), Participant.class)
+                                .child(NewOrJoinMeetingViewModel.getCurrentMeetingID()).child("ListOfParticipants"), Participant.class)
                         .build();
         participants.setValue(participantsList);
     }
