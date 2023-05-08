@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.remote.SessionHandler;
 import com.group7.meetr.viewmodel.LoginPageViewModel;
 import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
 
@@ -38,7 +38,7 @@ public class NewOrJoinMeetingActivity extends AppCompatActivity {
                 return;
             }
             NewOrJoinMeetingViewModel.setCurrentMeetingID(mid);
-            FirebaseFunctionsManager.callJoinMeeting(mid,LoginPageViewModel.getCurrentUser().getEmail());
+            SessionHandler.callJoinMeeting(mid,LoginPageViewModel.getCurrentUser().getEmail());
             Intent intent = new Intent(NewOrJoinMeetingActivity.this, InMeetingActivity.class );
             startActivity(intent);
         });
@@ -57,7 +57,7 @@ public class NewOrJoinMeetingActivity extends AppCompatActivity {
             for (char c : meetingID.toCharArray()) {
                 if(!alphabet.contains(String.valueOf(c))) return false;
             }
-            boolean b = FirebaseFunctionsManager.callCheckIfMeetingExists(meetingID);
+            boolean b = SessionHandler.callCheckIfMeetingExists(meetingID);
             return b;
         }
         return false;
@@ -66,7 +66,7 @@ public class NewOrJoinMeetingActivity extends AppCompatActivity {
         btn.setOnClickListener(view -> {
             String mid = generateMID();
             NewOrJoinMeetingViewModel.setCurrentMeetingID(mid);
-            FirebaseFunctionsManager.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(), mid);
+            SessionHandler.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(), mid);
             Intent intent = new Intent(NewOrJoinMeetingActivity.this, ModeratorActivity.class );
             startActivity(intent);
         });
