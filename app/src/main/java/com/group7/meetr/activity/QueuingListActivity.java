@@ -45,11 +45,11 @@ public class QueuingListActivity extends AppCompatActivity {
 
 
         ImageButton leaveQueuesButton = findViewById(R.id.btn_leave_queuelist);
-        goToModeratorview(leaveQueuesButton);
+        goToModeratorView(leaveQueuesButton);
     }
 
 
-    private void goToModeratorview(ImageButton leaveParticipantsButton) {
+    private void goToModeratorView(ImageButton leaveParticipantsButton) {
         leaveParticipantsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
