@@ -60,6 +60,8 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_view);
         createNotificationChannel();
+
+        InMeetingViewModel inMeetingViewModel = new InMeetingViewModel();
         currentSpeakingUser = InMeetingViewModel.getLiveData();
         currentSpeakingUser.observe(this, new Observer<Integer>() {
             @Override
@@ -82,9 +84,6 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        QueueListViewModel queueListViewModel = new QueueListViewModel();
-        queueListViewModel.indexObserver();
 
         Button vib = findViewById(R.id.buttonJoin);
         vib.setOnClickListener(new View.OnClickListener() {
