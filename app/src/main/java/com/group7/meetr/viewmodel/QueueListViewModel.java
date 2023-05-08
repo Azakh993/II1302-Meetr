@@ -11,13 +11,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.remote.QueueHandler;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class QueueListViewModel {
     private final FirebaseDatabase database;
@@ -31,6 +34,14 @@ public class QueueListViewModel {
 
     public QueueListViewModel() {
         this.database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
+        queueListObserver();
+    }
+
+    private void queueListObserver() {
+        QueueHandler.observeQueue()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(QueueListViewModel::setQueue);
     }
 
     public void indexObserver() {
@@ -43,8 +54,7 @@ public class QueueListViewModel {
         ValueEventListener indexListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                FirebaseFunctionsManager.callGetSpeakingQueue(MEETINGID);
-
+                QueueHandler.callGetSpeakingQueue(MEETINGID);
             }
 
             @Override
@@ -56,7 +66,7 @@ public class QueueListViewModel {
         lastIndexRef.addValueEventListener(indexListener);
     }
 
-    public static void setQueue(ArrayList<Object> queue) {
+    private static void setQueue(ArrayList<Object> queue) {
         QueueListViewModel.queue = queue;
         QueueListViewModel.setQueueList();
         QueueListViewModel.queueLiveData.setValue(QueueListViewModel.outlist);
@@ -67,13 +77,13 @@ public class QueueListViewModel {
     }
 
     private static void setQueueList() {
-        HashMap<String, String> queuehashmap = new HashMap<>();
+        HashMap<String, String> queueHashMap = new HashMap<>();
         ArrayList<Object> temp = new ArrayList<>();
         temp.addAll(queue);
         outlist.clear();
         for(Object item : temp) {
-            queuehashmap = (HashMap<String, String>) item;
-            String arrayListItem = queuehashmap.get("name");
+            queueHashMap = (HashMap<String, String>) item;
+            String arrayListItem = queueHashMap.get("name");
             outlist.add(arrayListItem);
             Log.d("QUEUE", "setQueueList: " + outlist);
         }
