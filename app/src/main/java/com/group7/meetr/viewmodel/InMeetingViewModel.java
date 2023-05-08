@@ -29,9 +29,8 @@ public class InMeetingViewModel {
                 .subscribe(InMeetingViewModel::setLiveData);
     }
 
-    public void receiveProximityInput(long timestamp){
-        QueueHandler.sendProximityData("7",timestamp); // ???
-        SessionHandler.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(),NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID());
+    public static void receiveProximityInput(long timestamp){
+        QueueHandler.sendProximityData(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(),timestamp); // ???
     }
 
     /**
