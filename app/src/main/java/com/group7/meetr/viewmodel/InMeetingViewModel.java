@@ -12,7 +12,7 @@ public class InMeetingViewModel {
     private static MutableLiveData<Integer> liveData = new MutableLiveData<>();
 
     public static void receiveProximityInput(long timestamp){
-        String s = FirebaseFunctionsManager.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(),NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID());
+        FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(), LoginPageViewModel.getCurrentUser().getEmail(), timestamp);
     }
 
     /**
