@@ -1,22 +1,35 @@
 package com.group7.meetr.viewmodel;
 
-import android.util.Log;
+import static com.group7.meetr.viewmodel.ViewModelUtils.indexObserver;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.group7.meetr.data.model.Participant;
-import com.group7.meetr.data.remote.SessionHandler;
+import com.group7.meetr.data.remote.QueueHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class InMeetingViewModel {
     private static MutableLiveData<Integer> liveData = new MutableLiveData<>();
 
-    private SessionHandler sessionHandler = new SessionHandler();
+    public InMeetingViewModel() {
+        indexObserver();
+        queueListObserver();
+    }
+
+    static void queueListObserver() {
+        QueueHandler.observeQueue()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(InMeetingViewModel::setLiveData);
+    }
+
     public void receiveProximityInput(long timestamp){
-        sessionHandler.sendProximityData("7",timestamp);
+        QueueHandler.sendProximityData("7",timestamp);
     }
 
     /**
