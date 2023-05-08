@@ -44,7 +44,6 @@ public class ModeratorActivity extends AppCompatActivity {
         goToQueue(queueButton);
 
         QueueListViewModel queueListViewModel = new QueueListViewModel();
-        queueListViewModel.indexObserver();
     }
 
     private void goToOptions(Button optionsButton) {
