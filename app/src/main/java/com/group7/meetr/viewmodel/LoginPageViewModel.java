@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.group7.meetr.data.model.AuthenticationHandler;
-import com.group7.meetr.data.remote.SessionHandler;
 
 public class LoginPageViewModel extends AndroidViewModel {
     private static AuthenticationHandler authenticationHandler;
@@ -30,17 +29,7 @@ public class LoginPageViewModel extends AndroidViewModel {
      * @return
      */
     public FirebaseUser login(String email, String password) {
-        SessionHandler sessionHandler = new SessionHandler();
         currentUser = authenticationHandler.signIn(email, password);
-
-        if(currentUser != null && !currentUser.getUid().isEmpty()) {
-            if (email.contains("admin@admin.com")) {
-                sessionHandler.createSession(email);
-
-            } else {
-                sessionHandler.joinSession(email);
-            }
-        }
 
         return currentUser;
     }

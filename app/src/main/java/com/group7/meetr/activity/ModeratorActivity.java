@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -13,6 +14,7 @@ import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
+import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
@@ -21,9 +23,12 @@ public class ModeratorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
+
         ActivityModeratorBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_moderator);
         activityMainBinding.setViewModel(moderatorViewModel);
         activityMainBinding.executePendingBindings();
+        TextView t = findViewById(R.id.txt_meetingID);
+        t.setText(NewOrJoinMeetingViewModel.getCurrentMeetingID());
 
         Button optionsButton = findViewById(R.id.btn_options);
         goToOptions(optionsButton);
@@ -86,7 +91,7 @@ public class ModeratorActivity extends AppCompatActivity {
         participation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                FirebaseFunctionsManager.callGetSpeakingQueue(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID());
                 Intent intent;
                 intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
                 startActivity(intent);
