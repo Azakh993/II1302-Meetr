@@ -1,0 +1,79 @@
+package com.group7.meetr.data.remote;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UtilFunctions {
+    static FirebaseFunctions fFunctions;
+
+
+    /**
+     * Private function that runs any function on Firebase side.
+     * Use this to make a task that runs your functions defined in firebase.
+     * @param functionName name of function. capitalized sensitive
+     * @param data Data to send. JSON Map format. STRING -> Object. Object any java default object.
+     * @return returns task. run whencomplete on it to get actual data.
+     */
+    static Task<Map<String, Object>> anyFunction(String functionName, Map<String, Object> data){
+        data.put("push", true);
+        data.put("uid", LoginPageViewModel.getCurrentUser().getUid());
+        return fFunctions
+                .getHttpsCallable(functionName)
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        Object result = task.getResult().getData();
+                        if(result == null) return null;
+                        if(result.getClass() == ArrayList.class)
+                            return (Map<String, Object>) ((ArrayList<Object>) task.getResult().getData()).get(0);
+                        else
+                            return (Map<String, Object>)task.getResult().getData();
+
+                    }
+                });
+    }
+    /**
+     * Use this to execute any function defined in firebase.
+     * @param functionName name of function. capitalized sensitive
+     * @param data Data to send. JSON Map format. STRING -> Object. Object any java default object.
+     * @return returns task. run whencomplete on it to get actual data.
+     * Map<String, Object> map.put(blahblabhbl).
+     * callanyfunction("test", map);
+     */
+    public static Map<String, Object> callAnyFunction(String functionName, Map<String, Object> data){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+        Map<String, Object> result = new HashMap<>();
+        anyFunction(functionName, data).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+            @Override
+            public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+                }
+                else
+                { result.putAll(task.getResult()); }
+            }
+        });
+        return result;
+    }
+}
