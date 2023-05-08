@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.remote.QueueHandler;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
@@ -86,7 +86,7 @@ public class ModeratorActivity extends AppCompatActivity {
         participation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                QueueHandler.callGetSpeakingQueue("7");
                 Intent intent;
                 intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
                 startActivity(intent);
