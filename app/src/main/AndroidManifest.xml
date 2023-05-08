@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31">
         <activity
+            android:name=".activity.NewOrJoinMeetingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.QueuingListActivity"
             android:exported="true" />
         <activity
@@ -25,7 +28,7 @@
             android:exported="true" />
         <activity
             android:name=".activity.LoginPageActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".activity.ModeratorActivity"
             android:exported="true" />

@@ -12,6 +12,8 @@ import android.widget.Button;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.QueueHandler;
+import com.group7.meetr.viewmodel.LoginPageViewModel;
+import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
 
 public class TalkingActivity extends AppCompatActivity {
 
@@ -31,7 +33,7 @@ public class TalkingActivity extends AppCompatActivity {
                 Intent intent;
                 //TODO: Make participants activity and replace second variable here.
                 intent = new Intent(TalkingActivity.this, InMeetingActivity.class);
-                QueueHandler.callFinishedTalking("7");
+                QueueHandler.callFinishedTalking(NewOrJoinMeetingViewModel.getCurrentMeetingID());
                 startActivity(intent);
             }
         });

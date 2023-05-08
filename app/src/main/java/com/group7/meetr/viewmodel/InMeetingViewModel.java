@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.group7.meetr.data.remote.QueueHandler;
+import com.group7.meetr.data.remote.SessionHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,8 @@ public class InMeetingViewModel {
     }
 
     public void receiveProximityInput(long timestamp){
-        QueueHandler.sendProximityData("7",timestamp);
+        QueueHandler.sendProximityData("7",timestamp); // ???
+        SessionHandler.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(),NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID());
     }
 
     /**
