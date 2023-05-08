@@ -43,6 +43,9 @@ public class ModeratorActivity extends AppCompatActivity {
         Button queueButton = findViewById(R.id.btn_queue);
         goToQueue(queueButton);
 
+        Button consensusButton = findViewById(R.id.btn_consensus);
+        goToConsensus(consensusButton);
+
         QueueListViewModel queueListViewModel = new QueueListViewModel();
         queueListViewModel.indexObserver();
     }
@@ -116,4 +119,19 @@ public class ModeratorActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void goToConsensus(Button leaveMeetingButton) {
+        leaveMeetingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    private void Startonsensus(Button leaveMeetingButton) {
+        //TODO: Call function to initiate consensus lists on server side
+    }
+
 }
