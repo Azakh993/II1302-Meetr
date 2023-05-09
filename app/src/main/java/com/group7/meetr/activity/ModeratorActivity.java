@@ -8,6 +8,10 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.remote.FirebaseFunctionsManager;
@@ -15,8 +19,13 @@ import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
-public class ModeratorActivity extends AppCompatActivity {
+import java.util.List;
 
+public class ModeratorActivity extends AppCompatActivity {
+    RecyclerView currentspeakerListRecyclerView;
+    LiveData<List<String>> queueLiveData;
+    List<String> queue;
+    QueuingListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +54,22 @@ public class ModeratorActivity extends AppCompatActivity {
 
         QueueListViewModel queueListViewModel = new QueueListViewModel();
         queueListViewModel.indexObserver();
+
+
+        currentspeakerListRecyclerView = findViewById(R.id.currentspeakerList);
+        currentspeakerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        queueLiveData = QueueListViewModel.getQueueLiveData();
+        queue = queueLiveData.getValue();
+
+        queueLiveData.observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                queue = queueLiveData.getValue();
+                adapter = new QueuingListAdapter(queue);
+                currentspeakerListRecyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private void goToOptions(Button optionsButton) {
@@ -86,7 +111,7 @@ public class ModeratorActivity extends AppCompatActivity {
         participation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseFunctionsManager.callGetSpeakingQueue("7");
+                FirebaseFunctionsManager.callGetSpeakingQueue("9");
                 Intent intent;
                 intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
                 startActivity(intent);
