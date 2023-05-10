@@ -43,6 +43,12 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private boolean lightFlag = false;
     private float lastLux = -1;
 
+    private long lastGestureTime = 0;
+    private static final long GESTURE_COOLDOWN = 2000; // 2000 milliseconds = 2 second
+
+
+
+
     private boolean gesture1ProximityFlag = false;
     private boolean gesture1LightFlag = false;
     private boolean gesture2ProximityFlag = false;
@@ -87,33 +93,38 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        long timestamp = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastGestureTime < GESTURE_COOLDOWN) {
+            return;
+        }
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             float distance = event.values[0];
-            gesture1ProximityFlag = (distance > 4) && (distance <= 8);
-            gesture2ProximityFlag = (distance <= 2);
+            gesture1ProximityFlag = (distance >= 0) && (distance <= 8);
+            gesture2ProximityFlag = (distance <= 0);
         } else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
             float luxValue = event.values[0];
 
             if (lastLux != -1) {
                 float luxChange = Math.abs((lastLux - luxValue) / luxValue * 100);
-                gesture1LightFlag = (luxChange >= 5) && (luxChange < 60);
+                gesture1LightFlag = (luxChange >= 10) && (luxChange < 95);
                 gesture2LightFlag = (luxChange >= 95);
             }
             lastLux = luxValue;
         }
 
-        if (gesture1ProximityFlag && gesture1LightFlag) {
-            Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
-            inMeetingViewModel.enqueue();
-            gesture1ProximityFlag = false;
-            gesture1LightFlag = false;
-        } else if (gesture2ProximityFlag && gesture2LightFlag) {
+        if (gesture2ProximityFlag && gesture2LightFlag) {
             Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
             inMeetingViewModel.enqueue();
             gesture2ProximityFlag = false;
             gesture2LightFlag = false;
+            lastGestureTime = currentTime;
+        } else if (gesture1ProximityFlag && gesture1LightFlag) {
+            Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
+            inMeetingViewModel.enqueue();
+            gesture1ProximityFlag = false;
+            gesture1LightFlag = false;
+            lastGestureTime = currentTime;
         }
     }
 
