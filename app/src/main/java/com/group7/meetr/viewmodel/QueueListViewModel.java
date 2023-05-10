@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.group7.meetr.data.remote.QueueHandler;
+import com.group7.meetr.data.remote.UtilFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,39 +16,27 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class QueueListViewModel {
-    private static MutableLiveData<List<String>> queueLiveData = new MutableLiveData<>();
-    private static ArrayList<String> queueList = new ArrayList<>();
+    private final MutableLiveData<List<String>> queueLiveData = new MutableLiveData<>();
+    private ArrayList<String> queueList = new ArrayList<>();
 
     public QueueListViewModel() {
         indexObserver();
         queueListObserver();
     }
 
-    static void queueListObserver() {
+    private void queueListObserver() {
         QueueHandler.observeQueue()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(QueueListViewModel::setQueue);
+                .subscribe(this::setQueue);
     }
 
-    static void setQueue(ArrayList<Object> queue) {
-        QueueListViewModel.setQueueList(queue);
-        QueueListViewModel.queueLiveData.setValue(QueueListViewModel.queueList);
+    private void setQueue(ArrayList<Object> queue) {
+        queueList = UtilFunctions.parseQueueArrayList(queue);
+        queueLiveData.setValue(queueList);
     }
 
-    public static LiveData<List<String>> getQueueLiveData() {
-        return QueueListViewModel.queueLiveData;
+    public LiveData<List<String>> getQueueLiveData() {
+        return queueLiveData;
     }
-
-    private static void setQueueList(ArrayList<Object> queue) {
-        HashMap<String, String> queueHashMap;
-        queueList.clear();
-        for(Object item : queue) {
-            queueHashMap = (HashMap<String, String>) item;
-            String arrayListItem = queueHashMap.get("name");
-            queueList.add(arrayListItem);
-        }
-    }
-
-
 }
