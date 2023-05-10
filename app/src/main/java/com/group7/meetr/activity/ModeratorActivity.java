@@ -3,10 +3,10 @@ package com.group7.meetr.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.se.omapi.Session;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +15,8 @@ import androidx.databinding.DataBindingUtil;
 import com.group7.meetr.R;
 import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.data.remote.SessionHandler;
-import com.group7.meetr.data.remote.UtilFunctions;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ModeratorActivity extends AppCompatActivity {
     private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
@@ -70,7 +66,12 @@ public class ModeratorActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        SessionHandler.callEndMeeting(Meeting.getMeetingID());
+                        Toast t = new Toast(ModeratorActivity.this);
+                        t.setText("Ending meeting did not succeed!");
+                        SessionHandler.callEndMeeting(Meeting.getMeetingID(),t);
+
+                        Intent i = new Intent(ModeratorActivity.this, RoleSelectionActivity.class);
+                        startActivity(i);
                         //Yes button clicked
                         break;
 

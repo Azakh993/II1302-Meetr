@@ -1,18 +1,18 @@
 package com.group7.meetr.data.remote;
 
+import static androidx.core.content.ContextCompat.startActivity;
 import static com.group7.meetr.data.remote.UtilFunctions.anyFunction;
 import static com.group7.meetr.data.remote.UtilFunctions.fFunctions;
 
+import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
-import com.google.firebase.functions.HttpsCallableResult;
+import com.group7.meetr.activity.LoginPageActivity;
 import com.group7.meetr.data.model.User;
 
 import java.util.HashMap;
@@ -138,7 +138,7 @@ public class SessionHandler {
             }
         });
     }
-    public static void callEndMeeting(String mid){
+    public static void callEndMeeting(String mid, Toast toast){
         if(fFunctions == null)
             fFunctions = FirebaseFunctions.getInstance("europe-west1");
 
@@ -149,6 +149,7 @@ public class SessionHandler {
             if (!task.isSuccessful()) {
                 Log.d("FFunctionsManager:endMeeting","Task not successful...");
                 task.getException().printStackTrace();
+                toast.show();
 
                 Exception e = task.getException();
                 if (e instanceof FirebaseFunctionsException) {
@@ -158,6 +159,7 @@ public class SessionHandler {
                 }
             } else {
                 Log.d("FFunctionsManager:endMeeting","Task succeeded!");
+
             }
         });
     }
