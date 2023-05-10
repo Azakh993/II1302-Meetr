@@ -2,12 +2,10 @@ package com.group7.meetr.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +15,11 @@ import com.group7.meetr.viewmodel.QueueListViewModel;
 import java.util.List;
 
 public class QueuingListActivity extends AppCompatActivity {
-    RecyclerView queueListRecyclerView;
-    LiveData<List<String>> queueLiveData;
-    List<String> queue;
-    QueuingListAdapter adapter;
+    private final QueueListViewModel queueListViewModel = new QueueListViewModel();
+    private RecyclerView queueListRecyclerView;
+    private LiveData<List<String>> queueLiveData;
+    private List<String> queue;
+    private QueuingListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,35 +29,24 @@ public class QueuingListActivity extends AppCompatActivity {
         queueListRecyclerView = findViewById(R.id.ParticipantList);
         queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        queueLiveData = QueueListViewModel.getQueueLiveData();
+        queueLiveData = queueListViewModel.getQueueLiveData();
         queue = queueLiveData.getValue();
 
-        queueLiveData.observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                queue = queueLiveData.getValue();
-                adapter = new QueuingListAdapter(queue);
-                queueListRecyclerView.setAdapter(adapter);
-            }
+        queueLiveData.observe(this, strings -> {
+            queue = queueLiveData.getValue();
+            adapter = new QueuingListAdapter(queue);
+            queueListRecyclerView.setAdapter(adapter);
         });
-
-
 
         ImageButton leaveQueuesButton = findViewById(R.id.btn_leave_queuelist);
         goToModeratorView(leaveQueuesButton);
     }
 
-
     private void goToModeratorView(ImageButton leaveParticipantsButton) {
-        leaveParticipantsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make participants activity and replace second variable here.
-                intent = new Intent(QueuingListActivity.this, ModeratorActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        leaveParticipantsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(QueuingListActivity.this, ModeratorActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
