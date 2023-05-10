@@ -2,37 +2,42 @@ package com.group7.meetr.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 import com.group7.meetr.viewmodel.QueueListViewModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ModeratorActivity extends AppCompatActivity {
-    RecyclerView currentspeakerListRecyclerView;
-    LiveData<List<String>> queueLiveData;
-    List<String> queue;
-    QueuingListAdapter adapter;
+    private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
+    private final QueueListViewModel queueListViewModel = new QueueListViewModel();
+    private RecyclerView queueListRecyclerView;
+    private LiveData<List<String>> queueLiveData;
+    private List<String> queue;
+    private QueuingListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
+
         ActivityModeratorBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_moderator);
         activityMainBinding.setViewModel(moderatorViewModel);
         activityMainBinding.executePendingBindings();
+        TextView t = findViewById(R.id.txt_meetingID);
+        t.setText(Meeting.getMeetingID());
 
         Button optionsButton = findViewById(R.id.btn_options);
         goToOptions(optionsButton);
@@ -52,93 +57,57 @@ public class ModeratorActivity extends AppCompatActivity {
         Button queueButton = findViewById(R.id.btn_queue);
         goToQueue(queueButton);
 
-        QueueListViewModel queueListViewModel = new QueueListViewModel();
-        queueListViewModel.indexObserver();
+        queueListRecyclerView = findViewById(R.id.currentspeakerList);
+        queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        currentspeakerListRecyclerView = findViewById(R.id.currentspeakerList);
-        currentspeakerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        queueLiveData = QueueListViewModel.getQueueLiveData();
+        queueLiveData = queueListViewModel.getQueueLiveData();
         queue = queueLiveData.getValue();
 
-        queueLiveData.observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                queue = queueLiveData.getValue();
-                adapter = new QueuingListAdapter(queue);
-                currentspeakerListRecyclerView.setAdapter(adapter);
-            }
+        queueLiveData.observe(this, strings -> {
+            queue = queueLiveData.getValue();
+            adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            queueListRecyclerView.setAdapter(adapter);
         });
+
+
     }
 
     private void goToOptions(Button optionsButton) {
-        optionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make options activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionActivity.class);
-                //startActivity(intent);
-            }
+        optionsButton.setOnClickListener(view -> {
+
         });
     }
 
     private void goToParticipants(Button participantsButton) {
-        participantsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make participants activity and replace second variable here.
-                intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
-                startActivity(intent);
-            }
+        participantsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
+            startActivity(intent);
         });
     }
 
     private void goToQueue(Button queueButton) {
-        queueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make vote activity and replace second variable here.
-                intent = new Intent(ModeratorActivity.this, QueuingListActivity.class);
-                startActivity(intent);
-            }
+        queueButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, QueuingListActivity.class);
+            startActivity(intent);
         });
     }
+
     private void goToParticipation(Button participation) {
-        participation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseFunctionsManager.callGetSpeakingQueue("9");
-                Intent intent;
-                intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
-                startActivity(intent);
-            }
+        participation.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, InMeetingActivity.class);
+            startActivity(intent);
         });
     }
 
     private void goToLobby(ImageButton lobbyImgButton) {
-        lobbyImgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make lobby qr activity and replace second variable here.
-                //intent = new Intent(ModeratorActivity.this, OptionsActivity.class);
-                //startActivity(intent);
-            }
+        lobbyImgButton.setOnClickListener(view -> {
         });
     }
 
     private void goToLogin(ImageButton leaveMeetingButton) {
-        leaveMeetingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                intent = new Intent(ModeratorActivity.this, LoginPageActivity.class);
-                startActivity(intent);
-            }
+        leaveMeetingButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, LoginPageActivity.class);
+            startActivity(intent);
         });
     }
 }
