@@ -4,20 +4,12 @@ import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 
-import com.group7.meetr.data.model.ModeratorPageModel;
-
 public class ModeratorViewModel extends BaseObservable {
-    //Creating private instance of the ModeratorView.
-    private ModeratorPageModel modModel;
+
     public ModeratorViewModel(){
-        modModel = new ModeratorPageModel("");
-    }
-    public void onBtnJoinClicked(){
 
     }
-    public void onBtnQueueClicked(){
 
-    }
     public void onBtnNextClicked(){
         Log.d("!TALKER", "Current talker should change!");
         //TODO: Insert next participant here
@@ -38,11 +30,4 @@ public class ModeratorViewModel extends BaseObservable {
         Log.d("!ACTIVITY", "DEAD BUTTON...");
         //TODO: Add voting system and add that here? idk...
     }
-    public String getSessionName(){
-        return modModel.getMeeting_name();
-    }
-    public void setSessionName(String s){
-        modModel.setMeeting_name(s);
-    }
-
 }

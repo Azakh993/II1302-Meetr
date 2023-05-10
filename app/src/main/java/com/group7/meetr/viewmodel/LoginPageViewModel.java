@@ -3,45 +3,46 @@ package com.group7.meetr.viewmodel;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.group7.meetr.data.model.AuthenticationHandler;
-import com.group7.meetr.data.remote.SessionHandler;
+import com.group7.meetr.data.model.User;
+import com.group7.meetr.data.remote.AuthenticationHandler;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginPageViewModel extends AndroidViewModel {
-    private static AuthenticationHandler authenticationHandler;
-    private FirebaseUser currentUser;
+    private final AuthenticationHandler authenticationHandler;
+    private final MutableLiveData<FirebaseUser> firebaseUserMutableLiveData = new MutableLiveData<>();
+    private FirebaseUser user;
 
 
     public LoginPageViewModel(Application application) {
         super(application);
         authenticationHandler = new AuthenticationHandler(application);
-    }
-    public static FirebaseUser getCurrentUser(){
-        return authenticationHandler.getCurrentUser();
+        firebaseUserObserver();
     }
 
+    private void firebaseUserObserver() {
+        User.observeFirebaseUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setUserLiveData);
+    }
 
-    /**
-     * Checks if user login information is correct. -1 false login
-     * 1 is user
-     * 3 is admin user.
-     *
-     * @return
-     */
-    public FirebaseUser login(String email, String password) {
-        SessionHandler sessionHandler = new SessionHandler();
-        currentUser = authenticationHandler.signIn(email, password);
+    private void setUserLiveData(FirebaseUser firebaseUser) {
+        setFirebaseUser(firebaseUser);
+        firebaseUserMutableLiveData.setValue(user);
+    }
 
-        if(currentUser != null && !currentUser.getUid().isEmpty()) {
-            if (email.contains("admin@admin.com")) {
-                sessionHandler.createSession(email);
+    private void setFirebaseUser(FirebaseUser firebaseUser) {
+        user = firebaseUser;
+    }
 
-            } else {
-                sessionHandler.joinSession(email);
-            }
-        }
-
-        return currentUser;
+    public LiveData<FirebaseUser> login(String email, String password) {
+        authenticationHandler.signIn(email, password);
+        return firebaseUserMutableLiveData;
     }
 }

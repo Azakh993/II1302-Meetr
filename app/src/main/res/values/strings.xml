@@ -29,6 +29,10 @@
     <string name="open_lobby_code">Open lobby code</string>
     <string name="modV_voting">Initiate vote</string>
     <string name="modV_Queue">See queue</string>
+    <string name="join">Join</string>
+    <string name="meeting_code">Meeting code</string>
+    <string name="create_new_meeting">Create new meeting</string>
+    <string name="current_queue">Current queue</string>
 
 
 </resources>

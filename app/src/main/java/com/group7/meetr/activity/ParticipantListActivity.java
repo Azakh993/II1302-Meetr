@@ -2,19 +2,17 @@ package com.group7.meetr.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.group7.meetr.R;
-import com.group7.meetr.viewmodel.ParticipantsListViewModel;
 import com.group7.meetr.data.model.Participant;
+import com.group7.meetr.viewmodel.ParticipantsListViewModel;
 
 public class ParticipantListActivity extends AppCompatActivity {
 
@@ -22,7 +20,6 @@ public class ParticipantListActivity extends AppCompatActivity {
     ParticipantListAdapter adapter;
     LiveData<FirebaseRecyclerOptions<Participant>> participantsListLiveData;
     FirebaseRecyclerOptions<Participant> participantsList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,36 +33,27 @@ public class ParticipantListActivity extends AppCompatActivity {
         participantsListViewModel.participantsListListener();
         participantsListLiveData = participantsListViewModel.getParticipants();
         participantsList = participantsListLiveData.getValue();
-        participantsListLiveData.observe(this, new Observer<FirebaseRecyclerOptions<Participant>>() {
-            @Override
-            public void onChanged(FirebaseRecyclerOptions<Participant> stringFirebaseRecyclerOptions) {
-                participantsList = participantsListLiveData.getValue();
-            }
-        });
+        participantsListLiveData.observe(this, stringFirebaseRecyclerOptions ->
+                participantsList = participantsListLiveData.getValue());
 
         adapter = new ParticipantListAdapter(participantsList);
         participantListRecyclerView.setAdapter(adapter);
 
         ImageButton leaveParticipantsButton = findViewById(R.id.btn_leave_participantlist);
-        goToModeratorview(leaveParticipantsButton);
+        goToModeratorView(leaveParticipantsButton);
 
     }
 
-    private void goToModeratorview(ImageButton leaveParticipantsButton) {
-        leaveParticipantsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                //TODO: Make participants activity and replace second variable here.
-                intent = new Intent(ParticipantListActivity.this, ModeratorActivity.class);
-                startActivity(intent);
-                finish();
-            }
+    private void goToModeratorView(ImageButton leaveParticipantsButton) {
+        leaveParticipantsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ParticipantListActivity.this, ModeratorActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
     /**
-     *This method starts listening for changes in the data source
+     * This method starts listening for changes in the data source
      * (in this case, the Firebase Realtime Database)
      * and updates the RecyclerView adapter accordingly.
      */
