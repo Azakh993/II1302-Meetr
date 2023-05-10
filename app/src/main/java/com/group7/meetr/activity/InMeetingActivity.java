@@ -44,10 +44,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private float lastLux = -1;
 
     private long lastGestureTime = 0;
-    private static final long GESTURE_COOLDOWN = 2000; // 2000 milliseconds = 2 second
 
-
-
+    private static final long GESTURE_INTERVAL = 1000; // 1000 milliseconds = 1 second
+    private long gestureStartTime = 0;
+    private boolean isGestureIntervalStarted = false;
 
     private boolean gesture1ProximityFlag = false;
     private boolean gesture1LightFlag = false;
@@ -94,8 +94,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void onSensorChanged(SensorEvent event) {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastGestureTime < GESTURE_COOLDOWN) {
-            return;
+
+        if (!isGestureIntervalStarted) {
+            gestureStartTime = currentTime;
+            isGestureIntervalStarted = true;
         }
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
@@ -113,20 +115,28 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             lastLux = luxValue;
         }
 
-        if (gesture2ProximityFlag && gesture2LightFlag) {
-            Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
-            inMeetingViewModel.enqueue();
-            gesture2ProximityFlag = false;
-            gesture2LightFlag = false;
-            lastGestureTime = currentTime;
-        } else if (gesture1ProximityFlag && gesture1LightFlag) {
-            Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
-            inMeetingViewModel.enqueue();
+        // Check if gesture interval time has passed
+        if (currentTime - gestureStartTime > GESTURE_INTERVAL) {
+            if (gesture2ProximityFlag && gesture2LightFlag) {
+                Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
+                inMeetingViewModel.enqueue();
+                gesture2ProximityFlag = false;
+                gesture2LightFlag = false;
+            } else if (gesture1ProximityFlag && gesture1LightFlag) {
+                Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
+                inMeetingViewModel.enqueue();
+                gesture1ProximityFlag = false;
+                gesture1LightFlag = false;
+            }
+            // Reset flags and gesture start time
+            isGestureIntervalStarted = false;
             gesture1ProximityFlag = false;
             gesture1LightFlag = false;
-            lastGestureTime = currentTime;
+            gesture2ProximityFlag = false;
+            gesture2LightFlag = false;
         }
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
