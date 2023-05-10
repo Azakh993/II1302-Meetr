@@ -39,11 +39,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private SensorManager sensorManager;
     private Sensor proximitySensor;
     private Sensor lightSensor;
-    private boolean proximityFlag = false;
-    private boolean lightFlag = false;
     private float lastLux = -1;
-
-    private long lastGestureTime = 0;
 
     private static final long GESTURE_INTERVAL = 600;
     private long gestureStartTime = 0;
@@ -126,14 +122,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             if (gesture2ProximityFlag && gesture2LightFlag) {
                 Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
                 inMeetingViewModel.enqueue();
-                gesture2ProximityFlag = false;
-                gesture2LightFlag = false;
                 lastGestureDetectedTime = currentTime;
             } else if (gesture1ProximityFlag && gesture1LightFlag) {
                 Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
                 inMeetingViewModel.enqueue();
-                gesture1ProximityFlag = false;
-                gesture1LightFlag = false;
                 lastGestureDetectedTime = currentTime;
             }
             // Reset flags and gesture start time
