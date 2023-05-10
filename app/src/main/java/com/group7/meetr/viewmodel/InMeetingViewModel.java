@@ -5,8 +5,10 @@ import static com.group7.meetr.viewmodel.ViewModelUtils.indexObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.model.User;
 import com.group7.meetr.data.remote.QueueHandler;
-import com.group7.meetr.data.remote.SessionHandler;
+import com.group7.meetr.data.remote.UtilFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,59 +17,83 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class InMeetingViewModel {
-    private static MutableLiveData<Integer> liveData = new MutableLiveData<>();
+    private final MutableLiveData<Integer> queuePositionLiveData = new MutableLiveData<>();
+    private ArrayList<Object> queueArrayList = new ArrayList<>();
+    private final String email;
+    private final String uid;
+    private final String meetingID;
 
     public InMeetingViewModel() {
+        email = User.getEmail();
+        uid = User.getUid();
+        meetingID = Meeting.getMeetingID();
         indexObserver();
         queueListObserver();
     }
 
-    static void queueListObserver() {
+    private void queueListObserver() {
         QueueHandler.observeQueue()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(InMeetingViewModel::setLiveData);
+                .subscribe(this::setQueueParameters);
     }
 
-    public static void receiveProximityInput(long timestamp){
-        QueueHandler.sendProximityData(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(),timestamp); // ???
+    public void enqueue() {
+        ArrayList<String> queue = UtilFunctions.parseQueueArrayList(queueArrayList);
+
+        if(queue.isEmpty()) {
+            QueueHandler.callEnqueue(meetingID, email, System.currentTimeMillis());
+            return;
+        }
+
+        for (String email: queue) {
+            if(email.equals(this.email)) {
+              return;
+            }
+        }
+        QueueHandler.callEnqueue(meetingID, email, System.currentTimeMillis());
+    }
+
+    private boolean checkPosition(Object userObject) {
+        if (userObject == null) {
+            return false;
+        }
+        HashMap<String, Object> userHashMap = (HashMap<String, Object>) userObject;
+        String userUID = (String) userHashMap.get("uid");
+        String userEmail = (String) userHashMap.get("name");
+
+        if(userEmail != null && userUID != null) {
+            return userUID.equals(uid) && userEmail.equals(email);
+        }
+
+        return false;
+    }
+
+    public LiveData<Integer> getQueuePositionLiveData() {
+        return queuePositionLiveData;
     }
 
     /**
      * If next user in queue, set livedata to 2
      * if current user is 0 in queue set to 1
      * otherwise it will stay at 0
-     * @param objects
+     *
+     * @param queue
      */
-    public static void setLiveData(ArrayList<Object> objects){
-        if(objects.size() > 1){
-            if(isMyUser(objects.get(1)))
-            {
-                liveData.setValue(2);
+    public void setQueueParameters(ArrayList<Object> queue) {
+        queueArrayList = queue;
+        if (queue.size() > 1) {
+            Object secondInQueue = queue.get(1);
+            if (checkPosition(secondInQueue)) {
+                queuePositionLiveData.setValue(2);
             }
         }
-        if(objects.size() > 0){
-            if(isMyUser(objects.get(0)))
-            {
-                liveData.setValue(1);
+        if (queue.size() > 0) {
+            Object firstInQueue = queue.get(0);
+            if (checkPosition(firstInQueue)) {
+                queuePositionLiveData.setValue(1);
             }
         }
-        liveData.setValue(0);
-
-    }
-    private static boolean isMyUser(Object o){
-        if(o == null) return false;
-        HashMap<String, Object> test = (HashMap<String, Object>) o;
-        String uid = (String)test.get("uid");
-        String userName = (String) test.get("name");
-        if(uid.equals(LoginPageViewModel.getCurrentUser().getUid()) && userName.equals(LoginPageViewModel.getCurrentUser().getEmail())){
-            return true;
-        }
-        return false;
-
-    }
-
-    public static LiveData<Integer> getLiveData() {
-        return liveData;
+        queuePositionLiveData.setValue(0);
     }
 }
