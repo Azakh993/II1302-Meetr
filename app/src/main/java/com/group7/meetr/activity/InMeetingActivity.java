@@ -33,8 +33,6 @@ import com.group7.meetr.viewmodel.InMeetingViewModel;
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
     private final InMeetingViewModel inMeetingViewModel = new InMeetingViewModel();
     private LiveData<Integer> currentSpeakingUser;
-    private LiveData<Long> meetingEnded;
-
     private static final String CHANNEL_ID = "my_channel_01";
     private static final int NOTIFICATION_ID = 1;
     private static final long[] vibrationPattern = {0, 400, 200, 400};
@@ -43,11 +41,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private Sensor lightSensor;
     private float lastLux = -1;
 
-    private static final long GESTURE_INTERVAL = 600;
+    private static final long GESTURE_INTERVAL = 500;
     private long gestureStartTime = 0;
     private boolean isGestureIntervalStarted = false;
 
-    private static final long COOLDOWN_TIME = 1000;
+    private static final long COOLDOWN_TIME = 900;
     private long lastGestureDetectedTime = 0;
     private boolean gesture1ProximityFlag = false;
     private boolean gesture1LightFlag = false;
@@ -68,13 +66,6 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
                 Intent intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
                 showNotification(InMeetingActivity.this, "You are currently speaking!");
-            }
-        });
-
-        meetingEnded = inMeetingViewModel.getMeetingEndedLiveData();
-        meetingEnded.observe(this, newMeetingEndedTime -> {
-            if(newMeetingEndedTime != 0) {
-                finish();
             }
         });
 
