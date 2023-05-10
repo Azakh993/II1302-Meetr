@@ -63,14 +63,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ParticipantList"
         android:layout_width="match_parent"
-        android:layout_height="559dp"
+        android:layout_height="535dp"
         android:layout_margin="16dp"
-        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/navbar_queue"
-        app:layout_constraintVertical_bias="0.962" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
