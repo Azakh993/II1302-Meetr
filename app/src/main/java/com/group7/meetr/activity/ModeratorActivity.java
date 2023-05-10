@@ -3,7 +3,7 @@ package com.group7.meetr.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,9 +25,9 @@ import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import java.util.Collections;
 import java.util.List;
-import com.group7.meetr.viewmodel.QueueListViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
+    private static final String TAG = "ModeratorActivity";
     private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
     private final QueueListViewModel queueListViewModel = new QueueListViewModel();
     private RecyclerView queueListRecyclerView;
@@ -44,6 +44,9 @@ public class ModeratorActivity extends AppCompatActivity {
         activityMainBinding.executePendingBindings();
         TextView t = findViewById(R.id.txt_meetingID);
         t.setText(Meeting.getMeetingID());
+
+        Button endButton = findViewById(R.id.btn_endMeeting);
+        goToEndMeetingPrompt(endButton);
 
         Button optionsButton = findViewById(R.id.btn_options);
         goToOptions(optionsButton);
@@ -63,22 +66,27 @@ public class ModeratorActivity extends AppCompatActivity {
         Button queueButton = findViewById(R.id.btn_queue);
         goToQueue(queueButton);
 
+        Button consensusOpen = findViewById(R.id.btn_consensus);
+        goToConsensus(consensusOpen);
+
+        Button consensusClose = findViewById(R.id.btn_endConsensus);
+        goToEndConsensus(consensusClose);
+
+
         queueListRecyclerView = findViewById(R.id.currentspeakerList);
         queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         queueLiveData = queueListViewModel.getQueueLiveData();
         queue = queueLiveData.getValue();
+        //String firstelement = queue.get(0);
 
         queueLiveData.observe(this, strings -> {
             queue = queueLiveData.getValue();
             adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            Log.d(TAG, "onCreate: " + Collections.singletonList(queue.get(0)));
             queueListRecyclerView.setAdapter(adapter);
         });
 
-
-
-        Button endButton = findViewById(R.id.btn_endMeeting);
-        goToEndMeetingPrompt(endButton);
 
     }
 
@@ -148,15 +156,10 @@ public class ModeratorActivity extends AppCompatActivity {
         });
     }
 
-    private void goToConsensus(Button leaveMeetingButton) {
-        leaveMeetingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startConsensus();
-                Intent intent;
-                intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
-                startActivity(intent);
-            }
+    private void goToConsensus(Button consensusButton) {
+        consensusButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -164,12 +167,10 @@ public class ModeratorActivity extends AppCompatActivity {
         //TODO: Call function to initiate consensus lists on server side
     }
 
-    private void endConsensus(Button endConsensusButton) {
-        endConsensusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Call function to empty consensus lists on server side
-            }
+    private void goToEndConsensus(Button endConsensusButton) {
+        endConsensusButton.setOnClickListener(view -> {
+            Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+            startActivity(intent);
         });
 
     }
