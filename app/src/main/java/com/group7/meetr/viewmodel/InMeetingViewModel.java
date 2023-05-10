@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class InMeetingViewModel {
     private final MutableLiveData<Integer> queuePositionLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Long> meetingEndedLiveData = new MutableLiveData<>();
     private ArrayList<Object> queueArrayList = new ArrayList<>();
     private final String email;
     private final String uid;
@@ -29,6 +30,8 @@ public class InMeetingViewModel {
         meetingID = Meeting.getMeetingID();
         indexObserver();
         queueListObserver();
+        ViewModelUtils.endTimeObserver();
+        meetingEndedObserver();
     }
 
     private void queueListObserver() {
@@ -36,6 +39,13 @@ public class InMeetingViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setQueueParameters);
+    }
+
+    private void meetingEndedObserver() {
+        Meeting.observeMeetingEnded()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setMeetingEndedLiveData);
     }
 
     public void enqueue() {
@@ -95,5 +105,12 @@ public class InMeetingViewModel {
             }
         }
         queuePositionLiveData.setValue(0);
+    }
+
+    public LiveData<Long> getMeetingEndedLiveData() {
+        return meetingEndedLiveData;
+    }
+    public void setMeetingEndedLiveData(Long meetingEnded) {
+        meetingEndedLiveData.setValue(meetingEnded);
     }
 }

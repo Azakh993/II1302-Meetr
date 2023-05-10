@@ -4,15 +4,11 @@ import static com.group7.meetr.data.remote.UtilFunctions.anyFunction;
 import static com.group7.meetr.data.remote.UtilFunctions.fFunctions;
 
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
-import com.google.firebase.functions.HttpsCallableResult;
 import com.group7.meetr.data.model.User;
 
 import java.util.HashMap;
@@ -135,6 +131,31 @@ public class SessionHandler {
                     meetingIDValid = !(boolean) task.getResult().get("exists");
                     meetingIDValidSubject.onNext(meetingIDValid);
                 }
+            }
+        });
+    }
+    public static void callEndMeeting(String mid, Toast toast){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", mid);
+
+        anyFunction("endMeeting", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:endMeeting","Task not successful...");
+                task.getException().printStackTrace();
+                toast.show();
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            } else {
+                Log.d("FFunctionsManager:endMeeting","Task succeeded!");
+
             }
         });
     }

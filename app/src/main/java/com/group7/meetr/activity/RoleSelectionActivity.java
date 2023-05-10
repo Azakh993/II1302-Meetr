@@ -64,7 +64,7 @@ public class RoleSelectionActivity extends AppCompatActivity {
                 String toastString = "Invalid Meetr ID format!";
                 Toast.makeText(RoleSelectionActivity.this, toastString, toastString.length()).show();
             } else {
-                roleSelectionViewModel.joinMeeting(meetingID);
+                roleSelectionViewModel.joinMeeting(meetingID.toUpperCase());
             }
         });
     }

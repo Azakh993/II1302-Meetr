@@ -1,5 +1,6 @@
 package com.group7.meetr.viewmodel;
 
+import android.app.Application;
 import android.util.Log;
 
 import androidx.databinding.BaseObservable;
