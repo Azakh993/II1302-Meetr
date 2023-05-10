@@ -18,36 +18,31 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31">
         <activity
-            android:name=".activity.RoleSelectionActivity"
-            android:launchMode="singleTask"
+            android:name=".activity.ConsensusListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ConsensusActivity"
             android:exported="false" />
         <activity
             android:name=".activity.QueuingListActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".activity.ParticipantListActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".activity.LoginPageActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".activity.ModeratorActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".activity.InMeetingActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".activity.TalkingActivity"
-            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
