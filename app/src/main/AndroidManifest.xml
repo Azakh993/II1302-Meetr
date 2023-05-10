@@ -18,11 +18,14 @@
         android:theme="@style/Theme.Meetr"
         tools:targetApi="31">
         <activity
+            android:name=".activity.RoleSelectionActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.ConsensusListActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.ConsensusActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.QueuingListActivity"
             android:exported="true" />
