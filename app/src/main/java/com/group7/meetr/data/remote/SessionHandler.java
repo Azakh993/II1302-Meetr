@@ -138,6 +138,29 @@ public class SessionHandler {
             }
         });
     }
+    public static void callEndMeeting(String mid){
+        if(fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", mid);
+
+        anyFunction("endMeeting", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:endMeeting","Task not successful...");
+                task.getException().printStackTrace();
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            } else {
+                Log.d("FFunctionsManager:endMeeting","Task succeeded!");
+            }
+        });
+    }
 
     public static Observable<Boolean> observeMeetingIDValidity() {
         return meetingIDValidSubject;

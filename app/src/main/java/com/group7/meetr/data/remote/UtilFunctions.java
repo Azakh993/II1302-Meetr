@@ -62,7 +62,7 @@ public class UtilFunctions {
                 }
             }
             else
-            { result.putAll(task.getResult()); }
+            { if(task.getResult() != null) result.putAll(task.getResult()); }
         });
         return result;
     }
@@ -77,4 +77,5 @@ public class UtilFunctions {
         }
         return queueList;
     }
+
 }
