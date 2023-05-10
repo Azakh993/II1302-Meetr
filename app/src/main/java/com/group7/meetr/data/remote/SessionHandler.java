@@ -1,18 +1,14 @@
 package com.group7.meetr.data.remote;
 
-import static androidx.core.content.ContextCompat.startActivity;
 import static com.group7.meetr.data.remote.UtilFunctions.anyFunction;
 import static com.group7.meetr.data.remote.UtilFunctions.fFunctions;
 
-import android.app.Application;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
-import com.group7.meetr.activity.LoginPageActivity;
 import com.group7.meetr.data.model.User;
 
 import java.util.HashMap;
