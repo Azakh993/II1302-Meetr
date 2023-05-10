@@ -1,6 +1,9 @@
 package com.group7.meetr.viewmodel;
 
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
+import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.model.User;
+import com.group7.meetr.data.remote.QueueHandler;
+import com.group7.meetr.data.remote.SessionHandler;
 
 public class InputViewModel {
 
@@ -17,7 +20,8 @@ public class InputViewModel {
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - lastRequestTime > REQUEST_DEBOUNCE_INTERVAL) {
-            String s = FirebaseFunctionsManager.callNewMeeting(LoginPageViewModel.getCurrentUser().getEmail(),NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID());
+            SessionHandler.callNewMeeting(User.getEmail(), Meeting.getMeetingID());
+            QueueHandler.sendProximityData(Meeting.getMeetingID() ,timestamp);
             lastRequestTime = currentTime;
         }
     }

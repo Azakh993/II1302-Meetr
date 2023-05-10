@@ -7,12 +7,6 @@
 
 package com.group7.meetr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,59 +16,47 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.group7.meetr.R;
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
-import com.group7.meetr.viewmodel.InMeetingViewModel;
-import com.group7.meetr.viewmodel.LoginPageViewModel;
-import com.group7.meetr.viewmodel.NewOrJoinMeetingViewModel;
-import com.group7.meetr.viewmodel.QueueListViewModel;
-
+import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
+
+import com.group7.meetr.R;
+import com.group7.meetr.viewmodel.InMeetingViewModel;
 
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
-
+    private final InMeetingViewModel inMeetingViewModel = new InMeetingViewModel();
+    private LiveData<Integer> currentSpeakingUser;
+    private static final String CHANNEL_ID = "my_channel_01";
+    private static final int NOTIFICATION_ID = 1;
+    private static final long[] vibrationPattern = {0, 400, 200, 400};
     private SensorManager sensorManager;
-    Sensor proximitySensor;
-    Sensor lightSensor;
-
+    private Sensor proximitySensor;
+    private Sensor lightSensor;
     private boolean proximityFlag = false;
     private boolean lightFlag = false;
-
-    private InMeetingViewModel inputViewModel = new InMeetingViewModel();
-
     private float lastLux = -1;
-    private LiveData<Integer> currentSpeakingUser;
 
-    private static final String CHANNEL_ID = "my_channel_01";
-    private static final  int NOTIFICATION_ID = 1;
-    private static final long[] vibrationPattern = {0, 400, 200, 400};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_view);
         createNotificationChannel();
-        currentSpeakingUser = InMeetingViewModel.getLiveData();
-        currentSpeakingUser.observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if(integer == 2){
-                    showNotification(InMeetingActivity.this, "You are next to speak, get ready!");
-                } else if (integer == 1) {
-                    Intent intent;
-                    intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
-                    startActivity(intent);
-                    showNotification(InMeetingActivity.this, "You are currently speaking!");
 
-                }
+        currentSpeakingUser = inMeetingViewModel.getQueuePositionLiveData();
+        currentSpeakingUser.observe(this, positionInQueue -> {
+            if (positionInQueue == 2) {
+                showNotification(InMeetingActivity.this, "You are next to speak, get ready!");
+            } else if (positionInQueue == 1) {
+                Intent intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
+                startActivity(intent);
+                showNotification(InMeetingActivity.this, "You are currently speaking!");
             }
         });
 
@@ -85,17 +67,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        QueueListViewModel queueListViewModel = new QueueListViewModel();
-        queueListViewModel.indexObserver();
-
         Button vib = findViewById(R.id.buttonJoin);
-        vib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibr.vibrate(400);
-                FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeeting().getMeetingID(),LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
-            }
+        vib.setOnClickListener(v -> {
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
+            inMeetingViewModel.enqueue();
         });
     }
 
@@ -108,15 +84,15 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     public void onSensorChanged(SensorEvent event) {
         long timestamp = System.currentTimeMillis();
 
-        if(event.sensor.getType() == Sensor.TYPE_PROXIMITY){
+        if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             float distance = event.values[0];
             proximityFlag = (distance <= 7);
-        } else if (event.sensor.getType()  == Sensor.TYPE_LIGHT){
+        } else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
             float luxValue = event.values[0];
 
-            if(lastLux != -1){
+            if (lastLux != -1) {
                 float luxChange = Math.abs((lastLux - luxValue) / luxValue * 100);
-                if (luxChange >= 20){
+                if (luxChange >= 20) {
                     lightFlag = true;
                 }
             }
@@ -125,7 +101,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         if (proximityFlag && lightFlag) {
             Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
-            InMeetingViewModel.receiveProximityInput(timestamp);
+            inMeetingViewModel.enqueue();
             proximityFlag = false;
             lightFlag = false;
         }
@@ -150,18 +126,12 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         super.onPause();
         sensorManager.unregisterListener(this);
     }
+
     public void showNotification(Context context, String message) {
         // Create an explicit intent for an Activity in your app
         Intent intent = new Intent(context, TalkingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.exclamation)
@@ -182,26 +152,14 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Your Channel";
-            String description = "Your Channel Description";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-    public void setCurrentQueue(ArrayList<Object> queue){
-        Vibrator vibr = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        showNotification(InMeetingActivity.this, "It's your turn");
-
-        vibr.vibrate(400);
-        Intent intent;
-        FirebaseFunctionsManager.callEnqueue(NewOrJoinMeetingViewModel.getCurrentMeetingID(), LoginPageViewModel.getCurrentUser().getEmail(), System.currentTimeMillis());
-        intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
-        startActivity(intent);
+        CharSequence name = "Your Channel";
+        String description = "Your Channel Description";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }
