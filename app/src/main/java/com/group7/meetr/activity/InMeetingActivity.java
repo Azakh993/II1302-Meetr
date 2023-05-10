@@ -43,6 +43,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private boolean lightFlag = false;
     private float lastLux = -1;
 
+    private boolean gesture1ProximityFlag = false;
+    private boolean gesture1LightFlag = false;
+    private boolean gesture2ProximityFlag = false;
+    private boolean gesture2LightFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,24 +91,29 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             float distance = event.values[0];
-            proximityFlag = (distance <= 7);
+            gesture1ProximityFlag = (distance > 4) && (distance <= 8);
+            gesture2ProximityFlag = (distance <= 2);
         } else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
             float luxValue = event.values[0];
 
             if (lastLux != -1) {
                 float luxChange = Math.abs((lastLux - luxValue) / luxValue * 100);
-                if (luxChange >= 20) {
-                    lightFlag = true;
-                }
+                gesture1LightFlag = (luxChange >= 5) && (luxChange < 60);
+                gesture2LightFlag = (luxChange >= 95);
             }
             lastLux = luxValue;
         }
 
-        if (proximityFlag && lightFlag) {
-            Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
+        if (gesture1ProximityFlag && gesture1LightFlag) {
+            Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
             inMeetingViewModel.enqueue();
-            proximityFlag = false;
-            lightFlag = false;
+            gesture1ProximityFlag = false;
+            gesture1LightFlag = false;
+        } else if (gesture2ProximityFlag && gesture2LightFlag) {
+            Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
+            inMeetingViewModel.enqueue();
+            gesture2ProximityFlag = false;
+            gesture2LightFlag = false;
         }
     }
 
