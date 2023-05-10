@@ -34,6 +34,8 @@
     <string name="create_new_meeting">Create new meeting</string>
     <string name="current_queue">Current queue</string>
     <string name="end_meeting">End meeting</string>
+    <string name="modV_censensus">Open Consensus</string>
+    <string name="modV_endConsensus">End Consensus</string>
 
 
 </resources>
