@@ -1,10 +1,5 @@
 package com.group7.meetr.data.model;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
-import com.group7.meetr.data.remote.FirebaseFunctionsManager;
-
 import java.util.ArrayList;
 
 public class Queue {
