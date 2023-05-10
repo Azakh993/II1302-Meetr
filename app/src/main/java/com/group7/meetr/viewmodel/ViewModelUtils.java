@@ -1,5 +1,7 @@
 package com.group7.meetr.viewmodel;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,10 +34,30 @@ public class ViewModelUtils {
 
             @Override
             public void onCancelled(@NotNull DatabaseError databaseError) {
-                // Handle error
+                Log.d("indexObserver", databaseError.getDetails());
             }
         };
         frontIndexRef.addValueEventListener(indexListener);
         lastIndexRef.addValueEventListener(indexListener);
+    }
+
+    static void endTimeObserver() {
+        String meetingID = Meeting.getMeetingID();
+
+        DatabaseReference endTime = database.getReference("Sessions")
+                .child(meetingID).child("endTime");
+
+        ValueEventListener endTimeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Meeting.setMeetingEndedTime((Long) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError databaseError) {
+                Log.d("endTimeObserver", databaseError.getDetails());
+            }
+        };
+        endTime.addValueEventListener(endTimeListener);
     }
 }

@@ -1,16 +1,20 @@
 package com.group7.meetr.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.remote.SessionHandler;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
@@ -45,11 +49,42 @@ public class ModeratorActivity extends AppCompatActivity {
 
         Button queueButton = findViewById(R.id.btn_queue);
         goToQueue(queueButton);
+
+        Button endButton = findViewById(R.id.btn_endMeeting);
+        goToEndMeetingPrompt(endButton);
+
     }
 
     private void goToOptions(Button optionsButton) {
         optionsButton.setOnClickListener(view -> {
 
+        });
+    }
+    private void goToEndMeetingPrompt(Button btn) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Toast t = new Toast(ModeratorActivity.this);
+                        t.setText("Ending meeting did not succeed!");
+                        SessionHandler.callEndMeeting(Meeting.getMeetingID(),t);
+
+                        Intent i = new Intent(ModeratorActivity.this, RoleSelectionActivity.class);
+                        startActivity(i);
+                        //Yes button clicked
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+        btn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ModeratorActivity.this);
+            builder.setMessage("Are you sure you want to conclude the meeting?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         });
     }
 
