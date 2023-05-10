@@ -3,6 +3,7 @@ package com.group7.meetr.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.group7.meetr.viewmodel.QueueListViewModel;
 
 import java.util.Collections;
 import java.util.List;
+import com.group7.meetr.viewmodel.QueueListViewModel;
 
 public class ModeratorActivity extends AppCompatActivity {
     private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
@@ -144,5 +146,31 @@ public class ModeratorActivity extends AppCompatActivity {
             Intent intent = new Intent(ModeratorActivity.this, LoginPageActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void goToConsensus(Button leaveMeetingButton) {
+        leaveMeetingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startConsensus();
+                Intent intent;
+                intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void startConsensus() {
+        //TODO: Call function to initiate consensus lists on server side
+    }
+
+    private void endConsensus(Button endConsensusButton) {
+        endConsensusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Call function to empty consensus lists on server side
+            }
+        });
+
     }
 }
