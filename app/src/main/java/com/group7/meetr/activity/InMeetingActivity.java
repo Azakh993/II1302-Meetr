@@ -45,10 +45,12 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
 
     private long lastGestureTime = 0;
 
-    private static final long GESTURE_INTERVAL = 1000; // 1000 milliseconds = 1 second
+    private static final long GESTURE_INTERVAL = 600;
     private long gestureStartTime = 0;
     private boolean isGestureIntervalStarted = false;
 
+    private static final long COOLDOWN_TIME = 1000;
+    private long lastGestureDetectedTime = 0;
     private boolean gesture1ProximityFlag = false;
     private boolean gesture1LightFlag = false;
     private boolean gesture2ProximityFlag = false;
@@ -95,6 +97,10 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     public void onSensorChanged(SensorEvent event) {
         long currentTime = System.currentTimeMillis();
 
+        if (currentTime - lastGestureDetectedTime < COOLDOWN_TIME) {
+            return; // Ignore sensor changes during cooldown
+        }
+
         if (!isGestureIntervalStarted) {
             gestureStartTime = currentTime;
             isGestureIntervalStarted = true;
@@ -122,11 +128,13 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
                 inMeetingViewModel.enqueue();
                 gesture2ProximityFlag = false;
                 gesture2LightFlag = false;
+                lastGestureDetectedTime = currentTime;
             } else if (gesture1ProximityFlag && gesture1LightFlag) {
                 Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
                 inMeetingViewModel.enqueue();
                 gesture1ProximityFlag = false;
                 gesture1LightFlag = false;
+                lastGestureDetectedTime = currentTime;
             }
             // Reset flags and gesture start time
             isGestureIntervalStarted = false;
