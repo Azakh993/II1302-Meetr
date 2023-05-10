@@ -32,6 +32,7 @@
     <string name="join">Join</string>
     <string name="meeting_code">Meeting code</string>
     <string name="create_new_meeting">Create new meeting</string>
+    <string name="current_queue">Current queue</string>
 
 
 </resources>

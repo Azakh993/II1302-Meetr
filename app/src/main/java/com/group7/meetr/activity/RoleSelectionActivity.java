@@ -20,7 +20,7 @@ public class RoleSelectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_or_join_meeting);
+        setContentView(R.layout.activity_chooserole);
 
         Button createMeetingBtn = findViewById(R.id.btn_NewMeeting);
         bindCreateFunctions(createMeetingBtn);

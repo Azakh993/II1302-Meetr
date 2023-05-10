@@ -18,16 +18,18 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- EditText field for the Email -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="Login"
             android:textSize="35sp"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:textStyle="bold" />
 
-        <!-- EditText field for the Email -->
+        <!-- EditText field for the password -->
         <EditText
             android:id="@+id/inEmail"
             android:layout_width="match_parent"
@@ -43,7 +45,6 @@
             android:inputType="textEmailAddress"
             android:padding="8dp" />
 
-        <!-- EditText field for the password -->
         <EditText
             android:id="@+id/inPassword"
             android:layout_width="match_parent"
