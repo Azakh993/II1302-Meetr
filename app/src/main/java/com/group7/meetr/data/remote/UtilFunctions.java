@@ -72,6 +72,7 @@ public class UtilFunctions {
         HashMap<String, String> queueHashMap;
         for(Object item : queue) {
             queueHashMap = (HashMap<String, String>) item;
+            if(queueHashMap == null) return new ArrayList<>();
             String arrayListItem = queueHashMap.get("name");
             queueList.add(arrayListItem);
         }
