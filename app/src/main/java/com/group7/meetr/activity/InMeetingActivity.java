@@ -41,7 +41,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private Sensor lightSensor;
     private float lastLux = -1;
 
-    private static final long GESTURE_INTERVAL = 500;
+    private static final long GESTURE_INTERVAL = 600;
     private long gestureStartTime = 0;
     private boolean isGestureIntervalStarted = false;
 
@@ -120,11 +120,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         // Check if gesture interval time has passed
         if (currentTime - gestureStartTime > GESTURE_INTERVAL) {
             if (gesture2ProximityFlag && gesture2LightFlag) {
-                Toast.makeText(this, "Reply Registered", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Reply Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
                 inMeetingViewModel.enqueue();
                 lastGestureDetectedTime = currentTime;
             } else if (gesture1ProximityFlag && gesture1LightFlag) {
-                Toast.makeText(this, "Queue Request Registered", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Queue Request Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
                 inMeetingViewModel.enqueue();
                 lastGestureDetectedTime = currentTime;
             }
