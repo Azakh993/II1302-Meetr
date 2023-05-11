@@ -1,5 +1,7 @@
 package com.group7.meetr.viewmodel;
 
+import static com.group7.meetr.viewmodel.ViewModelUtils.participantsConsensusObserver;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +15,7 @@ public class ModeratorViewModel extends BaseObservable {
     private final String meetingID = Meeting.getMeetingID();
 
     public ModeratorViewModel(){
-
+        participantsConsensusObserver();
     }
     
     public void onBtnParticipantsClicked(){
