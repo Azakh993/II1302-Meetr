@@ -64,6 +64,38 @@ public class InMeetingViewModel {
         QueueHandler.callEnqueue(meetingID, email, System.currentTimeMillis());
     }
 
+    public void replyEnqueue() {
+        ArrayList<String> queue = UtilFunctions.parseQueueArrayList(queueArrayList);
+
+        if(queue.isEmpty()) {
+            QueueHandler.callReplyEnqueue(meetingID, email, System.currentTimeMillis());
+            return;
+        }
+
+        for (String email: queue) {
+            if(email.equals(this.email)) {
+                return;
+            }
+        }
+        QueueHandler.callReplyEnqueue(meetingID, email, System.currentTimeMillis());
+    }
+
+    public void inclusiveEnqueue() {
+        ArrayList<String> queue = UtilFunctions.parseQueueArrayList(queueArrayList);
+
+        if(queue.isEmpty()) {
+            QueueHandler.callInclusiveEnqueue(meetingID, email, System.currentTimeMillis());
+            return;
+        }
+
+        for (String email: queue) {
+            if(email.equals(this.email)) {
+                return;
+            }
+        }
+        QueueHandler.callInclusiveEnqueue(meetingID, email, System.currentTimeMillis());
+    }
+
     private boolean checkPosition(Object userObject) {
         if (userObject == null) {
             return false;

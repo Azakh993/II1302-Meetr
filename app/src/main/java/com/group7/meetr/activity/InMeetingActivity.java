@@ -121,11 +121,11 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         if (currentTime - gestureStartTime > GESTURE_INTERVAL) {
             if (gesture2ProximityFlag && gesture2LightFlag) {
                 Toast.makeText(this, "Reply Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
-                inMeetingViewModel.enqueue();
+                inMeetingViewModel.replyEnqueue();
                 lastGestureDetectedTime = currentTime;
             } else if (gesture1ProximityFlag && gesture1LightFlag) {
                 Toast.makeText(this, "Queue Request Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
-                inMeetingViewModel.enqueue();
+                inMeetingViewModel.inclusiveEnqueue();
                 lastGestureDetectedTime = currentTime;
             }
             // Reset flags and gesture start time
@@ -148,7 +148,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         // Register a listener for the sensor.
         super.onResume();
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor, 10);
     }
 
     @Override
