@@ -150,7 +150,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToConsensus(Button consensusButton) {
         consensusButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
             startActivity(intent);
         });
     }
@@ -161,7 +161,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToEndConsensus(Button endConsensusButton) {
         endConsensusButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
+            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
             startActivity(intent);
         });
 
