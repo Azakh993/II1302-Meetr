@@ -1,20 +1,19 @@
 package com.group7.meetr.viewmodel;
 
-import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
+
+import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.remote.SessionHandler;
 
 public class ModeratorViewModel extends BaseObservable {
 
     public ModeratorViewModel(){
 
     }
-
-    public void onBtnNextClicked(){
-        Log.d("!TALKER", "Current talker should change!");
-        //TODO: Insert next participant here
-    }
+    
     public void onBtnParticipantsClicked(){
         Log.d("!ACTIVITY", "Change view to Participants!");
         //TODO: Swap view + activity here.
@@ -30,5 +29,9 @@ public class ModeratorViewModel extends BaseObservable {
     public void onBtnLeaveClicked(){
         Log.d("!ACTIVITY", "DEAD BUTTON...");
         //TODO: Add voting system and add that here? idk...
+    }
+
+    public void endMeeting(Toast toast) {
+        SessionHandler.callEndMeeting(Meeting.getMeetingID(), toast);
     }
 }

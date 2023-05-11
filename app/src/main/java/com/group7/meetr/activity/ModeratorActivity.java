@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.remote.SessionHandler;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
@@ -61,24 +60,18 @@ public class ModeratorActivity extends AppCompatActivity {
         });
     }
     private void goToEndMeetingPrompt(Button btn) {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        Toast t = new Toast(ModeratorActivity.this);
-                        t.setText("Ending meeting did not succeed!");
-                        SessionHandler.callEndMeeting(Meeting.getMeetingID(),t);
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    Toast t = new Toast(ModeratorActivity.this);
+                    t.setText("Ending meeting did not succeed!");
+                    moderatorViewModel.endMeeting(t);
+                    finish();
+                    break;
 
-                        Intent i = new Intent(ModeratorActivity.this, RoleSelectionActivity.class);
-                        startActivity(i);
-                        //Yes button clicked
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
             }
         };
         btn.setOnClickListener(view -> {
