@@ -66,7 +66,7 @@ public class ConsensusHandler {
     }
 
     /**
-     * 
+     *
      * @param agrees
      * @param meetingID
      */
@@ -135,7 +135,7 @@ public class ConsensusHandler {
                 Log.d("FFunctionsManager:callGetConsensusStances", "Task succeeded!");
                 Map<String, Object> outerHashMap = task.getResult();
 
-                if(outerHashMap.get("queue") != null) {
+                if(outerHashMap.get("concede") != null) {
                     agreed.clear();
                     agreed.addAll((ArrayList<Object>) outerHashMap.get("concede"));
                     consensusAgreedSubject.onNext(agreed);

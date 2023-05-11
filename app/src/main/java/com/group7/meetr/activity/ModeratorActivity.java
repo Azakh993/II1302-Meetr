@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.remote.ConsensusHandler;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
 
@@ -51,6 +52,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
         Button endButton = findViewById(R.id.btn_endMeeting);
         goToEndMeetingPrompt(endButton);
+        ConsensusHandler.callStartConsensus(Meeting.getMeetingID());
 
     }
 
@@ -83,6 +85,10 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToParticipants(Button participantsButton) {
         participantsButton.setOnClickListener(view -> {
+            ConsensusHandler.callSetConsensusStance(true, Meeting.getMeetingID());
+            ConsensusHandler.callGetConsensusStances(Meeting.getMeetingID());
+            ConsensusHandler.callEndConsensus(Meeting.getMeetingID());
+
             Intent intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
             startActivity(intent);
         });
