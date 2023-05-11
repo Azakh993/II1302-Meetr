@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class ModeratorActivity extends AppCompatActivity {
-    private static final String TAG = "ModeratorActivity";
     private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
     private final QueueListViewModel queueListViewModel = new QueueListViewModel();
     private RecyclerView queueListRecyclerView;
@@ -82,7 +81,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
         queueLiveData.observe(this, strings -> {
             queue = queueLiveData.getValue();
-            if(queue.size() > 0){
+            if(queue != null && queue.size() > 0){
                 adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
             }
             queueListRecyclerView.setAdapter(adapter);
@@ -162,10 +161,6 @@ public class ModeratorActivity extends AppCompatActivity {
             Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void startConsensus() {
-        //TODO: Call function to initiate consensus lists on server side
     }
 
     private void goToEndConsensus(Button endConsensusButton) {

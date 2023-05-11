@@ -3,18 +3,24 @@ package com.group7.meetr.activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.group7.meetr.R;
+import com.group7.meetr.viewmodel.ConsensusListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConsensusListActivity extends AppCompatActivity {
+    private ConsensusListViewModel consensusListViewModel = new ConsensusListViewModel();
 
     private RecyclerView posListrecycler, negListrecycler;
     private QueuingListAdapter adapter1, adapter2;
+    private LiveData<ArrayList<String>> consensusAgreedLiveData;
+    private LiveData<ArrayList<String>> consensusNotSureLiveData;
+
     private List<String> poslist;
     private List<String> neglist;
     @Override
@@ -27,24 +33,23 @@ public class ConsensusListActivity extends AppCompatActivity {
         posListrecycler.setLayoutManager(new LinearLayoutManager(this));
         negListrecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        poslist = new ArrayList<>();
-        neglist = new ArrayList<>();
+        consensusAgreedLiveData = consensusListViewModel.getConsensusAgreedLiveData();
+        consensusNotSureLiveData = consensusListViewModel.getConsensusNotSureLiveData();
 
-        poslist.add("hej");
-        poslist.add("hej");
-        //poslist.add("hej");
+        poslist = consensusAgreedLiveData.getValue();
+        neglist = consensusNotSureLiveData.getValue();
 
-        neglist.add("test");
-        //neglist.add("test");
-        //neglist.add("test");
+        consensusAgreedLiveData.observe(this, arraylist -> {
+            poslist = consensusAgreedLiveData.getValue();
+            adapter1 = new QueuingListAdapter(poslist);
+            posListrecycler.setAdapter(adapter1);
+        });
 
-
-        adapter1 = new QueuingListAdapter(poslist);
-        posListrecycler.setAdapter(adapter1);
-
-        adapter2 = new QueuingListAdapter(neglist);
-        negListrecycler.setAdapter(adapter2);
-
+        consensusNotSureLiveData.observe(this, arraylist -> {
+            poslist = consensusNotSureLiveData.getValue();
+            adapter2 = new QueuingListAdapter(neglist);
+            negListrecycler.setAdapter(adapter2);
+        });
     }
 
 
