@@ -23,6 +23,7 @@ public class RegisterPageActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
     private Button registerButton;
+    private Button loginInsteadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,10 @@ public class RegisterPageActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirmPassword);
         registerButton = findViewById(R.id.btn_login);
 
+        loginInsteadButton = findViewById(R.id.btn_loginInstead);
+
         registerButtonOnClick(registerButton);
+        setLoginButton(loginInsteadButton);
     }
 
 
@@ -58,6 +62,12 @@ public class RegisterPageActivity extends AppCompatActivity {
         });
     }
 
+    private void setLoginButton(Button register){
+        register.setOnClickListener(view -> {
+            Intent intent = new Intent(RegisterPageActivity.this, LoginPageActivity.class);
+            startActivity(intent);
+        });
+    }
     private void switchToJoinOrCreateActivity() {
         Toast.makeText(getApplicationContext(), "Registration successful!",
                 Toast.LENGTH_SHORT).show();

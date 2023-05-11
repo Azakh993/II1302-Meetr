@@ -73,6 +73,13 @@
             android:textSize="30sp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/btn_registerInstead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Register" />
+
 
     </LinearLayout>
 </layout>
