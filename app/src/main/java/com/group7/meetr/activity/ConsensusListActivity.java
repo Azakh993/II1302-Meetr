@@ -1,5 +1,6 @@
 package com.group7.meetr.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class ConsensusListActivity extends AppCompatActivity {
     private LiveData<ArrayList<String>> consensusAgreedLiveData;
     private LiveData<ArrayList<String>> consensusNotSureLiveData;
     private LiveData<ArrayList<String>> consensusAwaitingLiveData;
+    private LiveData<Boolean> userConsensusAwaiting;
+
 
 
     private List<String> poslist;
@@ -55,6 +58,14 @@ public class ConsensusListActivity extends AppCompatActivity {
             neglist = consensusNotSureLiveData.getValue();
             adapter2 = new QueuingListAdapter(neglist);
             negListrecycler.setAdapter(adapter2);
+        });
+
+        userConsensusAwaiting = consensusListViewModel.getUserConsensusAwaiting();
+        userConsensusAwaiting.observe(this, awaitingState -> {
+            if(awaitingState) {
+                Intent intent = new Intent(ConsensusListActivity.this, ConsensusActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
