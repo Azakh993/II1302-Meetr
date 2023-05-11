@@ -37,6 +37,10 @@ public class ModeratorViewModel extends BaseObservable {
         SessionHandler.callEndMeeting(meetingID, toast);
     }
 
+    public void endConsensus() {
+        ConsensusHandler.callEndConsensus(meetingID);
+    }
+
     public void startConsensusMode() {
         ConsensusHandler.callStartConsensus(meetingID);
     }
