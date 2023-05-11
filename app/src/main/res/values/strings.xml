@@ -34,6 +34,9 @@
     <string name="create_new_meeting">Create new meeting</string>
     <string name="current_queue">Current queue</string>
     <string name="end_meeting">End meeting</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="title_register">Register</string>
 
 
 </resources>
