@@ -165,10 +165,23 @@ public class ModeratorActivity extends AppCompatActivity {
     }
 
     private void goToEndConsensus(Button endConsensusButton) {
-        endConsensusButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
-            startActivity(intent);
-        });
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    Toast t = new Toast(ModeratorActivity.this);
+                    t.setText("Ending consensus did not succeed!");
+                    moderatorViewModel.endConsensus();
+                    break;
 
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        };
+        endConsensusButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ModeratorActivity.this);
+            builder.setMessage("Are you sure you want to conclude the concensus?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        });
     }
 }
