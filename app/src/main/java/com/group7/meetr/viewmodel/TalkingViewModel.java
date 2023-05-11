@@ -15,7 +15,7 @@ public class TalkingViewModel {
     private final String meetingID = Meeting.getMeetingID();
 
     public TalkingViewModel() {
-        ViewModelUtils.endTimeObserver();
+        FirebaseObservers.endTimeObserver();
         meetingEndedObserver();
     }
 

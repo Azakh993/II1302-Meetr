@@ -1,6 +1,6 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.ViewModelUtils.indexObserver;
+import static com.group7.meetr.viewmodel.FirebaseObservers.indexObserver;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -30,7 +30,7 @@ public class InMeetingViewModel {
         meetingID = Meeting.getMeetingID();
         indexObserver();
         queueListObserver();
-        ViewModelUtils.endTimeObserver();
+        FirebaseObservers.endTimeObserver();
         meetingEndedObserver();
     }
 

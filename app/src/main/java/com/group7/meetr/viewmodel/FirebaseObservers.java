@@ -17,7 +17,7 @@ import com.group7.meetr.data.remote.QueueHandler;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ViewModelUtils {
+public class FirebaseObservers {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
 
     static void indexObserver() {
