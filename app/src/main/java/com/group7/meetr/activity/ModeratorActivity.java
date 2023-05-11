@@ -158,8 +158,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToConsensus(Button consensusButton) {
         consensusButton.setOnClickListener(view -> {
-            moderatorViewModel.startConsensusMode();
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
+            Intent intent = new Intent(ModeratorActivity.this, ConsensusActivity.class);
             startActivity(intent);
         });
     }
