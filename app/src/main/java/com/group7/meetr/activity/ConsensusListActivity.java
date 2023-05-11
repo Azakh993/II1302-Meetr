@@ -56,13 +56,6 @@ public class ConsensusListActivity extends AppCompatActivity {
             adapter2 = new QueuingListAdapter(neglist);
             negListrecycler.setAdapter(adapter2);
         });
-
-        //Change below!
-        consensusAwaitingLiveData.observe(this, arraylist -> {
-            awaitinglist = consensusAwaitingLiveData.getValue();
-            adapter2 = new QueuingListAdapter(awaitinglist);
-            negListrecycler.setAdapter(adapter2);
-        });
     }
 
 
