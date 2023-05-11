@@ -39,7 +39,7 @@ public class ConsensusListViewModel {
     }
 
     private void setConsensusAgreedNotSureLiveData(ArrayList<Object> consensusNotSure) {
-        ArrayList<String> consensusNotSureList = parseToStringArray(consensusNotSure));
+        ArrayList<String> consensusNotSureList = parseToStringArray(consensusNotSure);
         consensusAgreedLiveData.setValue(consensusNotSureList);
     }
 
