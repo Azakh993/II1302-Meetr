@@ -17,6 +17,7 @@ public class ConsensusListViewModel {
 
     public ConsensusListViewModel() {
         consensusAgreedObserver();
+        consensusNotSureObserver();
     }
 
     private void consensusAgreedObserver() {
@@ -30,7 +31,7 @@ public class ConsensusListViewModel {
         ConsensusHandler.getConsensusNotSureSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setConsensusAgreedLiveData);
+                .subscribe(this::setConsensusAgreedNotSureLiveData);
     }
 
     private void setConsensusAgreedLiveData(ArrayList<Object> consensusAgreed) {
@@ -50,11 +51,10 @@ public class ConsensusListViewModel {
     public LiveData<ArrayList<String>> getConsensusNotSureLiveData() {
         return consensusNotSureLiveData;
     }
-    private ArrayList<String> parseToStringArray(ArrayList<Object> olist){
+    private ArrayList<String> parseToStringArray(ArrayList<Object> consensusObjectArrayList){
         ArrayList<String> list = new ArrayList<>();
-        for (Object o :
-                olist) {
-            list.add((String) o);
+        for (Object user : consensusObjectArrayList) {
+            list.add((String) user);
         }
         return list;
     }
