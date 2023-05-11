@@ -1,5 +1,8 @@
 package com.group7.meetr.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,6 +107,12 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToLobby(ImageButton lobbyImgButton) {
         lobbyImgButton.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("MEETR Code", Meeting.getMeetingID());
+            clipboard.setPrimaryClip(clip);
+            Toast t = new Toast(ModeratorActivity.this);
+            t.setText("Copied to clipboard!");
+            t.show();
         });
     }
 
