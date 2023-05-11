@@ -48,7 +48,7 @@ public class LoginPageActivity extends AppCompatActivity {
     }
 
     private void switchToJoinOrCreateActivity() {
-        Toast.makeText(getApplicationContext(), "Moderator login successful!",
+        Toast.makeText(getApplicationContext(), "Login successful!",
                 Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(LoginPageActivity.this, RoleSelectionActivity.class);
         startActivity(intent);
