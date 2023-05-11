@@ -1,5 +1,7 @@
 package com.group7.meetr.data.remote;
 
+import static com.group7.meetr.data.model.Consensus.setConsensusAgreedSubject;
+import static com.group7.meetr.data.model.Consensus.setConsensusNotSureSubject;
 import static com.group7.meetr.data.remote.UtilFunctions.anyFunction;
 import static com.group7.meetr.data.remote.UtilFunctions.fFunctions;
 
@@ -13,31 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
-
 public class ConsensusHandler {
-    private static final PublishSubject<ArrayList<Object>> consensusAgreedSubject = PublishSubject.create();
-    private static final PublishSubject<ArrayList<Object>> consensusNotSureSubject = PublishSubject.create();
-
-    private static final ArrayList<Object> notSure = new ArrayList<>();
-    private static final ArrayList<Object> agreed = new ArrayList<>();
-
-
-    /**
-     * Observe this is if you need the people who have agreed in the current consensusState.
-     * @return returns an array of objects
-     */
-    public static Observable<ArrayList<Object>> getConsensusAgreedSubject() {
-        return consensusAgreedSubject;
-    }
-    /**
-     * Observe this is if you need the people who have not agreed in the current consensusState.
-     * @return returns an array of objects
-     */
-    public static Observable<ArrayList<Object>> getConsensusNotSureSubject() {
-        return consensusNotSureSubject;
-    }
 
     /**
      * Starts consensus on current meeting.
@@ -136,13 +114,8 @@ public class ConsensusHandler {
                 Map<String, Object> outerHashMap = task.getResult();
 
                 if(outerHashMap.get("concede") != null) {
-                    agreed.clear();
-                    agreed.addAll((ArrayList<Object>) outerHashMap.get("concede"));
-                    consensusAgreedSubject.onNext(agreed);
-
-                    notSure.clear();
-                    notSure.addAll((ArrayList<Object>) outerHashMap.get("concerned"));
-                    consensusNotSureSubject.onNext(notSure);
+                    setConsensusAgreedSubject((ArrayList<Object>) outerHashMap.get("concede"));
+                    setConsensusNotSureSubject((ArrayList<Object>) outerHashMap.get("concerned"));
                 }
             }
         });
