@@ -55,7 +55,7 @@ public class ConsensusListViewModel {
 
     private void setConsensusAwaitingLiveData(ArrayList<Object> consensusAwaiting) {
         ArrayList<String> consensusAwaitingList = parseToStringArray(consensusAwaiting);
-        consensusNotSureLiveData.setValue(consensusAwaitingList);
+        consensusAwaitingLiveData.setValue(consensusAwaitingList);
     }
 
     public LiveData<ArrayList<String>> getConsensusAgreedLiveData() {
