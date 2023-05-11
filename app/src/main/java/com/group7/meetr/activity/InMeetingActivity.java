@@ -42,9 +42,18 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private SensorManager sensorManager;
     private Sensor proximitySensor;
     private Sensor lightSensor;
-    private boolean proximityFlag = false;
-    private boolean lightFlag = false;
     private float lastLux = -1;
+
+    private static final long GESTURE_INTERVAL = 600;
+    private long gestureStartTime = 0;
+    private boolean isGestureIntervalStarted = false;
+
+    private static final long COOLDOWN_TIME = 900;
+    private long lastGestureDetectedTime = 0;
+    private boolean gesture1ProximityFlag = false;
+    private boolean gesture1LightFlag = false;
+    private boolean gesture2ProximityFlag = false;
+    private boolean gesture2LightFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,30 +109,52 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        long timestamp = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastGestureDetectedTime < COOLDOWN_TIME) {
+            return; // Ignore sensor changes during cooldown
+        }
+
+        if (!isGestureIntervalStarted) {
+            gestureStartTime = currentTime;
+            isGestureIntervalStarted = true;
+        }
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             float distance = event.values[0];
-            proximityFlag = (distance <= 7);
+            gesture1ProximityFlag = (distance >= 0) && (distance <= 8);
+            gesture2ProximityFlag = (distance <= 0);
         } else if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
             float luxValue = event.values[0];
 
             if (lastLux != -1) {
                 float luxChange = Math.abs((lastLux - luxValue) / luxValue * 100);
-                if (luxChange >= 20) {
-                    lightFlag = true;
-                }
+                gesture1LightFlag = (luxChange >= 10) && (luxChange < 95);
+                gesture2LightFlag = (luxChange >= 95);
             }
             lastLux = luxValue;
         }
 
-        if (proximityFlag && lightFlag) {
-            Toast.makeText(this, "Request Registered: " + timestamp, Toast.LENGTH_SHORT).show();
-            inMeetingViewModel.enqueue();
-            proximityFlag = false;
-            lightFlag = false;
+        // Check if gesture interval time has passed
+        if (currentTime - gestureStartTime > GESTURE_INTERVAL) {
+            if (gesture2ProximityFlag && gesture2LightFlag) {
+                Toast.makeText(this, "Reply Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
+                inMeetingViewModel.replyEnqueue();
+                lastGestureDetectedTime = currentTime;
+            } else if (gesture1ProximityFlag && gesture1LightFlag) {
+                Toast.makeText(this, "Queue Request Registered" + " " + lastLux, Toast.LENGTH_SHORT).show();
+                inMeetingViewModel.inclusiveEnqueue();
+                lastGestureDetectedTime = currentTime;
+            }
+            // Reset flags and gesture start time
+            isGestureIntervalStarted = false;
+            gesture1ProximityFlag = false;
+            gesture1LightFlag = false;
+            gesture2ProximityFlag = false;
+            gesture2LightFlag = false;
         }
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -135,7 +166,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         // Register a listener for the sensor.
         super.onResume();
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, lightSensor, 10);
     }
 
     @Override
