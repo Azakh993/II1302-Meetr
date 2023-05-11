@@ -15,7 +15,7 @@
         android:textSize="24sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewList1"
+        android:id="@+id/posRecyclerViewList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
@@ -29,7 +29,7 @@
         android:textSize="24sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewList2"
+        android:id="@+id/negRecyclerViewList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
