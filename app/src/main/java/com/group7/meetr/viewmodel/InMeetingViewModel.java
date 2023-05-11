@@ -1,6 +1,6 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.FirebaseObservers.indexObserver;
+import static com.group7.meetr.data.remote.FirebaseObservers.indexObserver;
 
 import android.util.Log;
 
@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.data.model.User;
+import com.group7.meetr.data.remote.FirebaseObservers;
 import com.group7.meetr.data.remote.QueueHandler;
 import com.group7.meetr.data.remote.UtilFunctions;
 

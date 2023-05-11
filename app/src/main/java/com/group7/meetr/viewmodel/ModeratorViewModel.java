@@ -1,6 +1,6 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.FirebaseObservers.participantsConsensusObserver;
+import static com.group7.meetr.data.remote.FirebaseObservers.participantsConsensusObserver;
 
 import android.util.Log;
 import android.widget.Toast;

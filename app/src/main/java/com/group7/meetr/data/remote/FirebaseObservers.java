@@ -1,4 +1,4 @@
-package com.group7.meetr.viewmodel;
+package com.group7.meetr.data.remote;
 
 import android.util.Log;
 
@@ -12,15 +12,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.remote.ConsensusHandler;
-import com.group7.meetr.data.remote.QueueHandler;
 
 import org.jetbrains.annotations.NotNull;
 
 public class FirebaseObservers {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    static void indexObserver() {
+    public static void indexObserver() {
         String mid = Meeting.getMeetingID();
 
         DatabaseReference queueRef = database.getReference("Sessions")
@@ -44,7 +42,7 @@ public class FirebaseObservers {
         lastIndexRef.addValueEventListener(indexListener);
     }
 
-    static void endTimeObserver() {
+    public static void endTimeObserver() {
         String meetingID = Meeting.getMeetingID();
 
         DatabaseReference endTime = database.getReference("Sessions")
@@ -64,7 +62,7 @@ public class FirebaseObservers {
         endTime.addValueEventListener(endTimeListener);
     }
 
-    static void participantsConsensusObserver() {
+    public static void participantsConsensusObserver() {
         String meetingID = Meeting.getMeetingID();
 
         DatabaseReference endTime = database.getReference("Sessions")

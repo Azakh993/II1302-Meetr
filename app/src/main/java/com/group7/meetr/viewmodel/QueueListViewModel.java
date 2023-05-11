@@ -1,6 +1,6 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.FirebaseObservers.indexObserver;
+import static com.group7.meetr.data.remote.FirebaseObservers.indexObserver;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
