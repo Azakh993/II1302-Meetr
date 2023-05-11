@@ -20,9 +20,13 @@ public class ConsensusListActivity extends AppCompatActivity {
     private QueuingListAdapter adapter1, adapter2;
     private LiveData<ArrayList<String>> consensusAgreedLiveData;
     private LiveData<ArrayList<String>> consensusNotSureLiveData;
+    private LiveData<ArrayList<String>> consensusAwaitingLiveData;
+
 
     private List<String> poslist;
     private List<String> neglist;
+    private List<String> awaitinglist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +39,11 @@ public class ConsensusListActivity extends AppCompatActivity {
 
         consensusAgreedLiveData = consensusListViewModel.getConsensusAgreedLiveData();
         consensusNotSureLiveData = consensusListViewModel.getConsensusNotSureLiveData();
+        consensusAwaitingLiveData = consensusListViewModel.getConsensusAwaitingLiveData();
 
         poslist = consensusAgreedLiveData.getValue();
         neglist = consensusNotSureLiveData.getValue();
+        awaitinglist = consensusAwaitingLiveData.getValue();
 
         consensusAgreedLiveData.observe(this, arraylist -> {
             poslist = consensusAgreedLiveData.getValue();
@@ -48,6 +54,13 @@ public class ConsensusListActivity extends AppCompatActivity {
         consensusNotSureLiveData.observe(this, arraylist -> {
             neglist = consensusNotSureLiveData.getValue();
             adapter2 = new QueuingListAdapter(neglist);
+            negListrecycler.setAdapter(adapter2);
+        });
+
+        //Change below!
+        consensusAwaitingLiveData.observe(this, arraylist -> {
+            awaitinglist = consensusAwaitingLiveData.getValue();
+            adapter2 = new QueuingListAdapter(awaitinglist);
             negListrecycler.setAdapter(adapter2);
         });
     }

@@ -8,6 +8,8 @@ import io.reactivex.subjects.PublishSubject;
 public class Consensus {
     private static final PublishSubject<ArrayList<Object>> consensusAgreedSubject = PublishSubject.create();
     private static final PublishSubject<ArrayList<Object>> consensusNotSureSubject = PublishSubject.create();
+    private static final PublishSubject<ArrayList<Object>> consensusAwaitingSubject = PublishSubject.create();
+
 
     public static void setConsensusAgreedSubject(ArrayList<Object> agreedArrayList) {
         consensusAgreedSubject.onNext(agreedArrayList);
@@ -15,6 +17,10 @@ public class Consensus {
 
     public static void setConsensusNotSureSubject(ArrayList<Object> notSureArrayList) {
         consensusNotSureSubject.onNext(notSureArrayList);
+    }
+
+    public static void setConsensusAwaitingSubject(ArrayList<Object> awaitingArrayList) {
+        consensusAwaitingSubject.onNext(awaitingArrayList);
     }
 
     /**
@@ -31,4 +37,10 @@ public class Consensus {
     public static Observable<ArrayList<Object>> getConsensusNotSureSubject() {
         return consensusNotSureSubject;
     }
+
+    public static Observable<ArrayList<Object>> getConsensusAwaitingSubject() {
+        return consensusAwaitingSubject;
+    }
+
+
 }

@@ -13,10 +13,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ConsensusListViewModel {
     private final MutableLiveData<ArrayList<String>> consensusAgreedLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> consensusNotSureLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> consensusAwaitingLiveData = new MutableLiveData<>();
+
 
     public ConsensusListViewModel() {
         consensusAgreedObserver();
         consensusNotSureObserver();
+        consensusAwaitingObserver();
     }
 
     private void consensusAgreedObserver() {
@@ -33,6 +36,13 @@ public class ConsensusListViewModel {
                 .subscribe(this::setConsensusNotSureLiveData);
     }
 
+    private void consensusAwaitingObserver() {
+        Consensus.getConsensusAwaitingSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setConsensusAwaitingLiveData);
+    }
+
     private void setConsensusAgreedLiveData(ArrayList<Object> consensusAgreed) {
         ArrayList<String> consensusAgreedList = parseToStringArray(consensusAgreed);
         consensusAgreedLiveData.setValue(consensusAgreedList);
@@ -43,6 +53,11 @@ public class ConsensusListViewModel {
         consensusNotSureLiveData.setValue(consensusNotSureList);
     }
 
+    private void setConsensusAwaitingLiveData(ArrayList<Object> consensusAwaiting) {
+        ArrayList<String> consensusAwaitingList = parseToStringArray(consensusAwaiting);
+        consensusNotSureLiveData.setValue(consensusAwaitingList);
+    }
+
     public LiveData<ArrayList<String>> getConsensusAgreedLiveData() {
         return consensusAgreedLiveData;
     }
@@ -50,6 +65,11 @@ public class ConsensusListViewModel {
     public LiveData<ArrayList<String>> getConsensusNotSureLiveData() {
         return consensusNotSureLiveData;
     }
+
+    public LiveData<ArrayList<String>> getConsensusAwaitingLiveData() {
+        return consensusAwaitingLiveData;
+    }
+
     private ArrayList<String> parseToStringArray(ArrayList<Object> consensusObjectArrayList){
         ArrayList<String> list = new ArrayList<>();
         for (Object user : consensusObjectArrayList) {

@@ -1,6 +1,7 @@
 package com.group7.meetr.data.remote;
 
 import static com.group7.meetr.data.model.Consensus.setConsensusAgreedSubject;
+import static com.group7.meetr.data.model.Consensus.setConsensusAwaitingSubject;
 import static com.group7.meetr.data.model.Consensus.setConsensusNotSureSubject;
 import static com.group7.meetr.data.remote.UtilFunctions.anyFunction;
 import static com.group7.meetr.data.remote.UtilFunctions.fFunctions;
@@ -116,6 +117,7 @@ public class ConsensusHandler {
                 if(outerHashMap.get("concede") != null) {
                     setConsensusAgreedSubject((ArrayList<Object>) outerHashMap.get("concede"));
                     setConsensusNotSureSubject((ArrayList<Object>) outerHashMap.get("concerned"));
+                    setConsensusAwaitingSubject((ArrayList<Object>) outerHashMap.get("awaiting"));
                 }
             }
         });
