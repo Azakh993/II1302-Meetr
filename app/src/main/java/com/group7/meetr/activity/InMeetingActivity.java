@@ -34,6 +34,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
     private final InMeetingViewModel inMeetingViewModel = new InMeetingViewModel();
     private LiveData<Integer> currentSpeakingUser;
     private LiveData<Long> meetingEnded;
+    private LiveData<Boolean> userConsensusAwaiting;
 
     private static final String CHANNEL_ID = "my_channel_01";
     private static final int NOTIFICATION_ID = 1;
@@ -59,6 +60,14 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
                 Intent intent = new Intent(InMeetingActivity.this, TalkingActivity.class);
                 startActivity(intent);
                 showNotification(InMeetingActivity.this, "You are currently speaking!");
+            }
+        });
+
+        userConsensusAwaiting = inMeetingViewModel.getUserConsensusAwaiting();
+        userConsensusAwaiting.observe(this, awaitingState -> {
+            if(awaitingState) {
+                Intent intent = new Intent(InMeetingActivity.this, ConsensusActivity.class);
+                startActivity(intent);
             }
         });
 
