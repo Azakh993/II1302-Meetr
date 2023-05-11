@@ -22,6 +22,10 @@
             android:launchMode="singleTask"
             android:exported="false" />
         <activity
+            android:name=".activity.RegisterPageActivity"
+            android:launchMode="singleTask"
+            android:exported="true" />
+        <activity
             android:name=".activity.QueuingListActivity"
             android:launchMode="singleTask"
             android:exported="true" />
