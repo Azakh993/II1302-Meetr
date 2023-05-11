@@ -46,7 +46,7 @@ public class ConsensusListActivity extends AppCompatActivity {
         });
 
         consensusNotSureLiveData.observe(this, arraylist -> {
-            poslist = consensusNotSureLiveData.getValue();
+            neglist = consensusNotSureLiveData.getValue();
             adapter2 = new QueuingListAdapter(neglist);
             negListrecycler.setAdapter(adapter2);
         });
