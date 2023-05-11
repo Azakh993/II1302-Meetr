@@ -2,31 +2,33 @@ package com.group7.meetr.data.model;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 public class Consensus {
+    private static final PublishSubject<ArrayList<Object>> consensusAgreedSubject = PublishSubject.create();
+    private static final PublishSubject<ArrayList<Object>> consensusNotSureSubject = PublishSubject.create();
 
-    private static ArrayList<String> participants;
-    private static ArrayList<String> positiveParticipants;
-    private static ArrayList<String> negativeParticipants;
-
-    public static ArrayList<String> getParticipants() {
-        return participants;
+    public static void setConsensusAgreedSubject(ArrayList<Object> agreedArrayList) {
+        consensusAgreedSubject.onNext(agreedArrayList);
     }
 
-    public static ArrayList<String> getPositiveParticipants() {
-        return positiveParticipants;
-    }
-    public static ArrayList<String> getNegativeParticipants() {
-        return negativeParticipants;
+    public static void setConsensusNotSureSubject(ArrayList<Object> notSureArrayList) {
+        consensusNotSureSubject.onNext(notSureArrayList);
     }
 
-    public static void setParticipants(ArrayList<String> participants) {
-        Consensus.participants = participants;
+    /**
+     * Observe this is if you need the people who have agreed in the current consensusState.
+     * @return returns an array of objects
+     */
+    public static Observable<ArrayList<Object>> getConsensusAgreedSubject() {
+        return consensusAgreedSubject;
     }
-    public static void setPositiveParticipants(ArrayList<String> participants) {
-        Consensus.positiveParticipants = positiveParticipants;
+    /**
+     * Observe this is if you need the people who have not agreed in the current consensusState.
+     * @return returns an array of objects
+     */
+    public static Observable<ArrayList<Object>> getConsensusNotSureSubject() {
+        return consensusNotSureSubject;
     }
-    public static void setNegativeParticipants(ArrayList<String> participants) {
-        Consensus.negativeParticipants = negativeParticipants;
-    }
-
 }
