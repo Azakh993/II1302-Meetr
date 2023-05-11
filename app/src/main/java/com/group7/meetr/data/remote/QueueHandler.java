@@ -55,6 +55,60 @@ public class QueueHandler {
         });
     }
 
+    public static void callInclusiveEnqueue(String meetingID, String participantName, long timestamp) {
+        if (fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", meetingID);
+        data.put("participant", participantName);
+        data.put("timestamp", timestamp); // NOT USED BY SERVER ATM
+
+        anyFunction("inclusiveQueue", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:enqueue", "Task not successful...");
+                task.getException().printStackTrace();
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            } else {
+                Log.d("FFunctionsManager:enqueue", "Task succeeded!");
+
+            }
+        });
+    }
+
+    public static void callReplyEnqueue(String meetingID, String participantName, long timestamp) {
+        if (fFunctions == null)
+            fFunctions = FirebaseFunctions.getInstance("europe-west1");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("mID", meetingID);
+        data.put("participant", participantName);
+        data.put("timestamp", timestamp); // NOT USED BY SERVER ATM
+
+        anyFunction("replyToSpeaker", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.d("FFunctionsManager:enqueue", "Task not successful...");
+                task.getException().printStackTrace();
+
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                }
+            } else {
+                Log.d("FFunctionsManager:enqueue", "Task succeeded!");
+
+            }
+        });
+    }
+
     /**
      * Ask server for the getspeakingqueue.
      *
