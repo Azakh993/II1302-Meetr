@@ -1,60 +1,61 @@
 package com.group7.meetr.viewmodel;
 
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.FirebaseDatabase;
-import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.model.Participant;
+import com.group7.meetr.data.remote.ConsensusHandler;
+import com.group7.meetr.data.remote.UtilFunctions;
+
+import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ConsensusListViewModel {
-    private final FirebaseDatabase database;
-    private final MutableLiveData<FirebaseRecyclerOptions<Participant>> participants = new MutableLiveData<>();
-    private final MutableLiveData<FirebaseRecyclerOptions<Participant>> yesParticipants = new MutableLiveData<>();
-    private final MutableLiveData<FirebaseRecyclerOptions<Participant>> noParticipants = new MutableLiveData<>();
-    private FirebaseRecyclerOptions<Participant> participantsList;
-    private FirebaseRecyclerOptions<Participant> yesParticipantsList;
-    private FirebaseRecyclerOptions<Participant> noParticipantsList;
+    private final MutableLiveData<ArrayList<String>> consensusAgreedLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> consensusNotSureLiveData = new MutableLiveData<>();
 
     public ConsensusListViewModel() {
-        this.database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
+        consensusAgreedObserver();
     }
 
-    public void participantsListListener() {
-        participantsList =
-                new FirebaseRecyclerOptions.Builder<Participant>()
-                        .setQuery(database.getReference("Sessions")
-                                .child(Meeting.getMeetingID()).child("ListOfParticipants"), Participant.class)
-                        .build();
-        participants.setValue(participantsList);
+    private void consensusAgreedObserver() {
+        ConsensusHandler.getConsensusAgreedSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setConsensusAgreedLiveData);
     }
 
-    public void yesListListener() {
-        participantsList =
-                new FirebaseRecyclerOptions.Builder<Participant>()
-                        .setQuery(database.getReference("Sessions")
-                                .child(Meeting.getMeetingID()).child("ListOfParticipants"), Participant.class)
-                        .build();
-        yesParticipants.setValue(yesParticipantsList);
-    }
-    public void noListListener() {
-        participantsList =
-                new FirebaseRecyclerOptions.Builder<Participant>()
-                        .setQuery(database.getReference("Sessions")
-                                .child(Meeting.getMeetingID()).child("ListOfParticipants"), Participant.class)
-                        .build();
-        noParticipants.setValue(noParticipantsList);
+    private void consensusNotSureObserver() {
+        ConsensusHandler.getConsensusNotSureSubject()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setConsensusAgreedLiveData);
     }
 
-    public LiveData<FirebaseRecyclerOptions<Participant>> getParticipants() {
-        return participants;
+    private void setConsensusAgreedLiveData(ArrayList<Object> consensusAgreed) {
+        ArrayList<String> consensusAgreedList = parseToStringArray(consensusAgreed);
+        consensusAgreedLiveData.setValue(consensusAgreedList);
     }
-    public LiveData<FirebaseRecyclerOptions<Participant>> getYesParticipants() {
-        return yesParticipants;
+
+    private void setConsensusAgreedNotSureLiveData(ArrayList<Object> consensusNotSure) {
+        ArrayList<String> consensusNotSureList = parseToStringArray(consensusNotSure);
+        consensusAgreedLiveData.setValue(consensusNotSureList);
     }
-    public LiveData<FirebaseRecyclerOptions<Participant>> getNoParticipants() {
-        return noParticipants;
+
+    public LiveData<ArrayList<String>> getConsensusAgreedLiveData() {
+        return consensusAgreedLiveData;
+    }
+
+    public LiveData<ArrayList<String>> getConsensusNotSureLiveData() {
+        return consensusNotSureLiveData;
+    }
+    private ArrayList<String> parseToStringArray(ArrayList<Object> olist){
+        ArrayList<String> list = new ArrayList<>();
+        for (Object o :
+                olist) {
+            list.add((String) o);
+        }
+        return list;
     }
 }
