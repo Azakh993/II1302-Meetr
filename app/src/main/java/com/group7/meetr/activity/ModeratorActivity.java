@@ -11,27 +11,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.group7.meetr.R;
 import com.group7.meetr.data.model.Meeting;
+import com.group7.meetr.data.remote.ConsensusHandler;
 import com.group7.meetr.databinding.ActivityModeratorBinding;
 import com.group7.meetr.viewmodel.ModeratorViewModel;
-import com.group7.meetr.viewmodel.QueueListViewModel;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ModeratorActivity extends AppCompatActivity {
-    private static final String TAG = "ModeratorActivity";
     private final ModeratorViewModel moderatorViewModel = new ModeratorViewModel();
-    private final QueueListViewModel queueListViewModel = new QueueListViewModel();
-    private RecyclerView queueListRecyclerView;
-    private LiveData<List<String>> queueLiveData;
-    private List<String> queue;
-    private QueuingListAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +31,6 @@ public class ModeratorActivity extends AppCompatActivity {
         activityMainBinding.executePendingBindings();
         TextView t = findViewById(R.id.txt_meetingID);
         t.setText(Meeting.getMeetingID());
-
-        Button endButton = findViewById(R.id.btn_endMeeting);
-        goToEndMeetingPrompt(endButton);
 
         Button optionsButton = findViewById(R.id.btn_options);
         goToOptions(optionsButton);
@@ -64,27 +50,9 @@ public class ModeratorActivity extends AppCompatActivity {
         Button queueButton = findViewById(R.id.btn_queue);
         goToQueue(queueButton);
 
-        Button consensusOpen = findViewById(R.id.btn_consensus);
-        goToConsensus(consensusOpen);
-
-        Button consensusClose = findViewById(R.id.btn_endConsensus);
-        goToEndConsensus(consensusClose);
-
-
-        queueListRecyclerView = findViewById(R.id.currentspeakerList);
-        queueListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        queueLiveData = queueListViewModel.getQueueLiveData();
-        queue = queueLiveData.getValue();
-
-        queueLiveData.observe(this, strings -> {
-            queue = queueLiveData.getValue();
-            if(queue.size() > 0){
-                adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
-            }
-            queueListRecyclerView.setAdapter(adapter);
-        });
-
+        Button endButton = findViewById(R.id.btn_endMeeting);
+        goToEndMeetingPrompt(endButton);
+        ConsensusHandler.callStartConsensus(Meeting.getMeetingID());
 
     }
 
@@ -117,6 +85,10 @@ public class ModeratorActivity extends AppCompatActivity {
 
     private void goToParticipants(Button participantsButton) {
         participantsButton.setOnClickListener(view -> {
+            ConsensusHandler.callSetConsensusStance(true, Meeting.getMeetingID());
+            ConsensusHandler.callGetConsensusStances(Meeting.getMeetingID());
+            ConsensusHandler.callEndConsensus(Meeting.getMeetingID());
+
             Intent intent = new Intent(ModeratorActivity.this, ParticipantListActivity.class);
             startActivity(intent);
         });
@@ -146,24 +118,5 @@ public class ModeratorActivity extends AppCompatActivity {
             Intent intent = new Intent(ModeratorActivity.this, LoginPageActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void goToConsensus(Button consensusButton) {
-        consensusButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void startConsensus() {
-        //TODO: Call function to initiate consensus lists on server side
-    }
-
-    private void goToEndConsensus(Button endConsensusButton) {
-        endConsensusButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ModeratorActivity.this, ConsensusListActivity.class);
-            startActivity(intent);
-        });
-
     }
 }
