@@ -22,6 +22,8 @@ public class LoginPageActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button loginButton;
 
+    private Button registerButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +34,10 @@ public class LoginPageActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.inEmail);
         passwordEditText = findViewById(R.id.inPassword);
         loginButton = findViewById(R.id.btn_login);
-
+        Button btn = findViewById(R.id.btn_registerInstead);
         loginOnButtonClick(loginButton);
+        setRegisterButton(btn);
+
     }
 
 
@@ -46,9 +50,15 @@ public class LoginPageActivity extends AppCompatActivity {
             firebaseUserLiveData.observe(this, firebaseUser -> switchToJoinOrCreateActivity());
         });
     }
+    private void setRegisterButton(Button register){
+        register.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginPageActivity.this, RegisterPageActivity.class);
+            startActivity(intent);
+        });
+    }
 
     private void switchToJoinOrCreateActivity() {
-        Toast.makeText(getApplicationContext(), "Moderator login successful!",
+        Toast.makeText(getApplicationContext(), "Login successful!",
                 Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(LoginPageActivity.this, RoleSelectionActivity.class);
         startActivity(intent);

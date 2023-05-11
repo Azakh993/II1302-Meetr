@@ -36,6 +36,9 @@
     <string name="end_meeting">End meeting</string>
     <string name="modV_censensus">Open Consensus</string>
     <string name="modV_endConsensus">End Consensus</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="title_register">Register</string>
 
 
 </resources>
