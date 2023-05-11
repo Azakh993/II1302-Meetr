@@ -3,7 +3,6 @@ package com.group7.meetr.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -77,15 +76,21 @@ public class ModeratorActivity extends AppCompatActivity {
 
         queueLiveData = queueListViewModel.getQueueLiveData();
         queue = queueLiveData.getValue();
-        //String firstelement = queue.get(0);
 
         queueLiveData.observe(this, strings -> {
             queue = queueLiveData.getValue();
             adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
             Log.d(TAG, "onCreate: " + Collections.singletonList(queue.get(0)));
+            if(queue.size() > 0){
+                adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            }
             queueListRecyclerView.setAdapter(adapter);
         });
 
+
+
+        Button endButton = findViewById(R.id.btn_endMeeting);
+        goToEndMeetingPrompt(endButton);
 
     }
 
