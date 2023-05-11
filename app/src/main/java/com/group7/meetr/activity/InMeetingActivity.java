@@ -80,7 +80,7 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         vib.setOnClickListener(v -> {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
-            inMeetingViewModel.enqueue();
+            inMeetingViewModel.inclusiveEnqueue();
         });
     }
 
