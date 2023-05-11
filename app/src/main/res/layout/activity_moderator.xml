@@ -76,7 +76,7 @@
                     android:contentDescription="@string/modV_lobbyCode"
                     android:cropToPadding="false"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/qrcode" />
+                    app:srcCompat="@drawable/content_copy" />
             </LinearLayout>
         </LinearLayout>
 
@@ -90,8 +90,8 @@
             <LinearLayout
                 android:id="@+id/options_LOUT"
                 style="@style/buttonList"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
 
                 <Button
                     android:id="@+id/btn_endMeeting"
@@ -99,8 +99,8 @@
                     android:layout_height="61dp"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="8dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="8dp"
                     android:text="@string/end_meeting"
                     app:icon="@drawable/close_circle_outline" />
 
@@ -110,8 +110,8 @@
                     android:layout_height="61dp"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="3dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="4dp"
                     android:text="@string/modV_options"
                     app:icon="@drawable/cog_outline" />
 
@@ -122,9 +122,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="15dp"
+                android:paddingLeft="12dp"
                 android:paddingTop="5dp"
-                android:paddingRight="15dp"
+                android:paddingRight="12dp"
                 android:paddingBottom="5dp">
 
                 <Button
@@ -133,8 +133,8 @@
                     android:layout_height="61dp"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="8dp"
                     android:text="@string/modV_partlist"
                     app:icon="@drawable/account_group_outline" />
 
@@ -144,8 +144,8 @@
                     android:layout_height="61dp"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="4dp"
                     android:text="@string/modV_queue"
                     app:icon="@drawable/human_queue" />
             </LinearLayout>
@@ -198,10 +198,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="5dp">
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
 
                 <Button
                     android:id="@+id/btn_join"
