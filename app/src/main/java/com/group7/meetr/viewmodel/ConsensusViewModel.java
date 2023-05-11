@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.remote.QueueHandler;
+import com.group7.meetr.data.remote.ConsensusHandler;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,13 +39,13 @@ public class ConsensusViewModel {
         DatabaseReference queueRef = database.getReference("Sessions")
                 .child(mid).child("ListOfParticipants").child("consensus");
 
-        DatabaseReference frontIndexRef = queueRef.child("positive");
-        DatabaseReference lastIndexRef = queueRef.child("lastIndex");
+        DatabaseReference posList = queueRef.child("positive");
+        DatabaseReference negList = queueRef.child("negative");
 
         ValueEventListener indexListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                QueueHandler.callGetSpeakingQueue(Meeting.getMeetingID());
+                ConsensusHandler.callGetConsensusStances(Meeting.getMeetingID());
             }
 
             @Override
@@ -53,8 +53,8 @@ public class ConsensusViewModel {
                 Log.d("indexObserver", databaseError.getDetails());
             }
         };
-        frontIndexRef.addValueEventListener(indexListener);
-        lastIndexRef.addValueEventListener(indexListener);
+        posList.addValueEventListener(indexListener);
+        negList.addValueEventListener(indexListener);
     }
 
 }
