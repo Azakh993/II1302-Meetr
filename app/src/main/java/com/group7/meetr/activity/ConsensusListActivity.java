@@ -30,11 +30,11 @@ public class ConsensusListActivity extends AppCompatActivity {
         poslist = new ArrayList<>();
         neglist = new ArrayList<>();
 
-        //poslist.add("hej");
-        //poslist.add("hej");
+        poslist.add("hej");
+        poslist.add("hej");
         //poslist.add("hej");
 
-        //neglist.add("test");
+        neglist.add("test");
         //neglist.add("test");
         //neglist.add("test");
 
