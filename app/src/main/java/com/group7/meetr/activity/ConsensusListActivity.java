@@ -17,8 +17,8 @@ import java.util.List;
 public class ConsensusListActivity extends AppCompatActivity {
     private ConsensusListViewModel consensusListViewModel = new ConsensusListViewModel();
 
-    private RecyclerView posListrecycler, negListrecycler;
-    private QueuingListAdapter adapter1, adapter2;
+    private RecyclerView posListrecycler, negListrecycler, awaitListrecyler;
+    private QueuingListAdapter adapter1, adapter2, awaitadpter;
     private LiveData<ArrayList<String>> consensusAgreedLiveData;
     private LiveData<ArrayList<String>> consensusNotSureLiveData;
     private LiveData<ArrayList<String>> consensusAwaitingLiveData;
@@ -37,8 +37,10 @@ public class ConsensusListActivity extends AppCompatActivity {
 
         posListrecycler = findViewById(R.id.posRecyclerViewList);
         negListrecycler = findViewById(R.id.negRecyclerViewList);
+        awaitListrecyler = findViewById(R.id.awaitRecyclerViewList);
         posListrecycler.setLayoutManager(new LinearLayoutManager(this));
         negListrecycler.setLayoutManager(new LinearLayoutManager(this));
+        awaitListrecyler.setLayoutManager(new LinearLayoutManager(this));
 
         consensusAgreedLiveData = consensusListViewModel.getConsensusAgreedLiveData();
         consensusNotSureLiveData = consensusListViewModel.getConsensusNotSureLiveData();
@@ -58,6 +60,11 @@ public class ConsensusListActivity extends AppCompatActivity {
             neglist = consensusNotSureLiveData.getValue();
             adapter2 = new QueuingListAdapter(neglist);
             negListrecycler.setAdapter(adapter2);
+        });
+        consensusAwaitingLiveData.observe(this, arraylist -> {
+            awaitinglist = consensusAwaitingLiveData.getValue();
+            awaitadpter = new QueuingListAdapter(awaitinglist);
+            awaitListrecyler.setAdapter(awaitadpter);
         });
 
         userConsensusAwaiting = consensusListViewModel.getUserConsensusAwaiting();
