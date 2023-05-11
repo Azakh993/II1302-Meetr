@@ -34,12 +34,12 @@ public class ConsensusListViewModel {
     }
 
     private void setConsensusAgreedLiveData(ArrayList<Object> consensusAgreed) {
-        ArrayList<String> consensusAgreedList = UtilFunctions.parseabjhsdbhasj(consensusAgreed);
+        ArrayList<String> consensusAgreedList = parseToStringArray(consensusAgreed);
         consensusAgreedLiveData.setValue(consensusAgreedList);
     }
 
     private void setConsensusAgreedNotSureLiveData(ArrayList<Object> consensusNotSure) {
-        ArrayList<String> consensusNotSureList = UtilFunctions.parseabjhsdbhasj(consensusNotSure);
+        ArrayList<String> consensusNotSureList = parseToStringArray(consensusNotSure));
         consensusAgreedLiveData.setValue(consensusNotSureList);
     }
 
@@ -49,5 +49,13 @@ public class ConsensusListViewModel {
 
     public LiveData<ArrayList<String>> getConsensusNotSureLiveData() {
         return consensusNotSureLiveData;
+    }
+    private ArrayList<String> parseToStringArray(ArrayList<Object> olist){
+        ArrayList<String> list = new ArrayList<>();
+        for (Object o :
+                olist) {
+            list.add((String) o);
+        }
+        return list;
     }
 }
