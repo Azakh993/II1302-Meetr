@@ -3,8 +3,7 @@ package com.group7.meetr.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.group7.meetr.data.remote.ConsensusHandler;
-import com.group7.meetr.data.remote.UtilFunctions;
+import com.group7.meetr.data.model.Consensus;
 
 import java.util.ArrayList;
 
@@ -21,17 +20,17 @@ public class ConsensusListViewModel {
     }
 
     private void consensusAgreedObserver() {
-        ConsensusHandler.getConsensusAgreedSubject()
+        Consensus.getConsensusAgreedSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setConsensusAgreedLiveData);
     }
 
     private void consensusNotSureObserver() {
-        ConsensusHandler.getConsensusNotSureSubject()
+        Consensus.getConsensusNotSureSubject()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setConsensusAgreedNotSureLiveData);
+                .subscribe(this::setConsensusNotSureLiveData);
     }
 
     private void setConsensusAgreedLiveData(ArrayList<Object> consensusAgreed) {
@@ -39,9 +38,9 @@ public class ConsensusListViewModel {
         consensusAgreedLiveData.setValue(consensusAgreedList);
     }
 
-    private void setConsensusAgreedNotSureLiveData(ArrayList<Object> consensusNotSure) {
+    private void setConsensusNotSureLiveData(ArrayList<Object> consensusNotSure) {
         ArrayList<String> consensusNotSureList = parseToStringArray(consensusNotSure);
-        consensusAgreedLiveData.setValue(consensusNotSureList);
+        consensusNotSureLiveData.setValue(consensusNotSureList);
     }
 
     public LiveData<ArrayList<String>> getConsensusAgreedLiveData() {
