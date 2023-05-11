@@ -68,7 +68,9 @@ public class ModeratorActivity extends AppCompatActivity {
 
         queueLiveData.observe(this, strings -> {
             queue = queueLiveData.getValue();
-            adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            if(queue.size() > 0){
+                adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            }
             queueListRecyclerView.setAdapter(adapter);
         });
 
