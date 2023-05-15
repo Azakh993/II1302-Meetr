@@ -22,14 +22,14 @@ public class ConsensusActivity extends AppCompatActivity {
         Button yesButton = findViewById(R.id.button_yes);
         yesButton.setOnClickListener(v -> {
             viewModel.callSetConsensusStance(true);
-            navigateToConsensusListActivity();
+            // navigateToConsensusListActivity();
             finish();
         });
 
         Button noButton = findViewById(R.id.button_no);
         noButton.setOnClickListener(v -> {
             viewModel.callSetConsensusStance(false);
-            navigateToConsensusListActivity();
+            // navigateToConsensusListActivity();
             finish();
         });
     }

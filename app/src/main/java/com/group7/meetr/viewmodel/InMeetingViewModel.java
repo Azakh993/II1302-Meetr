@@ -1,5 +1,6 @@
 package com.group7.meetr.viewmodel;
 
+import static com.group7.meetr.data.remote.ConsensusHandler.consensusObserver;
 import static com.group7.meetr.data.remote.FirebaseObservers.indexObserver;
 
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.group7.meetr.data.model.Consensus;
 import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.data.model.User;
 import com.group7.meetr.data.remote.FirebaseObservers;
@@ -45,6 +47,7 @@ public class InMeetingViewModel {
         indexObserver();
         queueListObserver();
         consensusObserver();
+        userConsensusObserver();
         FirebaseObservers.endTimeObserver();
         meetingEndedObserver();
     }
@@ -61,6 +64,13 @@ public class InMeetingViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setMeetingEndedLiveData);
+    }
+
+    private void userConsensusObserver() {
+        Consensus.getUserConsensusAwaiting()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setUserConsensusAwaiting);
     }
 
     public void enqueue() {
@@ -154,36 +164,16 @@ public class InMeetingViewModel {
         queuePositionLiveData.setValue(0);
     }
 
+    private void setUserConsensusAwaiting(Boolean userConsensusAwaiting) {
+        this.userConsensusAwaiting.setValue(userConsensusAwaiting);
+    }
+
     public LiveData<Long> getMeetingEndedLiveData() {
         return meetingEndedLiveData;
     }
 
     public void setMeetingEndedLiveData(Long meetingEnded) {
         meetingEndedLiveData.setValue(meetingEnded);
-    }
-
-    private void consensusObserver() {
-        String meetingID = Meeting.getMeetingID();
-        String userID = User.getUid();
-
-        DatabaseReference consensusRef = database.getReference("Sessions")
-                .child(meetingID).child("ListOfParticipants")
-                .child(userID).child("consensus");
-
-        ValueEventListener consensusListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null && dataSnapshot.getValue().equals("awaiting")) {
-                    userConsensusAwaiting.setValue(true);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NotNull DatabaseError databaseError) {
-                Log.d("consensusObserver", databaseError.getDetails());
-            }
-        };
-        consensusRef.addValueEventListener(consensusListener);
     }
 
     public LiveData<Boolean> getUserConsensusAwaiting() {

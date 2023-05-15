@@ -15,6 +15,7 @@ import com.group7.meetr.viewmodel.TalkingViewModel;
 public class TalkingActivity extends AppCompatActivity {
     private final TalkingViewModel talkingViewModel = new TalkingViewModel();
     private LiveData<Long> meetingEnded;
+    private LiveData<Boolean> consensusUserAwaiting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,12 @@ public class TalkingActivity extends AppCompatActivity {
             if(newMeetingEndedTime != 0) {
                 finish();
             }
+        });
+
+        consensusUserAwaiting = talkingViewModel.getUserConsensusAwaitingLiveData();
+        consensusUserAwaiting.observe(this, awaiting -> {
+                talkingViewModel.finishedTalking();
+                finish();
         });
 
         button.setOnClickListener(view -> {

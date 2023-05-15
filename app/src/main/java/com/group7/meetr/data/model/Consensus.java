@@ -1,5 +1,7 @@
 package com.group7.meetr.data.model;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
@@ -9,6 +11,7 @@ public class Consensus {
     private static final PublishSubject<ArrayList<Object>> consensusAgreedSubject = PublishSubject.create();
     private static final PublishSubject<ArrayList<Object>> consensusNotSureSubject = PublishSubject.create();
     private static final PublishSubject<ArrayList<Object>> consensusAwaitingSubject = PublishSubject.create();
+    private static final PublishSubject<Boolean> userConsensusAwaiting = PublishSubject.create();
 
 
     public static void setConsensusAgreedSubject(ArrayList<Object> agreedArrayList) {
@@ -21,6 +24,10 @@ public class Consensus {
 
     public static void setConsensusAwaitingSubject(ArrayList<Object> awaitingArrayList) {
         consensusAwaitingSubject.onNext(awaitingArrayList);
+    }
+
+    public static void setUserConsensusAwaiting(Boolean awaitingStatus) {
+        userConsensusAwaiting.onNext(awaitingStatus);
     }
 
     /**
@@ -42,5 +49,7 @@ public class Consensus {
         return consensusAwaitingSubject;
     }
 
-
+    public static Observable<Boolean> getUserConsensusAwaiting() {
+        return userConsensusAwaiting;
+    }
 }
