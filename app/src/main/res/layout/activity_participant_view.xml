@@ -30,12 +30,21 @@
         android:id="@+id/buttonJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Join queue"
+        android:text="@string/partV_join_q"
         android:layout_below="@+id/recyclerView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:textColor="#ffffff" />
 
+    <Button
+        android:id="@+id/buttonReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reply_button"
+        android:layout_below="@+id/recyclerView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="128dp"
+        android:textColor="#ffffff" />
 
 
 </RelativeLayout>

@@ -39,6 +39,8 @@
     <string name="confirm_password">Confirm password</string>
     <string name="register">Register</string>
     <string name="title_register">Register</string>
+    <string name="reply_button">Reply button</string>
+    <string name="partV_join_q">Join queue</string>
 
 
 </resources>

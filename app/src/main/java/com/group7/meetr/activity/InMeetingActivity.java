@@ -94,11 +94,17 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        Button vib = findViewById(R.id.buttonJoin);
-        vib.setOnClickListener(v -> {
+        Button join = findViewById(R.id.buttonJoin);
+        join.setOnClickListener(v -> {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
             inMeetingViewModel.inclusiveEnqueue();
+        });
+        Button reply = findViewById(R.id.buttonReply);
+        reply.setOnClickListener(v -> {
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
+            inMeetingViewModel.replyEnqueue();
         });
     }
 
