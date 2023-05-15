@@ -83,11 +83,11 @@ public class ModeratorActivity extends AppCompatActivity {
             queue = queueLiveData.getValue();
             if(queue != null && queue.size() > 0){
                 adapter = new QueuingListAdapter(Collections.singletonList(queue.get(0)));
+            } else if(queue != null && queue.size() == 0) {
+                adapter = new QueuingListAdapter(Collections.singletonList("No one :-)"));
             }
             queueListRecyclerView.setAdapter(adapter);
         });
-
-
     }
 
     private void goToOptions(Button optionsButton) {
