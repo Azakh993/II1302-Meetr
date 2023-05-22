@@ -33,6 +33,9 @@ import com.group7.meetr.viewmodel.InMeetingViewModel;
 public class InMeetingActivity extends AppCompatActivity implements SensorEventListener {
     private final InMeetingViewModel inMeetingViewModel = new InMeetingViewModel();
     private LiveData<Integer> currentSpeakingUser;
+    private LiveData<Long> meetingEnded;
+    private LiveData<Boolean> userConsensusAwaiting;
+
     private static final String CHANNEL_ID = "my_channel_01";
     private static final int NOTIFICATION_ID = 1;
     private static final long[] vibrationPattern = {0, 400, 200, 400};
@@ -69,6 +72,21 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
             }
         });
 
+        userConsensusAwaiting = inMeetingViewModel.getUserConsensusAwaiting();
+        userConsensusAwaiting.observe(this, awaitingState -> {
+            if(awaitingState) {
+                Intent intent = new Intent(InMeetingActivity.this, ConsensusActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        meetingEnded = inMeetingViewModel.getMeetingEndedLiveData();
+        meetingEnded.observe(this, newMeetingEndedTime -> {
+            if(newMeetingEndedTime != 0) {
+                finish();
+            }
+        });
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -76,11 +94,17 @@ public class InMeetingActivity extends AppCompatActivity implements SensorEventL
         sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        Button vib = findViewById(R.id.buttonJoin);
-        vib.setOnClickListener(v -> {
+        Button join = findViewById(R.id.buttonJoin);
+        join.setOnClickListener(v -> {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
             inMeetingViewModel.inclusiveEnqueue();
+        });
+        Button reply = findViewById(R.id.buttonReply);
+        reply.setOnClickListener(v -> {
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(VibrationEffect.createOneShot(400, 10));
+            inMeetingViewModel.replyEnqueue();
         });
     }
 

@@ -1,6 +1,6 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.ViewModelUtils.indexObserver;
+import static com.group7.meetr.data.remote.FirebaseObservers.indexObserver;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +9,6 @@ import com.group7.meetr.data.remote.QueueHandler;
 import com.group7.meetr.data.remote.UtilFunctions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -1,14 +1,27 @@
 package com.group7.meetr.viewmodel;
 
-import static com.group7.meetr.viewmodel.ViewModelUtils.indexObserver;
+import static com.group7.meetr.data.remote.ConsensusHandler.consensusObserver;
+import static com.group7.meetr.data.remote.FirebaseObservers.indexObserver;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.group7.meetr.data.model.Consensus;
 import com.group7.meetr.data.model.Meeting;
 import com.group7.meetr.data.model.User;
+import com.group7.meetr.data.remote.FirebaseObservers;
 import com.group7.meetr.data.remote.QueueHandler;
 import com.group7.meetr.data.remote.UtilFunctions;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +30,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class InMeetingViewModel {
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
     private final MutableLiveData<Integer> queuePositionLiveData = new MutableLiveData<>();
     private final MutableLiveData<Long> meetingEndedLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> userConsensusAwaiting = new MutableLiveData<>();
+
     private ArrayList<Object> queueArrayList = new ArrayList<>();
     private final String email;
     private final String uid;
@@ -30,7 +46,9 @@ public class InMeetingViewModel {
         meetingID = Meeting.getMeetingID();
         indexObserver();
         queueListObserver();
-        ViewModelUtils.endTimeObserver();
+        consensusObserver();
+        userConsensusObserver();
+        FirebaseObservers.endTimeObserver();
         meetingEndedObserver();
     }
 
@@ -46,6 +64,13 @@ public class InMeetingViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setMeetingEndedLiveData);
+    }
+
+    private void userConsensusObserver() {
+        Consensus.getUserConsensusAwaiting()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setUserConsensusAwaiting);
     }
 
     public void enqueue() {
@@ -139,10 +164,19 @@ public class InMeetingViewModel {
         queuePositionLiveData.setValue(0);
     }
 
+    private void setUserConsensusAwaiting(Boolean userConsensusAwaiting) {
+        this.userConsensusAwaiting.setValue(userConsensusAwaiting);
+    }
+
     public LiveData<Long> getMeetingEndedLiveData() {
         return meetingEndedLiveData;
     }
+
     public void setMeetingEndedLiveData(Long meetingEnded) {
         meetingEndedLiveData.setValue(meetingEnded);
+    }
+
+    public LiveData<Boolean> getUserConsensusAwaiting() {
+        return userConsensusAwaiting;
     }
 }

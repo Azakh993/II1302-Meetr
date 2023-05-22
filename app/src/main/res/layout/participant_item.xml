@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/participant_img"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:padding="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/participant_name"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +38,8 @@
 
             <TextView
                 android:id="@+id/participant_name"
-                android:layout_width="300dp"
-                android:layout_height="100dp"
+                android:layout_width="330dp"
+                android:layout_height="60dp"
                 android:gravity="center|start"
                 android:paddingStart="20dp"
                 android:text="Participant"

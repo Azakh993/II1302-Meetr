@@ -1,23 +1,24 @@
-package com.group7.meetr.viewmodel;
+package com.group7.meetr.data.remote;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.group7.meetr.data.model.Meeting;
-import com.group7.meetr.data.remote.QueueHandler;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ViewModelUtils {
+public class FirebaseObservers {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance("https://meetr-android-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    static void indexObserver() {
+    public static void indexObserver() {
         String mid = Meeting.getMeetingID();
 
         DatabaseReference queueRef = database.getReference("Sessions")
@@ -41,7 +42,7 @@ public class ViewModelUtils {
         lastIndexRef.addValueEventListener(indexListener);
     }
 
-    static void endTimeObserver() {
+    public static void endTimeObserver() {
         String meetingID = Meeting.getMeetingID();
 
         DatabaseReference endTime = database.getReference("Sessions")
@@ -59,5 +60,40 @@ public class ViewModelUtils {
             }
         };
         endTime.addValueEventListener(endTimeListener);
+    }
+
+    public static void participantsConsensusObserver() {
+        String meetingID = Meeting.getMeetingID();
+
+        DatabaseReference endTime = database.getReference("Sessions")
+                .child(meetingID).child("ListOfParticipants");
+
+        ChildEventListener participantsConsensusListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ConsensusHandler.callGetConsensusStances(meetingID);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ConsensusHandler.callGetConsensusStances(meetingID);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ParticipantsConsensusObserver", error.getDetails());
+            }
+        };
+        endTime.addChildEventListener(participantsConsensusListener);
     }
 }
